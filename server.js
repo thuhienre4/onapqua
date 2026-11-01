@@ -52,9 +52,18 @@ function importSeedPosts() {
   let seedPosts = [];
   try { seedPosts = JSON.parse(fs.readFileSync(path.join(root, 'seed', 'posts.json'), 'utf8')); } catch { return; }
   const pending = seedPosts.filter((post) => post.id && !seen.has(post.id));
-  if (!pending.length) return;
   let posts = [];
   try { posts = JSON.parse(fs.readFileSync(postsFile, 'utf8')); } catch { /* treat as empty */ }
+  // Newer seed versions refresh seed posts an admin has never edited (updatedAt still equals createdAt).
+  const seedById = new Map(seedPosts.map((post) => [post.id, post]));
+  let upgraded = 0;
+  posts = posts.map((post) => {
+    const seed = seedById.get(post.id);
+    if (!seed || Number(seed.seedVersion || 1) <= Number(post.seedVersion || 1) || post.updatedAt !== post.createdAt) return post;
+    upgraded += 1;
+    return { ...seed, clicks: Number(post.clicks || 0), published: post.published, featured: post.featured };
+  });
+  if (!pending.length && !upgraded) return;
   const existing = new Set(posts.map((post) => post.id));
   posts.push(...pending.filter((post) => !existing.has(post.id)));
   fs.writeFileSync(postsFile, `${JSON.stringify(posts, null, 2)}\n`);
@@ -314,6 +323,20 @@ function rating(value) {
   return Number.isFinite(number) ? Math.min(5, Math.max(0, number)) : 0;
 }
 
+// Accepts [{label, url}] or text lines "Label | https://url"; keeps valid http(s) links only.
+function sourceList(value) {
+  const items = Array.isArray(value) ? value : String(value ?? '').split(/\r?\n/).map((line) => {
+    const [label, url] = line.includes('|') ? line.split('|') : ['', line];
+    return { label, url };
+  });
+  return items.map((item) => {
+    try {
+      const url = safeUrl(text(item.url, 1500));
+      return { label: text(item.label, 160) || new URL(url).hostname.replace(/^www\./, ''), url };
+    } catch { return null; }
+  }).filter(Boolean).slice(0, 20);
+}
+
 function cleanPost(payload, previous = {}) {
   const title = text(payload.title ?? previous.title, 240);
   if (!title) throw new Error('Post title is required.');
@@ -328,6 +351,8 @@ function cleanPost(payload, previous = {}) {
     category: text(payload.category ?? previous.category, 120) || 'Guides',
     brand: text(payload.brand ?? previous.brand, 160),
     image: safeImageUrl(payload.image ?? previous.image),
+    logo: safeImageUrl(payload.logo ?? previous.logo),
+    sources: sourceList(payload.sources ?? previous.sources),
     sourceUrl: payload.sourceUrl || previous.sourceUrl ? safeUrl(payload.sourceUrl ?? previous.sourceUrl) : '',
     affiliateUrl: affiliateUrl ? safeUrl(affiliateUrl) : '',
     ctaLabel: text(payload.ctaLabel ?? previous.ctaLabel, 60),

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   input.value = new URLSearchParams(location.search).get('search') || '';
 
   const products = posts.filter((post) => post.category !== 'Best Of').map((post) => ({
-    name: post.brand || post.title, category: post.category, rating: post.rating, summary: post.excerpt,
+    name: post.brand || post.title, logo: post.logo, category: post.category, rating: post.rating, summary: post.excerpt,
     review: reviewUrl(post), visit: post.hasLink ? goUrl(post) : '', cta: post.ctaLabel || 'Visit website',
   }));
   const known = new Set(products.map((item) => item.name.toLowerCase()));
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!products.length) { grid.innerHTML = '<div class="rv-empty"><h3>No products yet</h3><p>Products will appear here as we publish reviews.</p></div>'; return; }
     grid.innerHTML = matches.length ? matches.map((item) => `
       <article class="rv-dir-item">
-        <div class="rv-dir-mark" aria-hidden="true">${escapeHtml(item.name.charAt(0).toUpperCase())}</div>
+        <div class="rv-dir-mark" aria-hidden="true">${item.logo ? `<img src="${escapeHtml(item.logo)}" alt="" width="40" height="40" loading="lazy">` : escapeHtml(item.name.charAt(0).toUpperCase())}</div>
         <div class="rv-dir-main">
           <div class="rv-meta"><h2>${escapeHtml(item.name)}</h2><span class="rv-chip">${escapeHtml(item.category || 'Other')}</span>${stars(item.rating)}</div>
           <p>${escapeHtml(item.summary)}</p>

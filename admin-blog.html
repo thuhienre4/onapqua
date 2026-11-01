@@ -29,7 +29,14 @@
             <div class="two"><div><label for="pros">Pros <small>(one per line)</small></label><textarea id="pros" maxlength="3000"></textarea></div><div><label for="cons">Cons <small>(one per line)</small></label><textarea id="cons" maxlength="3000"></textarea></div></div>
           </div>
 
-          <label for="image">Cover image URL</label><input id="image" maxlength="1500" placeholder="https://… or /assets/…"><img id="preview" class="preview" alt="Cover preview">
+          <div class="box">
+            <h3>Logo &amp; sources</h3>
+            <label for="logo">Brand logo URL <small>(square image; upload to /assets/logos/ or paste a link)</small></label><input id="logo" maxlength="1500" placeholder="/assets/logos/brand.png or https://…/logo.png">
+            <label for="sources">Sources <small>(one per line: Label | https://link)</small></label><textarea id="sources" maxlength="6000" placeholder="Make official site | https://www.make.com&#10;Trustpilot – Make | https://www.trustpilot.com/review/make.com&#10;G2 – Make reviews | https://www.g2.com/products/make/reviews"></textarea>
+            <p class="hint">Shown as "Sources &amp; references" at the end of the review, with the official website from "Official product page" above.</p>
+          </div>
+
+          <label for="image">Cover image URL <small>(used when the review is shared on social media)</small></label><input id="image" maxlength="1500" placeholder="https://… or /assets/…"><img id="preview" class="preview" alt="Cover preview">
           <label for="excerpt">Short summary</label><textarea id="excerpt" maxlength="600"></textarea>
           <label for="content">Review content</label><textarea id="content" required maxlength="20000"></textarea>
           <p class="hint">Formatting: <code>## Heading</code>, <code>- list item</code>, <code>| table | row |</code>, <code>**bold**</code>, <code>[link text](https://…)</code> or <code>[our review](/review/slug)</code>. Leave a blank line between paragraphs.</p>
@@ -48,6 +55,6 @@
       <aside class="panel"><h2>All reviews</h2><p class="muted">Drafts and published reviews, with affiliate clicks.</p><div id="posts" class="posts"><div class="empty">Loading...</div></div></aside>
     </div>
   </main>
-  <script src="admin-blog.js?v=4"></script>
+  <script src="admin-blog.js?v=5"></script>
 </body>
 </html>

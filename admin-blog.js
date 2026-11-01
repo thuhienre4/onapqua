@@ -1,6 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
 let posts = [];
-const fields = ['source-url', 'title', 'slug', 'brand', 'category', 'author', 'affiliate-url', 'cta-label', 'rating', 'price', 'pros', 'cons', 'image', 'excerpt', 'content', 'seo-title', 'meta-description', 'featured', 'published'];
+const fields = ['source-url', 'title', 'slug', 'brand', 'category', 'author', 'affiliate-url', 'cta-label', 'rating', 'price', 'pros', 'cons', 'logo', 'sources', 'image', 'excerpt', 'content', 'seo-title', 'meta-description', 'featured', 'published'];
 const keyFor = (id) => id.replace(/-([a-z])/g, (_, character) => character.toUpperCase());
 
 function value(id) {
@@ -69,7 +69,9 @@ function fill(post) {
     const current = post[keyFor(id)];
     const element = $('#' + id);
     if (element.type === 'checkbox') element.checked = Boolean(current);
-    else element.value = Array.isArray(current) ? current.join('\n') : (current ?? '');
+    else element.value = Array.isArray(current)
+      ? current.map((item) => (item && typeof item === 'object' ? `${item.label} | ${item.url}` : item)).join('\n')
+      : (current ?? '');
   });
   if (!post.rating) $('#rating').value = '';
   $('#form-title').textContent = 'Edit review';

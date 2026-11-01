@@ -33,9 +33,24 @@
 
   // Themed cover tile (galaxy, gold and silver) rather than vendor artwork, so every
   // card matches the site palette. Vendor images are still used for social sharing.
+  const logoMark = (post, className = 'rv-logo') => post.logo
+    ? `<span class="${className}"><img src="${escapeHtml(post.logo)}" alt="${escapeHtml(post.brand || '')} logo" width="64" height="64" loading="lazy" decoding="async"></span>`
+    : '';
+
   const cover = (post, className = '') => {
     const name = String(post.brand || post.title || '?').trim();
-    return `<div class="rv-cover ${className}" aria-hidden="true"><span class="rv-cover-name">${escapeHtml(name)}</span><span class="rv-cover-cat">${escapeHtml(post.category || 'Review')}</span></div>`;
+    return `<div class="rv-cover ${className}" aria-hidden="true">${logoMark(post, 'rv-cover-logo')}<span class="rv-cover-name">${escapeHtml(name)}</span><span class="rv-cover-cat">${escapeHtml(post.category || 'Review')}</span></div>`;
+  };
+
+  const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
+
+  // Structured "Sources & references" block plus the official website link.
+  const sourcesBlock = (post) => {
+    const sources = Array.isArray(post.sources) ? post.sources.filter((source) => source && source.url) : [];
+    if (!sources.length && !post.sourceUrl) return '';
+    const official = post.sourceUrl ? `<p class="rv-official">Official website: <a href="${escapeHtml(post.sourceUrl)}" target="_blank" rel="nofollow noopener">${escapeHtml(hostOf(post.sourceUrl))}</a></p>` : '';
+    const list = sources.length ? `<ol>${sources.map((source) => `<li><a href="${escapeHtml(source.url)}" target="_blank" rel="nofollow noopener">${escapeHtml(source.label || hostOf(source.url))}</a> <span>${escapeHtml(hostOf(source.url))}</span></li>`).join('')}</ol>` : '';
+    return `<section class="rv-sources" aria-labelledby="sources"><h2 id="sources">Sources &amp; references</h2><p class="rv-sources-note">This review is based on the official product information and the independent sources below. Last checked ${escapeHtml(formatDate(post.updatedAt || post.publishedAt))}.</p>${official}${list}</section>`;
   };
 
   const ctaLink = (post, className, label) => `<a class="${className}" href="${goUrl(post)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(label || post.ctaLabel || 'Check price')} <span aria-hidden="true">&#8599;</span></a>`;
@@ -79,11 +94,12 @@
     return `<p>${lines.map((line) => inline(escapeHtml(line))).join('<br>')}</p>`;
   }).join('');
 
-  const tableOfContents = (content) => {
+  const tableOfContents = (content, extra = []) => {
     const headings = String(content || '').split('\n').map((line) => line.trim()).filter((line) => /^##\s+/.test(line))
       .map((line) => inline(escapeHtml(line.replace(/^##\s+/, ''))));
-    if (headings.length < 3) return '';
-    return `<nav class="rv-toc" aria-label="On this page"><h2>On this page</h2><ul>${headings.map((text) => `<li><a href="#${headingId(text)}">${text.replace(/<[^>]+>/g, '')}</a></li>`).join('')}</ul></nav>`;
+    const items = [...headings.map((text) => [headingId(text), text.replace(/<[^>]+>/g, '')]), ...extra];
+    if (items.length < 3) return '';
+    return `<nav class="rv-toc" aria-label="On this page"><h2>On this page</h2><ul>${items.map(([id, text]) => `<li><a href="#${id}">${text}</a></li>`).join('')}</ul></nav>`;
   };
 
   const prosCons = (items, kind) => Array.isArray(items) && items.length
@@ -106,15 +122,16 @@
       <div class="container rv-article-grid${post.rating || post.hasLink || (post.pros || []).length || (post.cons || []).length ? '' : ' rv-article-solo'}">
         <div class="rv-article-main">
           <p class="rv-disclosure">Some links on this page are affiliate links. If you buy through them we may earn a commission, at no extra cost to you. <a href="/affiliate-disclosure.html">Learn more</a>.</p>
-          ${tableOfContents(post.content)}
+          ${tableOfContents(post.content, (post.sources || []).length || post.sourceUrl ? [['sources', 'Sources &amp; references']] : [])}
           <div class="rv-prose">${renderContent(post.content)}</div>
+          ${sourcesBlock(post)}
           ${verdictList ? `<section class="rv-verdict-inline" aria-label="Pros and cons"><h2>Pros &amp; cons</h2><div class="rv-pc-grid">${verdictList}</div></section>` : ''}
           ${post.hasLink ? `<section class="rv-final-cta"><div><h2>Ready to try ${escapeHtml(post.brand || 'it')}?</h2>${post.price ? `<p>${escapeHtml(post.price)}</p>` : '<p>Check the latest price and availability.</p>'}</div>${cta()}</section>` : ''}
         </div>
         ${post.rating || post.hasLink || verdictList ? `<aside class="rv-verdict" aria-label="Our verdict">
           <div class="rv-verdict-card">
             <span class="rv-kicker">OUR VERDICT</span>
-            <h2>${escapeHtml(post.brand || post.title)}</h2>
+            <div class="rv-verdict-brand">${logoMark(post)}<h2>${escapeHtml(post.brand || post.title)}</h2></div>
             ${post.rating ? `<div class="rv-score"><strong>${Number(post.rating).toFixed(1)}</strong><span>/ 5</span></div>${stars(post.rating)}` : ''}
             ${post.price ? `<p class="rv-price">${escapeHtml(post.price)}</p>` : ''}
             ${cta('rv-btn-block')}
@@ -131,5 +148,5 @@
     .then((posts) => Array.isArray(posts) ? posts : [])
     .catch(() => []);
 
-  return { escapeHtml, reviewUrl, goUrl, formatDate, readingTime, stars, cover, card, renderContent, tableOfContents, article, fetchPosts };
+  return { escapeHtml, reviewUrl, goUrl, formatDate, readingTime, stars, logoMark, cover, card, renderContent, tableOfContents, article, fetchPosts };
 });

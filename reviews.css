@@ -578,3 +578,28 @@
 }
 .rv-card-link,
 .rv-featured-media { text-decoration: none; }
+
+/* Brand logos */
+.rv-cover-logo,
+.rv-logo { display: grid; flex: none; place-items: center; overflow: hidden; border: 1px solid var(--rv-line); border-radius: 16px; background: #fff; box-shadow: 0 0 18px rgba(245, 200, 76, .25); }
+.rv-cover-logo { width: 64px; height: 64px; margin-bottom: 4px; }
+.rv-cover-lg .rv-cover-logo { width: 84px; height: 84px; border-radius: 20px; }
+.rv-logo { width: 46px; height: 46px; border-radius: 12px; }
+.rv-cover-logo img,
+.rv-logo img,
+.rv-dir-mark img { width: 72%; height: 72%; object-fit: contain; }
+.rv-dir-mark:has(img) { background: #fff; }
+.rv-verdict-brand { display: flex; align-items: center; gap: 12px; margin: 6px 0 12px; }
+.rv-verdict-brand h2 { margin: 0 !important; }
+
+/* Sources & references */
+.rv-sources { margin-top: 30px; padding: 22px 24px; border: 1px solid var(--rv-line); border-radius: 18px; background: var(--rv-card); }
+.rv-sources h2 { margin: 0 0 6px; color: var(--rv-ink); font-size: 1.3rem; scroll-margin-top: 90px; }
+.rv-sources-note { margin: 0 0 12px; color: var(--rv-muted); font-size: .88rem; }
+.rv-official { margin: 0 0 10px; font-weight: 700; }
+.rv-official a,
+.rv-sources li a { color: var(--rv-gold); font-weight: 700; text-underline-offset: 3px; }
+.rv-sources ol { margin: 0; padding-left: 22px; }
+.rv-sources li { margin: 6px 0; }
+.rv-sources li::marker { color: var(--rv-gold); font-weight: 800; }
+.rv-sources li span { color: var(--rv-muted); font-size: .8rem; }

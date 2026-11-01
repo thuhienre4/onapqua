@@ -125,11 +125,12 @@ function renderReview(html, { siteUrl, post, posts = [] }) {
     ] },
     { '@type': 'Article', headline: post.title, description: post.excerpt, image, url,
       datePublished: post.publishedAt, dateModified: post.updatedAt || post.publishedAt,
+      ...((post.sources || []).length ? { citation: post.sources.map((source) => source.url) } : {}),
       author: { '@type': 'Organization', name: post.author || siteName }, publisher: { '@type': 'Organization', name: siteName, logo: { '@type': 'ImageObject', url: `${siteUrl}/assets/logo.svg` } } },
   ];
   if (post.rating && post.brand) {
     graph.push({ '@type': 'Review', name: post.title, url, datePublished: post.publishedAt,
-      itemReviewed: { '@type': 'Product', name: post.brand, image, ...(post.sourceUrl ? { url: post.sourceUrl } : {}) },
+      itemReviewed: { '@type': 'Product', name: post.brand, image: post.logo ? `${siteUrl}${post.logo}` : image, ...(post.sourceUrl ? { url: post.sourceUrl } : {}) },
       reviewRating: { '@type': 'Rating', ratingValue: post.rating, bestRating: 5, worstRating: 0 },
       author: { '@type': 'Organization', name: siteName }, reviewBody: post.excerpt,
       ...(post.pros?.length ? { positiveNotes: { '@type': 'ItemList', itemListElement: post.pros.map((name, index) => ({ '@type': 'ListItem', position: index + 1, name })) } } : {}),
