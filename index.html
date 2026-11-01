@@ -4,49 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>onapqua. | Honest Product Reviews</title>
-    <meta name="description" content="onapqua. publishes honest, hands-on product reviews with clear pros, cons and where to buy." />
+    <!--@head-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css?v=21" />
-    <link rel="stylesheet" href="/polish.css?v=17" />
-    <link rel="stylesheet" href="/harmony.css?v=27" />
-    <link rel="stylesheet" href="/typography.css?v=1" />
-    <link rel="stylesheet" href="/brand.css?v=1" />
-    <link rel="stylesheet" href="/reviews.css?v=2" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/site.css?v=1" />
+    <link rel="stylesheet" href="/reviews.css?v=3" />
   </head>
-  <body class="rv-page" id="top">
-    <header class="site-header">
-      <div class="container header-inner">
-        <a class="brand-text brand-logo" href="/"><img class="brand-logo-mark" src="/assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span></a>
-        <nav class="main-nav" aria-label="Main navigation">
-          <a class="active" href="/">Home</a>
-          <a href="/blog.html">Reviews</a>
-          <a href="/products.html">Products</a>
-          <a href="/coupons.html">Coupons</a>
-        </nav>
-      </div>
-    </header>
+  <body class="rv-page">
+    <!--@header:home-->
 
-    <main>
+    <main id="main">
       <section class="rv-hero">
         <div class="container rv-hero-inner">
-          <span class="rv-kicker">HONEST REVIEWS &middot; REAL PROS &amp; CONS</span>
+          <span class="rv-kicker">INDEPENDENT REVIEWS &middot; CLEAR VERDICTS</span>
           <h1>Reviews that help you <span>buy smarter</span></h1>
-          <p class="rv-lead">We dig through specs, pricing and real user reviews, then tell you plainly what's good, what isn't, and where to get the best price.</p>
+          <p class="rv-lead">We dig through specs, pricing and thousands of real user reviews, then tell you plainly what's good, what isn't, and where to get the best deal.</p>
           <form class="rv-search" action="/blog.html" role="search">
-            <input type="search" name="q" placeholder="Search reviews, products or categories..." aria-label="Search reviews" />
+            <label class="rv-sr" for="home-search">Search reviews</label>
+            <input id="home-search" type="search" name="q" placeholder="Search hosting, WordPress plugins, AI tools..." />
             <button type="submit">Search</button>
           </form>
-          <div class="rv-hero-cats" id="hero-categories"></div>
+          <ul class="rv-trust" aria-label="Why readers trust us">
+            <li><b id="stat-reviews">14+</b> in-depth reviews</li>
+            <li><b>Sources</b> cited in every review</li>
+            <li><b>$0</b> extra cost to you</li>
+          </ul>
         </div>
       </section>
 
-      <section class="rv-section">
+      <section class="rv-section" id="guides-section" hidden>
         <div class="container">
-          <div id="featured-review"></div>
+          <div class="rv-section-head">
+            <div><span class="rv-kicker">BUYER'S GUIDES</span><h2>Best of 2026</h2></div>
+            <a class="rv-link" href="/blog.html?category=Best%20Of">All guides &rarr;</a>
+          </div>
+          <div class="rv-guides" id="guides"></div>
         </div>
+      </section>
+
+      <section class="rv-section" id="featured-section">
+        <div class="container"><div id="featured-review"></div></div>
       </section>
 
       <section class="rv-section">
@@ -59,62 +57,42 @@
         </div>
       </section>
 
-      <section class="rv-section rv-how" id="about">
+      <section class="rv-section" id="categories-section" hidden>
         <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">HOW WE REVIEW</span><h2>Clear verdicts, no fluff</h2></div></div>
+          <div class="rv-section-head"><div><span class="rv-kicker">BROWSE</span><h2>Explore by category</h2></div></div>
+          <div class="rv-cats" id="categories"></div>
+        </div>
+      </section>
+
+      <section class="rv-section rv-how">
+        <div class="container">
+          <div class="rv-section-head"><div><span class="rv-kicker">HOW WE REVIEW</span><h2>Clear verdicts, no fluff</h2></div><a class="rv-link" href="/about.html#how-we-review">Our method &rarr;</a></div>
           <div class="rv-steps">
-            <article><b>01</b><h3>We research it</h3><p>We study official specs and pricing, plus user and expert reviews on Trustpilot, G2, Capterra and trusted tech sites.</p></article>
-            <article><b>02</b><h3>We score it</h3><p>Each product gets a rating out of 5, an honest list of pros and cons, and links to our sources.</p></article>
-            <article><b>03</b><h3>You decide</h3><p>Follow our link to check the current price. We may earn a commission, at no extra cost to you.</p></article>
+            <article><b>01</b><h3>We research it</h3><p>Official specs and pricing, plus user and expert reviews on Trustpilot, G2, Capterra and trusted tech sites.</p></article>
+            <article><b>02</b><h3>We score it</h3><p>A rating out of 5, an honest list of pros and cons, and links to every source we used.</p></article>
+            <article><b>03</b><h3>You decide</h3><p>Compare, then follow our link to the official site. We may earn a commission, at no extra cost to you.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="rv-section">
+        <div class="container">
+          <div class="rv-newsletter">
+            <div><span class="rv-kicker">NEWSLETTER</span><h2>New reviews &amp; deals, once a month</h2><p>No spam. Unsubscribe any time.</p></div>
+            <form id="newsletter-form" class="rv-newsletter-form">
+              <label class="rv-sr" for="newsletter-email">Email address</label>
+              <input id="newsletter-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+              <button type="submit" class="rv-btn">Subscribe</button>
+              <p class="rv-form-note" id="newsletter-note" role="status"></p>
+            </form>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container site-footer-grid">
-        <div class="site-footer-brand"><a href="/"><img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="40" height="40" /><strong>onapqua.</strong></a><p>Honest, hands-on reviews with clear pros, cons and where to buy.</p><small>Independent reviews &middot; Updated regularly</small></div>
-        <nav class="site-footer-column" aria-label="Site links"><h2>Explore</h2><a href="/blog.html">All reviews</a><a href="/products.html">Products</a><a href="/coupons.html">Coupons</a></nav>
-        <nav class="site-footer-column" aria-label="Company links"><h2>Company</h2><a href="/#about">How we review</a><a href="mailto:hello@onapqua.com">Contact</a></nav>
-        <nav class="site-footer-column" aria-label="Legal links"><h2>Legal</h2><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="/#about">Affiliate Disclosure</a></nav>
-      </div>
-      <div class="container site-footer-bottom"><span>&copy; 2026 onapqua. All rights reserved.</span><span>Some links are affiliate links. We may earn a commission at no extra cost to you.</span></div>
-    </footer>
+    <!--@footer-->
 
-    <script src="/reviews.js?v=1"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        const { escapeHtml, card, cover, stars, reviewUrl, goUrl, fetchPosts } = window.Reviews;
-        const posts = await fetchPosts();
-        const latest = document.querySelector('#latest-reviews');
-        const featuredRoot = document.querySelector('#featured-review');
-
-        if (!posts.length) {
-          latest.innerHTML = '<div class="rv-empty"><h3>No reviews yet</h3><p>Our first reviews are on the way. Check back soon!</p></div>';
-          featuredRoot.closest('section').hidden = true;
-          return;
-        }
-
-        const featured = posts.find((post) => post.featured) || posts[0];
-        featuredRoot.innerHTML = `
-          <article class="rv-featured">
-            <a href="${reviewUrl(featured)}" class="rv-featured-media">${cover(featured, 'rv-cover-lg')}<span class="rv-badge">Editor's pick</span></a>
-            <div class="rv-featured-body">
-              <div class="rv-meta"><span class="rv-chip">${escapeHtml(featured.category || 'Review')}</span>${stars(featured.rating)}</div>
-              <h2><a href="${reviewUrl(featured)}">${escapeHtml(featured.title)}</a></h2>
-              <p>${escapeHtml(featured.excerpt)}</p>
-              ${featured.price ? `<p class="rv-price">${escapeHtml(featured.price)}</p>` : ''}
-              <div class="rv-actions"><a class="rv-btn" href="${reviewUrl(featured)}">Read full review</a>${featured.hasLink ? `<a class="rv-btn rv-btn-ghost" href="${goUrl(featured)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(featured.ctaLabel || 'Check price')} &#8599;</a>` : ''}</div>
-            </div>
-          </article>`;
-
-        const rest = posts.filter((post) => post.id !== featured.id);
-        latest.innerHTML = rest.length ? rest.slice(0, 9).map(card).join('') : '<div class="rv-empty"><p>More reviews coming soon.</p></div>';
-
-        const categories = [...new Set(posts.map((post) => post.category).filter(Boolean))].slice(0, 8);
-        document.querySelector('#hero-categories').innerHTML = categories
-          .map((category) => `<a href="/blog.html?category=${encodeURIComponent(category)}">${escapeHtml(category)}</a>`).join('');
-      });
-    </script>
+    <script src="/reviews.js?v=2"></script>
+    <script src="/home.js?v=1"></script>
   </body>
 </html>

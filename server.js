@@ -4,11 +4,14 @@ const path = require('path');
 const crypto = require('crypto');
 const dns = require('dns').promises;
 const net = require('net');
+const zlib = require('zlib');
+const render = require('./render.js');
 
 const root = __dirname;
 const host = process.env.HOST || '0.0.0.0';
 const port = Number(process.env.PORT || 3000);
 const production = process.env.NODE_ENV === 'production';
+const siteUrl = String(process.env.SITE_URL || 'https://www.onapqua.com').replace(/\/+$/, '');
 const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(root, '.data');
 const offersFile = path.join(dataDir, 'offers.json');
 const storesFile = path.join(dataDir, 'stores.json');
@@ -85,6 +88,12 @@ function send(res, status, body = '', type = 'text/plain; charset=utf-8', extra 
     'Content-Security-Policy': "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
     ...extra,
   };
+  const accepts = String(res.req?.headers['accept-encoding'] || '');
+  if (/gzip/.test(accepts) && /^(text\/|application\/(json|javascript|xml)|image\/svg)/.test(type) && Buffer.byteLength(body) > 1024) {
+    body = zlib.gzipSync(body);
+    headers['Content-Encoding'] = 'gzip';
+    headers.Vary = 'Accept-Encoding';
+  }
   res.writeHead(status, headers);
   res.end(body);
 }
@@ -419,12 +428,6 @@ function cleanStore(payload, previous = {}) {
   };
 }
 
-// Affiliate URLs stay server-side; readers follow the tracked /go/review/:id redirect.
-function publicPost(post) {
-  const { affiliateUrl, clicks, ...safe } = post;
-  return { ...safe, hasLink: Boolean(affiliateUrl) };
-}
-
 function publicOffer(offer) {
   const { code, ...safe } = offer;
   return { ...safe, hasCode: Boolean(text(code)) };
@@ -435,11 +438,21 @@ function clientIp(req) { return text(req.headers['x-forwarded-for'] || req.socke
 function serveStatic(req, res, pathname) {
   if (pathname === '/') pathname = '/index.html';
   if (pathname === '/admin') pathname = '/admin.html';
-  if (/^\/review\/[^/]+\/?$/.test(pathname)) pathname = '/post.html';
+  const reviewMatch = pathname.match(/^\/review\/([^/]+)\/?$/);
+  if (reviewMatch) {
+    const slugValue = decodeURIComponent(reviewMatch[1]);
+    const post = readArray(postsFile).find((item) => item.slug === slugValue && item.published === true);
+    const html = render.renderReview(fs.readFileSync(path.join(root, 'post.html'), 'utf8'), { siteUrl, post });
+    return send(res, post ? 200 : 404, req.method === 'HEAD' ? '' : html, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
+  }
   const decoded = decodeURIComponent(pathname);
-  if (decoded.includes('\0') || decoded.startsWith('/seed/') || decoded.startsWith('/.data/') || /^\/(server\.js|package(?:-lock)?\.json|Procfile|\.env)/i.test(decoded)) return send(res, 404, 'Not found');
+  if (decoded.includes('\0') || decoded.startsWith('/seed/') || decoded.startsWith('/.data/') || /^\/(server\.js|render\.js|package(?:-lock)?\.json|Procfile|\.env)/i.test(decoded)) return send(res, 404, 'Not found');
   const file = path.resolve(root, `.${decoded}`);
-  if (!file.startsWith(`${root}${path.sep}`) || !fs.existsSync(file) || !fs.statSync(file).isFile()) return send(res, 404, 'Not found');
+  if (!file.startsWith(`${root}${path.sep}`) || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
+    if (path.extname(decoded) && !decoded.endsWith('.html')) return send(res, 404, 'Not found');
+    const page = render.renderPage(fs.readFileSync(path.join(root, '404.html'), 'utf8'), { siteUrl, path: '/404.html' });
+    return send(res, 404, req.method === 'HEAD' ? '' : page, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
+  }
   const fileStat = fs.statSync(file);
   const etag = `W/\"${fileStat.size.toString(36)}-${Math.trunc(fileStat.mtimeMs).toString(36)}\"`;
   const isAsset = /\.(css|js|png|jpe?g|webp|svg)$/i.test(file);
@@ -452,7 +465,8 @@ function serveStatic(req, res, pathname) {
     res.writeHead(304, { ...headers, 'X-Content-Type-Options': 'nosniff' });
     return res.end();
   }
-  const content = req.method === 'HEAD' ? '' : fs.readFileSync(file);
+  let content = req.method === 'HEAD' ? '' : fs.readFileSync(file);
+  if (content && file.endsWith('.html')) content = render.renderPage(content.toString('utf8'), { siteUrl, path: decoded });
   send(res, 200, content, mimeTypes[path.extname(file).toLowerCase()] || 'application/octet-stream', headers);
 }
 
@@ -466,6 +480,14 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/healthz') {
       return json(res, 200, { ok: true, offers: readArray(offersFile).length, stores: readArray(storesFile).length, adminConfigured: Boolean(adminPassword) });
+    }
+
+    if (req.method === 'GET' && url.pathname === '/robots.txt') {
+      return send(res, 200, render.robots(siteUrl), 'text/plain; charset=utf-8', { 'Cache-Control': 'public, max-age=3600' });
+    }
+    if (req.method === 'GET' && url.pathname === '/sitemap.xml') {
+      const posts = readArray(postsFile).filter((post) => post.published === true);
+      return send(res, 200, render.sitemap(siteUrl, posts), 'application/xml; charset=utf-8', { 'Cache-Control': 'public, max-age=3600' });
     }
 
     if (req.method === 'POST' && url.pathname === '/api/login') {
@@ -502,13 +524,13 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/api/blog') {
       const posts = readArray(postsFile).filter((post) => post.published === true).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-      return publicJson(req, res, posts.map(publicPost));
+      return publicJson(req, res, posts.map(render.publicPost));
     }
 
     const publicPostMatch = url.pathname.match(/^\/api\/blog\/([^/]+)$/);
     if (req.method === 'GET' && publicPostMatch) {
       const post = readArray(postsFile).find((item) => item.slug === decodeURIComponent(publicPostMatch[1]) && item.published === true);
-      return post ? publicJson(req, res, publicPost(post)) : json(res, 404, { error: 'Post not found.' });
+      return post ? publicJson(req, res, render.publicPost(post)) : json(res, 404, { error: 'Post not found.' });
     }
 
     const reviewGoMatch = url.pathname.match(/^\/go\/review\/([^/]+)$/);
