@@ -36,6 +36,26 @@ function ensureData() {
     if (!fs.existsSync(target)) fs.copyFileSync(path.join(root, 'seed', seed), target);
   }
   if (!fs.existsSync(subscribersFile)) fs.writeFileSync(subscribersFile, '[]\n');
+  importSeedPosts();
+}
+
+// Seed reviews added after a site already has data are imported once each; the
+// ledger keeps reviews an admin deleted from coming back on the next restart.
+function importSeedPosts() {
+  const ledgerFile = path.join(dataDir, 'seeded-posts.json');
+  let imported = [];
+  try { imported = JSON.parse(fs.readFileSync(ledgerFile, 'utf8')); } catch { /* first run */ }
+  const seen = new Set(imported);
+  let seedPosts = [];
+  try { seedPosts = JSON.parse(fs.readFileSync(path.join(root, 'seed', 'posts.json'), 'utf8')); } catch { return; }
+  const pending = seedPosts.filter((post) => post.id && !seen.has(post.id));
+  if (!pending.length) return;
+  let posts = [];
+  try { posts = JSON.parse(fs.readFileSync(postsFile, 'utf8')); } catch { /* treat as empty */ }
+  const existing = new Set(posts.map((post) => post.id));
+  posts.push(...pending.filter((post) => !existing.has(post.id)));
+  fs.writeFileSync(postsFile, `${JSON.stringify(posts, null, 2)}\n`);
+  fs.writeFileSync(ledgerFile, `${JSON.stringify([...imported, ...pending.map((post) => post.id)], null, 2)}\n`);
 }
 
 function readArray(file) {

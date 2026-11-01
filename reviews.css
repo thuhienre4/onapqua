@@ -330,6 +330,7 @@
 }
 .rv-final-cta h2 { margin: 0 0 4px; color: var(--rv-ink); font-size: 1.35rem; }
 .rv-final-cta p { margin: 0; color: var(--rv-muted); font-weight: 600; }
+.rv-final-cta .rv-btn { flex: none; white-space: nowrap; }
 
 .rv-related { border-top: 1px solid var(--rv-line); background: #fff; }
 
