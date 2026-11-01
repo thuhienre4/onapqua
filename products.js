@@ -1,109 +1,43 @@
+// Product directory: every reviewed product plus any stores added in admin.
 document.addEventListener('DOMContentLoaded', async () => {
-  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const { escapeHtml, stars, reviewUrl, goUrl, fetchPosts } = window.Reviews;
   const getJson = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((response) => response.ok ? response.json() : []).catch(() => []);
-  const [stores, offers] = await Promise.all([getJson('/api/stores'), getJson('/api/offers')]);
-  document.querySelector('#product-grid').innerHTML = stores.map((store) => {
-    const storeOffers = offers.filter((offer) => offer.storeId === store.id);
-    const offer = storeOffers[0];
-    const logo = store.logo || `https://www.google.com/s2/favicons?sz=256&domain=${encodeURIComponent(store.domain)}`;
-    const dealHref = offer ? `deal.html?id=${encodeURIComponent(offer.id)}&brand=${encodeURIComponent(store.name)}&domain=${encodeURIComponent(store.domain)}` : '';
-    return `<article class="product-card" data-category="${escapeHtml(String(store.category || '').toLowerCase())}" data-search="${escapeHtml([store.name, store.domain, store.category].join(' ').toLowerCase())}">
-      <div class="product-top"><img src="${escapeHtml(logo)}" alt="${escapeHtml(store.name)} logo" /><div><h2>${escapeHtml(store.name)}</h2><p>${escapeHtml(store.description)}</p></div></div>
-      <div class="product-rating"><strong hidden>0</strong><small>(${storeOffers.length} offer${storeOffers.length === 1 ? '' : 's'})</small></div><div class="product-tags"><span>${escapeHtml(store.category || 'Other')}</span></div>
-      <div class="product-actions">${dealHref ? `<a class="explore" href="${dealHref}">Explore &#8599;</a>` : ''}<a class="visit" href="https://${escapeHtml(store.domain)}" target="_blank" rel="noopener">Visit website &#8599;</a></div>
-    </article>`;
-  }).join('');
-
-  const input = document.querySelector('#product-search');
-  const headerInput = document.querySelector('#header-product-search');
-  const sort = document.querySelector('#product-sort');
+  const [posts, stores] = await Promise.all([fetchPosts(), getJson('/api/stores')]);
   const grid = document.querySelector('#product-grid');
-  const filters = [...document.querySelectorAll('.product-filters [data-category]')];
-  const viewButtons = [...document.querySelectorAll('[data-product-view]')];
-  const moreCategories = document.querySelector('#more-categories');
-  const cards = [...document.querySelectorAll('.product-card')];
-  const empty = document.querySelector('.products-empty');
-  let category = 'all';
-  let view = 'all';
+  const count = document.querySelector('#product-count');
+  const input = document.querySelector('#product-q');
+  input.value = new URLSearchParams(location.search).get('search') || '';
 
-  const initialSearch = new URLSearchParams(window.location.search).get('search');
-  if (initialSearch) {
-    if (headerInput) headerInput.value = initialSearch;
-    if (input) input.value = initialSearch;
-  }
-
-  cards.forEach((card) => {
-    const couponLink = card.querySelector('.product-actions .explore');
-    if (!couponLink) return;
-    card.tabIndex = 0;
-    card.setAttribute('role', 'link');
-    card.setAttribute('aria-label', `View coupons for ${card.querySelector('h2')?.textContent || 'this product'}`);
-    card.addEventListener('click', (event) => {
-      if (event.target.closest('a, button')) return;
-      window.location.href = couponLink.href;
-    });
-    card.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter') return;
-      event.preventDefault();
-      window.location.href = couponLink.href;
-    });
-  });
-
-  const update = () => {
-    const query = (headerInput?.value || input?.value || '').trim().toLowerCase();
-    let visible = 0;
-    cards.forEach((card) => {
-      const categoryMatch = category === 'all' || card.dataset.category.split(' ').includes(category);
-      const viewMatch = view !== 'popular' || Number(card.querySelector('.product-rating strong').textContent) >= 4.8;
-      const searchMatch = !query || card.dataset.search.includes(query) || card.textContent.toLowerCase().includes(query);
-      card.hidden = !(categoryMatch && viewMatch && searchMatch);
-      if (!card.hidden) visible += 1;
-    });
-    empty.hidden = visible !== 0;
-  };
-
-  filters.forEach((button) => button.addEventListener('click', () => {
-    category = button.dataset.category;
-    view = 'all';
-    filters.forEach((item) => item.classList.remove('active'));
-    viewButtons.forEach((item) => item.classList.toggle('active', item.dataset.productView === 'all'));
-    button.classList.add('active');
-    update();
+  const products = posts.filter((post) => post.category !== 'Best Of').map((post) => ({
+    name: post.brand || post.title, category: post.category, rating: post.rating, summary: post.excerpt,
+    review: reviewUrl(post), visit: post.hasLink ? goUrl(post) : '', cta: post.ctaLabel || 'Visit website',
   }));
-  viewButtons.forEach((button) => button.addEventListener('click', () => {
-    view = button.dataset.productView;
-    category = 'all';
-    filters.forEach((item) => item.classList.remove('active'));
-    viewButtons.forEach((item) => item.classList.toggle('active', item === button));
-    update();
+  const known = new Set(products.map((item) => item.name.toLowerCase()));
+  stores.filter((store) => !known.has(String(store.name).toLowerCase())).forEach((store) => products.push({
+    name: store.name, category: store.category, rating: 0, summary: store.description,
+    review: '', visit: `https://${store.domain}`, cta: 'Visit website',
   }));
-  moreCategories?.addEventListener('click', () => {
-    const expanded = moreCategories.getAttribute('aria-expanded') === 'true';
-    moreCategories.setAttribute('aria-expanded', String(!expanded));
-    moreCategories.closest('.product-category-grid')?.classList.toggle('expanded', !expanded);
-    const label = moreCategories.querySelector('.more-label');
-    if (label) label.textContent = expanded ? 'More' : 'Fewer categories';
-  });
-  let updateFrame = 0;
-  const scheduleUpdate = (event) => {
-    const value = event.currentTarget.value;
-    if (event.currentTarget === headerInput && input) input.value = value;
-    if (event.currentTarget === input && headerInput) headerInput.value = value;
-    cancelAnimationFrame(updateFrame);
-    updateFrame = requestAnimationFrame(update);
+
+  const render = () => {
+    const query = input.value.trim().toLowerCase();
+    const matches = products.filter((item) => !query || [item.name, item.category, item.summary].join(' ').toLowerCase().includes(query))
+      .sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0));
+    count.textContent = products.length ? `${matches.length} product${matches.length === 1 ? '' : 's'}` : '';
+    if (!products.length) { grid.innerHTML = '<div class="rv-empty"><h3>No products yet</h3><p>Products will appear here as we publish reviews.</p></div>'; return; }
+    grid.innerHTML = matches.length ? matches.map((item) => `
+      <article class="rv-dir-item">
+        <div class="rv-dir-mark" aria-hidden="true">${escapeHtml(item.name.charAt(0).toUpperCase())}</div>
+        <div class="rv-dir-main">
+          <div class="rv-meta"><h2>${escapeHtml(item.name)}</h2><span class="rv-chip">${escapeHtml(item.category || 'Other')}</span>${stars(item.rating)}</div>
+          <p>${escapeHtml(item.summary)}</p>
+        </div>
+        <div class="rv-dir-actions">
+          ${item.review ? `<a class="rv-btn rv-btn-ghost" href="${item.review}">Read review</a>` : ''}
+          ${item.visit ? `<a class="rv-btn" href="${escapeHtml(item.visit)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(item.cta)} &#8599;</a>` : ''}
+        </div>
+      </article>`).join('') : '<div class="rv-empty"><h3>No matches</h3><p>Try another search.</p></div>';
   };
-  headerInput?.addEventListener('input', scheduleUpdate);
-  input?.addEventListener('input', scheduleUpdate);
-  sort?.addEventListener('change', () => {
-    const sorted = [...cards].sort((a, b) => {
-      if (sort.value === 'name') return a.querySelector('h2').textContent.localeCompare(b.querySelector('h2').textContent);
-      if (sort.value === 'reviews') {
-        const reviews = (card) => Number((card.querySelector('.product-rating small').textContent.match(/[\d,]+/)?.[0] || '0').replaceAll(',', ''));
-        return reviews(b) - reviews(a);
-      }
-      return Number(b.querySelector('.product-rating strong').textContent) - Number(a.querySelector('.product-rating strong').textContent);
-    });
-    sorted.forEach((card) => grid.append(card));
-  });
-  update();
+  document.querySelector('#product-search').addEventListener('submit', (event) => { event.preventDefault(); render(); });
+  input.addEventListener('input', render);
+  render();
 });

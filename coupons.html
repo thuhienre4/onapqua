@@ -1,53 +1,34 @@
 ﻿<!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <title>Coupons | onapqua.</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!--@head-->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=16" />
-  <link rel="stylesheet" href="polish.css?v=16" />
-  <link rel="stylesheet" href="coupons.css?v=14" />
-  <link rel="stylesheet" href="harmony.css?v=37" />
-  <link rel="stylesheet" href="typography.css?v=1" />
-    <link rel="stylesheet" href="brand.css?v=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/site.css?v=2" />
+  <link rel="stylesheet" href="/reviews.css?v=5" />
 </head>
-<body class="coupons-page">
-  <header class="site-header"><div class="container header-inner">
-    <a class="brand-text brand-logo" href="index.html"><img class="brand-logo-mark" src="assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span></a>
-    <nav class="main-nav" aria-label="Main navigation"><a href="/">Home</a><a href="/blog.html">Reviews</a><a href="/products.html">Products</a><a class="active" href="/coupons.html">Coupons</a></nav>
-  </div></header>
-
-  <main>
-    <section class="top-coupons"><div class="container">
-      <span class="coupon-page-kicker">FRESHLY VERIFIED</span><h1>Today's Top Coupons</h1><p class="coupon-page-lead">Handpicked offers from brands our shoppers love.</p>
-      <div class="coupon-carousel-wrap">
-        <button class="carousel-arrow prev" type="button" aria-label="Previous coupons">&lsaquo;</button>
-        <div class="coupon-carousel" id="coupon-carousel"></div>
-        <button class="carousel-arrow next" type="button" aria-label="Next coupons">&rsaquo;</button>
+<body class="rv-page">
+  <!--@header:coupons-->
+  <main id="main">
+    <section class="rv-hero rv-hero-compact">
+      <div class="container rv-hero-inner">
+        <span class="rv-kicker">COUPONS &amp; DEALS</span>
+        <h1>Verified <span>coupons &amp; deals</span></h1>
+        <p class="rv-lead">Promo codes and offers for the products we review. Click to reveal a code, then finish your purchase on the official site.</p>
       </div>
-      <div class="coupon-dots" aria-label="Coupon carousel pages"></div>
-      <div class="coupon-brand-strip"></div>
-    </div></section>
-
-    <section class="trending-coupons"><div class="container">
-      <span class="coupon-page-kicker">POPULAR RIGHT NOW</span><h2>Today's Trending Coupons</h2>
-      <div class="trending-list"></div>
-    </div></section>
+    </section>
+    <section class="rv-section">
+      <div class="container">
+        <div class="rv-offers" id="offers"><div class="rv-loading">Loading offers...</div></div>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer">
-    <div class="container site-footer-grid">
-      <div class="site-footer-brand"><a href="index.html"><img class="footer-logo-mark" src="assets/logo.svg" alt="" width="40" height="40" /><strong>onapqua.</strong></a><p>Independent reviews, practical buying guides and verified savings from the brands in our local directory.</p><small>Independent insights &middot; Updated regularly</small></div>
-      <nav class="site-footer-column" aria-label="Platform links"><h2>Platform</h2><a href="products.html">Products</a><a href="coupons.html">Coupons</a><a href="blog.html">Review Blog</a></nav>
-      <nav class="site-footer-column" aria-label="Company links"><h2>Company</h2><a href="/about.html">About us</a><a href="mailto:hello@onapqua.com">Contact</a><a href="mailto:hello@onapqua.com">Feedback</a></nav>
-      <nav class="site-footer-column" aria-label="Legal links"><h2>Legal</h2><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Use</a><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></nav>
-    </div>
-    <div class="container site-footer-bottom"><span>&copy; 2026 onapqua. All rights reserved.</span><span>Made for clearer choices and smarter savings.</span></div>
-  </footer>
-  <div class="coupon-code-toast" role="status"><span>Coupon code</span><strong>CRM30</strong><button type="button">Copy</button></div>
-  <script src="coupons.js?v=10"></script>
+  <!--@footer-->
+  <script src="/reviews.js?v=3"></script>
+  <script src="/coupons.js?v=2"></script>
 </body>
 </html>

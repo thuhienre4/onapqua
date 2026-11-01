@@ -85,7 +85,8 @@ function send(res, status, body = '', type = 'text/plain; charset=utf-8', extra 
   const headers = {
     'Content-Type': type, 'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Content-Security-Policy': "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+    'Content-Security-Policy': "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests",
+    ...(production ? { 'Strict-Transport-Security': 'max-age=31536000' } : {}),
     ...extra,
   };
   const accepts = String(res.req?.headers['accept-encoding'] || '');
@@ -477,6 +478,16 @@ ensureData();
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || `${host}:${port}`}`);
+
+    // One canonical origin: send the bare domain and plain HTTP to https://www.
+    const canonical = new URL(siteUrl);
+    const requestHost = String(req.headers.host || '').toLowerCase().split(':')[0];
+    const forwardedProto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+    const isSiteHost = requestHost === canonical.hostname || requestHost === canonical.hostname.replace(/^www\./, '');
+    if (production && isSiteHost && (requestHost !== canonical.hostname || forwardedProto === 'http')) {
+      res.writeHead(301, { Location: `${canonical.origin}${req.url}`, 'Cache-Control': 'public, max-age=3600' });
+      return res.end();
+    }
 
     if (req.method === 'GET' && url.pathname === '/healthz') {
       return json(res, 200, { ok: true, offers: readArray(offersFile).length, stores: readArray(storesFile).length, adminConfigured: Boolean(adminPassword) });

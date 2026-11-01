@@ -1,58 +1,50 @@
+// Coupons & deals from admin. Codes stay hidden until revealed, then the
+// tracked /go/:id link opens the store in a new tab.
 document.addEventListener('DOMContentLoaded', async () => {
-  const carousel = document.querySelector('#coupon-carousel');
-  const previous = document.querySelector('.carousel-arrow.prev');
-  const next = document.querySelector('.carousel-arrow.next');
-  const dots = document.querySelector('.coupon-dots');
-  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const { escapeHtml } = window.Reviews;
+  const root = document.querySelector('#offers');
   const offers = await fetch('/api/offers', { signal: AbortSignal.timeout(8000) }).then((response) => response.ok ? response.json() : []).catch(() => []);
-  const dealUrl = (offer) => `deal.html?id=${encodeURIComponent(offer.id)}&brand=${encodeURIComponent(offer.brand)}&offer=${encodeURIComponent(offer.discount)}&domain=${encodeURIComponent(offer.domain || '')}`;
-  const logoUrl = (offer) => offer.logo || `https://www.google.com/s2/favicons?sz=256&domain=${encodeURIComponent(offer.domain || '')}`;
 
-  if (offers.length) {
-    const featured = offers.filter((offer) => offer.featured).slice(0, 8);
-    const carouselOffers = featured.length ? featured : offers.slice(0, 8);
-    carousel.innerHTML = carouselOffers.map((offer) => `
-      <a class="feature-coupon" href="${dealUrl(offer)}">
-        <img src="${escapeHtml(logoUrl(offer))}" alt="${escapeHtml(offer.brand)} logo" />
-        <small>${escapeHtml(offer.brand)}</small><h2>${escapeHtml(offer.title)}</h2>
-      </a>`).join('');
-
-    const brandStrip = document.querySelector('.coupon-brand-strip');
-    if (brandStrip) brandStrip.innerHTML = offers.slice(0, 6).map((offer) => `
-      <a href="${dealUrl(offer)}"><img src="${escapeHtml(logoUrl(offer))}" alt="${escapeHtml(offer.brand)}" />
-      <span>${escapeHtml(offer.brand)}</span><strong>${escapeHtml(offer.discount)}</strong></a>`).join('');
-
-    const trending = document.querySelector('.trending-list');
-    if (trending) trending.innerHTML = offers.slice(0, 10).map((offer) => {
-      const discountParts = String(offer.discount || 'Deal').split(/\s+/);
-      return `<article class="trending-row"><img src="${escapeHtml(logoUrl(offer))}" alt="${escapeHtml(offer.brand)}" />
-        <div class="discount"><strong>${escapeHtml(discountParts[0])}</strong><span>${escapeHtml(discountParts.slice(1).join(' ') || 'DEAL')}</span></div>
-        <div class="trend-copy"><h3>${escapeHtml(offer.title)}</h3><a href="products.html?search=${encodeURIComponent(offer.brand)}">${escapeHtml(offer.brand)}</a></div>
-        <a class="trend-button" href="${dealUrl(offer)}">${offer.hasCode ? 'Get Code' : 'Get Deal'}</a></article>`;
-    }).join('');
-  } else {
-    document.querySelector('.coupon-carousel-wrap')?.setAttribute('hidden', '');
-    const trending = document.querySelector('.trending-list');
-    if (trending) trending.innerHTML = '<p class="coupon-page-lead">No coupons yet. New offers will appear here soon &mdash; meanwhile, <a href="/blog.html">read our reviews</a>.</p>';
+  if (!offers.length) {
+    root.innerHTML = '<div class="rv-empty"><h3>No coupons right now</h3><p>New offers are added regularly. Meanwhile, compare products in our reviews.</p><a class="rv-btn" href="/blog.html">Read reviews</a></div>';
+    return;
   }
 
-  const originalCards = [...carousel.querySelectorAll('.feature-coupon')];
-  const originalCount = originalCards.length;
-  let paused = false;
-  let lastFrame = 0;
-  let resumeTimer;
-  originalCards.forEach((card) => { const clone = card.cloneNode(true); clone.setAttribute('aria-hidden', 'true'); clone.setAttribute('tabindex', '-1'); carousel.append(clone); });
-  const cardStep = () => { const card = carousel.querySelector('.feature-coupon'); const gap = Number.parseFloat(getComputedStyle(carousel).columnGap) || 0; return card ? card.getBoundingClientRect().width + gap : 0; };
-  const pauseBriefly = () => { paused = true; clearTimeout(resumeTimer); resumeTimer = window.setTimeout(() => { paused = false; }, 1100); };
-  originalCards.forEach((_, index) => { const dot = document.createElement('button'); dot.type = 'button'; dot.setAttribute('aria-label', `Show coupon ${index + 1}`); dot.addEventListener('click', () => { carousel.scrollTo({ left: cardStep() * index, behavior: 'smooth' }); pauseBriefly(); }); dots.append(dot); });
-  const paintDots = () => { if (!originalCount || !cardStep()) return; const index = Math.floor((carousel.scrollLeft + cardStep() * .45) / cardStep()) % originalCount; [...dots.children].forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index)); };
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const animate = (time) => { if (!lastFrame) lastFrame = time; const delta = Math.min(time - lastFrame, 40); lastFrame = time; if (!paused && !document.hidden && originalCount > 1) { carousel.scrollLeft += delta * .075; const loopWidth = cardStep() * originalCount; if (loopWidth && carousel.scrollLeft >= loopWidth) carousel.scrollLeft -= loopWidth; } paintDots(); window.requestAnimationFrame(animate); };
-  previous?.addEventListener('click', () => { carousel.scrollBy({ left: -cardStep(), behavior: 'smooth' }); pauseBriefly(); });
-  next?.addEventListener('click', () => { carousel.scrollBy({ left: cardStep(), behavior: 'smooth' }); pauseBriefly(); });
-  carousel.addEventListener('pointerdown', () => { paused = true; });
-  carousel.addEventListener('pointerup', pauseBriefly);
-  carousel.addEventListener('pointercancel', pauseBriefly);
-  paintDots();
-  if (!reduceMotion && originalCount > 1) window.requestAnimationFrame(animate);
+  root.innerHTML = offers.map((offer) => `
+    <article class="rv-offer">
+      <div class="rv-offer-value"><strong>${escapeHtml(offer.discount || 'DEAL')}</strong><span>${offer.hasCode ? 'Code' : 'Deal'}</span></div>
+      <div class="rv-offer-body">
+        <span class="rv-chip">${escapeHtml(offer.brand)}</span>
+        <h2>${escapeHtml(offer.title)}</h2>
+        ${offer.description ? `<p>${escapeHtml(offer.description)}</p>` : ''}
+        ${offer.expiry ? `<small>Expires ${escapeHtml(offer.expiry)}</small>` : ''}
+      </div>
+      <div class="rv-offer-action">
+        ${offer.hasCode
+          ? `<button class="rv-btn" type="button" data-reveal="${escapeHtml(offer.id)}">Reveal code</button>`
+          : `<a class="rv-btn" href="/go/${encodeURIComponent(offer.id)}" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}
+      </div>
+    </article>`).join('');
+
+  root.addEventListener('click', async (event) => {
+    const button = event.target.closest('[data-reveal]');
+    if (!button) return;
+    const store = window.open('', '_blank');
+    try {
+      const response = await fetch(`/api/offers/${encodeURIComponent(button.dataset.reveal)}/code`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Code unavailable');
+      button.outerHTML = `<button class="rv-code" type="button" data-copy="${escapeHtml(data.code)}" title="Click to copy">${escapeHtml(data.code)}</button>`;
+      navigator.clipboard?.writeText(data.code).catch(() => {});
+      if (store) store.location = data.redirect;
+    } catch (error) {
+      store?.close();
+      button.textContent = error.message;
+    }
+  });
+  root.addEventListener('click', (event) => {
+    const code = event.target.closest('[data-copy]');
+    if (!code) return;
+    navigator.clipboard?.writeText(code.dataset.copy).then(() => { code.classList.add('copied'); }).catch(() => {});
+  });
 });

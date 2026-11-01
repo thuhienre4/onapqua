@@ -60,6 +60,8 @@ const pages = {
   '/about.html': { title: 'About onapqua. & How We Review', description: 'Who we are, how we research and score products, and how onapqua. is funded.' },
   '/privacy.html': { title: 'Privacy Policy | onapqua.', description: 'How onapqua. handles information when you visit the site.' },
   '/terms.html': { title: 'Terms of Use | onapqua.', description: 'The terms that apply when you use onapqua.' },
+  '/products.html': { title: 'Product Directory | onapqua.', description: 'Every product we review, with our score and a direct link to the official site.' },
+  '/coupons.html': { title: 'Coupons & Deals | onapqua.', description: 'Promo codes and deals for the hosting, WordPress and AI tools we review.' },
   '/404.html': { title: 'Page not found | onapqua.', description: defaultDescription },
   '/affiliate-disclosure.html': { title: 'Affiliate Disclosure | onapqua.', description: 'How affiliate links work on onapqua. and how they affect (and do not affect) our reviews.' },
 };
@@ -134,7 +136,7 @@ function renderReview(html, { siteUrl, post }) {
 
 function sitemap(siteUrl, posts) {
   const urls = [
-    ['/', null, '1.0'], ['/blog.html', null, '0.9'], ['/about.html', null, '0.5'],
+    ['/', null, '1.0'], ['/blog.html', null, '0.9'], ['/products.html', null, '0.6'], ['/coupons.html', null, '0.5'], ['/about.html', null, '0.5'],
     ['/affiliate-disclosure.html', null, '0.3'], ['/privacy.html', null, '0.2'], ['/terms.html', null, '0.2'],
     ...posts.map((post) => [`/review/${encodeURIComponent(post.slug)}`, post.updatedAt || post.publishedAt, '0.8']),
   ];

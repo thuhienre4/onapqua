@@ -31,12 +31,11 @@
     return `<span class="rv-stars" role="img" aria-label="Rated ${value} out of 5">${icons}<b>${value.toFixed(1)}</b></span>`;
   };
 
-  const cover = (post, className = '', eager = false) => {
-    const label = escapeHtml(post.brand || post.title || '?');
-    const media = post.image
-      ? `<img src="${escapeHtml(post.image)}" alt="${label}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" width="1200" height="630" onerror="this.remove()">`
-      : '';
-    return `<div class="rv-cover ${className}" data-initial="${escapeHtml(String(post.brand || post.title || '?').trim().charAt(0).toUpperCase())}">${media}</div>`;
+  // Themed cover tile (galaxy, gold and silver) rather than vendor artwork, so every
+  // card matches the site palette. Vendor images are still used for social sharing.
+  const cover = (post, className = '') => {
+    const name = String(post.brand || post.title || '?').trim();
+    return `<div class="rv-cover ${className}" aria-hidden="true"><span class="rv-cover-name">${escapeHtml(name)}</span><span class="rv-cover-cat">${escapeHtml(post.category || 'Review')}</span></div>`;
   };
 
   const ctaLink = (post, className, label) => `<a class="${className}" href="${goUrl(post)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(label || post.ctaLabel || 'Check price')} <span aria-hidden="true">&#8599;</span></a>`;
@@ -106,7 +105,6 @@
       </header>
       <div class="container rv-article-grid${post.rating || post.hasLink || (post.pros || []).length || (post.cons || []).length ? '' : ' rv-article-solo'}">
         <div class="rv-article-main">
-          ${post.image && post.image !== '/assets/og-default.png' ? cover(post, 'rv-cover-lg rv-article-cover', true) : ''}
           <p class="rv-disclosure">Some links on this page are affiliate links. If you buy through them we may earn a commission, at no extra cost to you. <a href="/affiliate-disclosure.html">Learn more</a>.</p>
           ${tableOfContents(post.content)}
           <div class="rv-prose">${renderContent(post.content)}</div>
