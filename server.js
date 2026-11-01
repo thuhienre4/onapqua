@@ -331,6 +331,8 @@ function cleanPost(payload, previous = {}) {
     sourceUrl: payload.sourceUrl || previous.sourceUrl ? safeUrl(payload.sourceUrl ?? previous.sourceUrl) : '',
     affiliateUrl: affiliateUrl ? safeUrl(affiliateUrl) : '',
     ctaLabel: text(payload.ctaLabel ?? previous.ctaLabel, 60),
+    seoTitle: text(payload.seoTitle ?? previous.seoTitle, 90),
+    metaDescription: text(payload.metaDescription ?? previous.metaDescription, 200),
     rating: rating(payload.rating ?? previous.rating),
     price: text(payload.price ?? previous.price, 120),
     pros: lines(payload.pros ?? previous.pros),
@@ -442,8 +444,9 @@ function serveStatic(req, res, pathname) {
   const reviewMatch = pathname.match(/^\/review\/([^/]+)\/?$/);
   if (reviewMatch) {
     const slugValue = decodeURIComponent(reviewMatch[1]);
-    const post = readArray(postsFile).find((item) => item.slug === slugValue && item.published === true);
-    const html = render.renderReview(fs.readFileSync(path.join(root, 'post.html'), 'utf8'), { siteUrl, post });
+    const posts = readArray(postsFile).filter((item) => item.published === true);
+    const post = posts.find((item) => item.slug === slugValue);
+    const html = render.renderReview(fs.readFileSync(path.join(root, 'post.html'), 'utf8'), { siteUrl, post, posts });
     return send(res, post ? 200 : 404, req.method === 'HEAD' ? '' : html, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
   }
   const decoded = decodeURIComponent(pathname);
@@ -453,6 +456,12 @@ function serveStatic(req, res, pathname) {
     if (path.extname(decoded) && !decoded.endsWith('.html')) return send(res, 404, 'Not found');
     const page = render.renderPage(fs.readFileSync(path.join(root, '404.html'), 'utf8'), { siteUrl, path: '/404.html' });
     return send(res, 404, req.method === 'HEAD' ? '' : page, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
+  }
+  // Pages are rendered with live review data, so they skip file-based ETags.
+  if (file.endsWith('.html')) {
+    const posts = readArray(postsFile).filter((item) => item.published === true);
+    const page = render.renderPage(fs.readFileSync(file, 'utf8'), { siteUrl, path: decoded, posts });
+    return send(res, 200, req.method === 'HEAD' ? '' : page, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
   }
   const fileStat = fs.statSync(file);
   const etag = `W/\"${fileStat.size.toString(36)}-${Math.trunc(fileStat.mtimeMs).toString(36)}\"`;
@@ -466,8 +475,7 @@ function serveStatic(req, res, pathname) {
     res.writeHead(304, { ...headers, 'X-Content-Type-Options': 'nosniff' });
     return res.end();
   }
-  let content = req.method === 'HEAD' ? '' : fs.readFileSync(file);
-  if (content && file.endsWith('.html')) content = render.renderPage(content.toString('utf8'), { siteUrl, path: decoded });
+  const content = req.method === 'HEAD' ? '' : fs.readFileSync(file);
   send(res, 200, content, mimeTypes[path.extname(file).toLowerCase()] || 'application/octet-stream', headers);
 }
 

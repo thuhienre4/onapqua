@@ -77,11 +77,23 @@ function siteSchema(siteUrl) {
   });
 }
 
+const newestFirst = (posts) => [...posts].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+
+// Server-rendered review lists, so search engines see real links instead of a loading message.
+function latestReviews(posts) {
+  const reviews = newestFirst(posts).filter((post) => post.category !== 'Best Of');
+  const featured = reviews.find((post) => post.featured) || reviews[0];
+  return reviews.filter((post) => post !== featured).slice(0, 6).map((post) => Reviews.card(publicPost(post))).join('');
+}
+
 // Fills placeholders in a static page. Returns the original HTML when it has none.
-function renderPage(html, { siteUrl, path }) {
+function renderPage(html, { siteUrl, path, posts = [] }) {
   if (!html.includes('<!--@')) return html;
   const meta = pages[path] || { title: siteName, description: defaultDescription };
+  const loading = '<div class="rv-loading">Loading reviews...</div>';
   return html
+    .replace('<!--@latest-->', () => latestReviews(posts) || loading)
+    .replace('<!--@all-->', () => newestFirst(posts).map((post) => Reviews.card(publicPost(post))).join('') || loading)
     .replace('<!--@head-->', head({ siteUrl, path: path === '/index.html' ? '/' : path, ...meta, extra: path === '/index.html' ? siteSchema(siteUrl) : '' }))
     .replace(/<!--@header:(\w+)-->/, (_, active) => header(active))
     .replace('<!--@footer-->', footer());
@@ -93,7 +105,7 @@ function publicPost(post) {
 }
 
 // Pre-renders a single review: SEO tags, structured data and the article body.
-function renderReview(html, { siteUrl, post }) {
+function renderReview(html, { siteUrl, post, posts = [] }) {
   if (!post) {
     return html
       .replace('<!--@head-->', head({ siteUrl, path: '/blog.html', title: 'Review not found | onapqua.', description: defaultDescription, extra: '<meta name="robots" content="noindex" />' }))
@@ -128,10 +140,21 @@ function renderReview(html, { siteUrl, post }) {
   ${jsonLd({ '@context': 'https://schema.org', '@graph': graph })}
   <script>window.__REVIEW__ = ${JSON.stringify(safe).replace(/</g, '\\u003c')};</script>`;
   return html
-    .replace('<!--@head-->', head({ siteUrl, path, title: `${post.title} | onapqua.`, description: post.excerpt || post.title, image: post.image, type: 'article', extra }))
+    .replace('<!--@head-->', head({ siteUrl, path, title: post.seoTitle || `${post.title} | onapqua.`, description: post.metaDescription || post.excerpt || post.title, image: post.image, type: 'article', extra }))
     .replace(/<!--@header:(\w+)-->/, header('reviews'))
     .replace('<!--@footer-->', footer())
-    .replace('<!--@article-->', Reviews.article(safe));
+    .replace('<!--@article-->', () => withRelated(Reviews.article(safe), post, posts));
+}
+
+// Fills the "More reviews" block on the server: same category first, then the rest.
+function withRelated(markup, post, posts) {
+  const others = newestFirst(posts).filter((item) => item.id !== post.id);
+  const related = [...others.filter((item) => item.category === post.category), ...others.filter((item) => item.category !== post.category)].slice(0, 3);
+  if (!related.length) return markup;
+  const cards = related.map((item) => Reviews.card(publicPost(item))).join('');
+  return markup
+    .replace('<section class="rv-section rv-related" hidden>', '<section class="rv-section rv-related">')
+    .replace('<div class="rv-grid" id="related-reviews"></div>', `<div class="rv-grid" id="related-reviews">${cards}</div>`);
 }
 
 function sitemap(siteUrl, posts) {

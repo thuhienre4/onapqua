@@ -1,6 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
 let posts = [];
-const fields = ['source-url', 'title', 'slug', 'brand', 'category', 'author', 'affiliate-url', 'cta-label', 'rating', 'price', 'pros', 'cons', 'image', 'excerpt', 'content', 'featured', 'published'];
+const fields = ['source-url', 'title', 'slug', 'brand', 'category', 'author', 'affiliate-url', 'cta-label', 'rating', 'price', 'pros', 'cons', 'image', 'excerpt', 'content', 'seo-title', 'meta-description', 'featured', 'published'];
 const keyFor = (id) => id.replace(/-([a-z])/g, (_, character) => character.toUpperCase());
 
 function value(id) {
@@ -28,7 +28,26 @@ function notice(message, error = false) {
   $('#notice').className = 'notice' + (error ? ' error' : '');
 }
 
+// Live Google-style preview with the same fallbacks the server uses.
+function updateSeo() {
+  const title = value('seo-title') || `${value('title') || 'Review title'} | onapqua.`;
+  const description = value('meta-description') || value('excerpt') || 'Your meta description appears here.';
+  const slugText = value('slug') || value('title').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || '…';
+  $('#serp-title').textContent = title;
+  $('#serp-desc').textContent = description;
+  $('#serp-url').textContent = `www.onapqua.com › review › ${slugText}`;
+  document.querySelectorAll('[data-count-for]').forEach((counter) => {
+    const length = (counter.dataset.countFor === 'seo-title' ? title : description).length;
+    const ideal = Number(counter.dataset.ideal);
+    counter.textContent = `${length} / ~${ideal} characters${length > ideal ? ' (may be cut off in Google)' : ''}`;
+    counter.className = `count ${length > ideal ? 'warn' : 'ok'}`;
+  });
+}
+
+['seo-title', 'meta-description', 'title', 'slug', 'excerpt'].forEach((id) => $('#' + id).addEventListener('input', updateSeo));
+
 function showPreview() {
+  updateSeo();
   const url = $('#image').value.trim();
   $('#preview').src = url;
   $('#preview').style.display = url ? 'block' : 'none';
