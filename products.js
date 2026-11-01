@@ -1,4 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const getJson = (url) => fetch(url, { signal: AbortSignal.timeout(8000) }).then((response) => response.ok ? response.json() : []).catch(() => []);
+  const [stores, offers] = await Promise.all([getJson('/api/stores'), getJson('/api/offers')]);
+  document.querySelector('#product-grid').innerHTML = stores.map((store) => {
+    const storeOffers = offers.filter((offer) => offer.storeId === store.id);
+    const offer = storeOffers[0];
+    const logo = store.logo || `https://www.google.com/s2/favicons?sz=256&domain=${encodeURIComponent(store.domain)}`;
+    const dealHref = offer ? `deal.html?id=${encodeURIComponent(offer.id)}&brand=${encodeURIComponent(store.name)}&domain=${encodeURIComponent(store.domain)}` : '';
+    return `<article class="product-card" data-category="${escapeHtml(String(store.category || '').toLowerCase())}" data-search="${escapeHtml([store.name, store.domain, store.category].join(' ').toLowerCase())}">
+      <div class="product-top"><img src="${escapeHtml(logo)}" alt="${escapeHtml(store.name)} logo" /><div><h2>${escapeHtml(store.name)}</h2><p>${escapeHtml(store.description)}</p></div></div>
+      <div class="product-rating"><strong hidden>0</strong><small>(${storeOffers.length} offer${storeOffers.length === 1 ? '' : 's'})</small></div><div class="product-tags"><span>${escapeHtml(store.category || 'Other')}</span></div>
+      <div class="product-actions">${dealHref ? `<a class="explore" href="${dealHref}">Explore &#8599;</a>` : ''}<a class="visit" href="https://${escapeHtml(store.domain)}" target="_blank" rel="noopener">Visit website &#8599;</a></div>
+    </article>`;
+  }).join('');
+
   const input = document.querySelector('#product-search');
   const headerInput = document.querySelector('#header-product-search');
   const sort = document.querySelector('#product-sort');

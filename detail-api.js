@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const domains = { 'lovo': 'lovo.ai', 'lala ai': 'lala.ai', 'travelstart': 'travelstart.com', 'booking.com': 'booking.com', 'fluentcrm': 'fluentcrm.com', 'fluent booking': 'fluentbooking.com' };
   const offers = await fetch('/api/offers', { signal: AbortSignal.timeout(8000) }).then((response) => response.ok ? response.json() : []).catch(() => []);
   const primary = offers.find((item) => item.id === requestedId) || offers.find((item) => item.brand.toLowerCase() === requestedBrand.toLowerCase());
+  if (!primary) {
+    document.title = 'Offer not found | onapqua.';
+    document.querySelector('.coupon-main').innerHTML = '<section class="container" style="padding:80px 16px;text-align:center"><h1>Offer not found</h1><p>This offer is no longer available.</p><p><a href="/coupons.html">See all coupons</a> &middot; <a href="/blog.html">Read our reviews</a></p></section>';
+    return;
+  }
   const brand = primary?.brand || requestedBrand;
   const discount = primary?.discount || params.get('offer') || '20% Off';
   const domain = primary?.domain || params.get('domain') || domains[brand.toLowerCase()] || `${brand.toLowerCase().replace(/[^a-z0-9]+/g, '')}.com`;

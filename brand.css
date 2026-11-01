@@ -32,6 +32,13 @@
   -webkit-text-fill-color: #168fe8 !important;
 }
 
+@media (max-width: 680px) {
+  .site-header .header-inner { gap: 10px; }
+  .site-header .brand-text.brand-logo { flex: none; }
+  .site-header .brand-text.brand-logo .brand-logo-name { display: none; }
+  .site-header .main-nav { min-width: 0; flex: 1; }
+}
+
 .site-footer-brand .footer-logo-mark {
   width: 40px;
   height: 40px;

@@ -22,7 +22,7 @@
 <body>
   <section id="login" class="login">
     <form id="login-form" class="login-card">
-      <img class="mark" src="assets/logo.svg" alt="" /><h1>onapqua. Admin</h1><p class="muted">Manage stores, coupon codes, deals and tracking.</p>
+      <img class="mark" src="assets/logo.svg" alt="" /><h1>onapqua. Admin</h1><p class="muted">Publish reviews, affiliate links, coupons and deals.</p>
       <label>Email<input name="email" type="email" autocomplete="username" required /></label>
       <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
       <p id="login-error" class="error"></p><button class="button" type="submit">Sign in</button>
@@ -31,11 +31,11 @@
 
   <div id="app" class="app hidden">
     <aside class="side"><div class="brand"><img class="mark" src="assets/logo.svg" alt="" /><strong>onapqua.</strong></div>
-      <nav class="nav"><button class="active" data-view="offers">▦ <span>Coupons & Deals</span></button><button data-view="stores">◫ <span>Stores</span></button></nav>
+      <nav class="nav"><a class="button" href="/admin-blog.html">✎ <span>Reviews</span></a><button class="active" data-view="offers">▦ <span>Coupons & Deals</span></button><button data-view="stores">◫ <span>Stores</span></button></nav>
       <div class="side-bottom"><button id="logout" class="button secondary" type="button">↪ <span>Log out</span></button></div>
     </aside>
     <main class="main">
-      <header class="top"><div><h1 id="page-title">Coupons & Deals</h1><p id="admin-email" class="muted"></p></div><div class="actions"><a class="button secondary" href="/admin-blog.html">Blog CMS</a><a class="button secondary" href="/" target="_blank" rel="noopener">View site</a></div></header>
+      <header class="top"><div><h1 id="page-title">Coupons & Deals</h1><p id="admin-email" class="muted"></p></div><div class="actions"><a class="button secondary" href="/admin-blog.html">Reviews</a><a class="button secondary" href="/" target="_blank" rel="noopener">View site</a></div></header>
       <section id="metrics" class="metrics"></section>
 
       <section id="offers-view" class="workspace">
@@ -74,7 +74,7 @@
     const formObject=form=>Object.fromEntries(new FormData(form));
     async function boot(){try{const current=await api('/api/admin/session');$('#login').classList.add('hidden');$('#app').classList.remove('hidden');$('#admin-email').textContent=current.email;await refresh()}catch{$('#login').classList.remove('hidden');$('#app').classList.add('hidden')}}
     async function refresh(){const [dashboard,nextOffers,nextStores]=await Promise.all([api('/api/admin/dashboard'),api('/api/admin/offers'),api('/api/admin/stores')]);offers=nextOffers;stores=nextStores;renderMetrics(dashboard);renderOffers();renderStores()}
-    function renderMetrics(d){$('#metrics').innerHTML=[['Offers',d.offers],['Codes',d.codes],['Deals',d.deals],['Stores',d.stores],['Clicks',d.clicks],['Reveals',d.reveals]].map(([k,v])=>`<article class="metric"><span>${k}</span><strong>${v}</strong></article>`).join('')}
+    function renderMetrics(d){$('#metrics').innerHTML=[['Reviews',d.reviews],['Review clicks',d.reviewClicks],['Offers',d.offers],['Stores',d.stores],['Offer clicks',d.clicks],['Reveals',d.reveals]].map(([k,v])=>`<article class="metric"><span>${k}</span><strong>${v}</strong></article>`).join('')}
     function renderOffers(){const q=$('#offer-search').value.toLowerCase();$('#offer-rows').innerHTML=offers.filter(o=>[o.brand,o.title,o.code].join(' ').toLowerCase().includes(q)).map(o=>`<tr><td><strong>${escapeHtml(o.brand)}</strong><br><span class="muted">${escapeHtml(o.title)}</span></td><td><span class="tag">${escapeHtml(o.type)}</span></td><td>${escapeHtml(o.discount)}</td><td>${o.visible!==false?'Yes':'No'}</td><td>${o.clicks||0} clicks<br>${o.reveals||0} reveals</td><td><div class="actions"><button class="button secondary small" data-edit-offer="${o.id}">Edit</button><button class="button danger small" data-delete-offer="${o.id}">Delete</button></div></td></tr>`).join('')||'<tr><td colspan="6">No offers found.</td></tr>'}
     function renderStores(){$('#store-rows').innerHTML=stores.map(s=>`<tr><td><strong>${escapeHtml(s.name)}</strong></td><td>${escapeHtml(s.domain)}</td><td>${escapeHtml(s.category)}</td><td>${s.visible!==false?'Yes':'No'}</td><td><div class="actions"><button class="button secondary small" data-edit-store="${s.id}">Edit</button><button class="button danger small" data-delete-store="${s.id}">Delete</button></div></td></tr>`).join('')||'<tr><td colspan="5">No stores found.</td></tr>'}
     function resetOffer(){const f=$('#offer-form');f.reset();f.id.value='';f.category.value='Other';f.order.value='0';f.visible.checked=true;$('#offer-form-title').textContent='Add offer';$('#offer-cancel').classList.add('hidden')}

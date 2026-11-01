@@ -1,94 +1,58 @@
 ﻿<!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <title>Popular Store Reviews | onapqua.</title>
-  <meta name="description" content="Reviews, buying guides and savings insights for popular stores featured on onapqua." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>All Reviews | onapqua.</title>
+  <meta name="description" content="Browse every onapqua. review by category, with ratings, pros and cons." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=17" />
-  <link rel="stylesheet" href="blog.css?v=7" />
-  <link rel="stylesheet" href="polish.css?v=18" />
-  <link rel="stylesheet" href="harmony.css?v=30" />
-  <link rel="stylesheet" href="typography.css?v=1" />
-    <link rel="stylesheet" href="brand.css?v=1" />
+  <link rel="stylesheet" href="/styles.css?v=21" />
+  <link rel="stylesheet" href="/polish.css?v=17" />
+  <link rel="stylesheet" href="/harmony.css?v=27" />
+  <link rel="stylesheet" href="/typography.css?v=1" />
+  <link rel="stylesheet" href="/brand.css?v=1" />
+  <link rel="stylesheet" href="/reviews.css?v=1" />
 </head>
-<body class="blog-page">
+<body class="rv-page">
   <header class="site-header"><div class="container header-inner">
-    <a class="brand-text brand-logo" href="index.html"><img class="brand-logo-mark" src="assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span></a>
-    <nav class="main-nav"><a href="index.html">Home</a><a href="products.html">Product</a><a href="coupons.html">Coupon</a><a class="active" href="blog.html">Blog</a></nav>
+    <a class="brand-text brand-logo" href="/"><img class="brand-logo-mark" src="/assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span></a>
+    <nav class="main-nav" aria-label="Main navigation"><a href="/">Home</a><a class="active" href="/blog.html">Reviews</a><a href="/products.html">Products</a><a href="/coupons.html">Coupons</a></nav>
   </div></header>
 
   <main>
-    <section class="company-finder"><div class="container finder-inner">
-      <span class="journal-pill">REVIEWS &amp; SHOPPING INSIGHTS</span>
-      <h1>Find a company you can trust</h1>
-      <p>Explore practical reviews and savings guides for the popular stores in our local directory.</p>
-      <form class="company-search" id="company-search"><input type="search" placeholder="Search company or category" aria-label="Search company or category" /><button type="submit" aria-label="Search">&#8981;</button></form>
-      <div class="review-prompt" aria-label="Review invitation"><span>Bought something recently?</span><a href="mailto:hello@onapqua.local?subject=Write%20a%20review">Write a review <b aria-hidden="true">&rarr;</b></a></div>
-      <section class="category-navigation" aria-labelledby="category-title">
-        <div class="category-navigation-head">
-          <h2 id="category-title">What are you looking for?</h2>
-          <div class="category-navigation-actions" aria-label="Category navigation">
-            <button class="category-arrow category-prev" type="button" aria-label="Previous categories">&lsaquo;</button>
-            <button class="category-arrow category-next" type="button" aria-label="Next categories">&rsaquo;</button>
-            <a class="category-see-more" href="products.html">See more</a>
-          </div>
-        </div>
-        <div class="finder-categories" aria-label="Popular categories">
-          <button type="button" data-topic="bank"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18L12 4 3 9Zm2 2v7m5-7v7m4-7v7m5-7v7M3 20h18"/></svg><span>Bank</span></button>
-          <button type="button" data-topic="travel insurance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 8 2 7-8c1-1 2.5-.8 3.2.2.7 1 .5 2.4-.5 3.2l-7.9 6.7 2 5-1.8 1-4-4-3.8 2.4-1.4-1.4 2.5-3.8L2 12.8 3 11Z"/></svg><span>Travel Insurance Company</span></button>
-          <button type="button" data-topic="car dealer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 8 2-3h10l2 3 2 2v7h-2v2h-3v-2H8v2H5v-2H3v-7l2-2Zm1 1h12M7 13h.01M17 13h.01"/></svg><span>Car Dealer</span></button>
-          <button type="button" data-topic="furniture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11V7a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v4M4 10a2 2 0 0 0-2 2v5h20v-5a2 2 0 0 0-4 0v2H6v-2a2 2 0 0 0-2-2Zm0 7v3m16-3v3"/></svg><span>Furniture Store</span></button>
-          <button type="button" data-topic="jewelry"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 9 4-5h8l4 5-8 11L4 9Zm0 0h16M8 4l4 5 4-5M8 9l4 11 4-11"/></svg><span>Jewelry Store</span></button>
-          <button type="button" data-topic="clothing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4-5 3 3 5 2-1v9h8v-9l2 1 3-5-5-3c-.5 1.4-1.8 2-4 2S8.5 5.4 8 4Z"/></svg><span>Clothing Store</span></button>
-          <button type="button" data-topic="electronics technology"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v12H5V4Zm-2 16h18M9 16l-1 4m7-4 1 4"/></svg><span>Electronics &amp; Technology</span></button>
-          <button type="button" data-topic="fitness nutrition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6m3-8v10m12-10v10m3-8v6M6 12h12"/></svg><span>Fitness &amp; Nutrition Service</span></button>
-          <button type="button" data-topic="ai"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 1.5 5.1L18 9l-4.5 1.9L12 16l-1.5-5.1L6 9l4.5-1.9L12 2Z"/><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/></svg><span>AI Tools</span></button>
-          <button type="button" data-topic="voice"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 10v4"/></svg><span>AI Voice</span></button>
-          <button type="button" data-topic="travel"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M6 16l4-4 3 2 5-7M15 7h3v3"/></svg><span>Travel Services</span></button>
-          <button type="button" data-topic="booking"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M5 20V8l7-4 7 4v12M8 11h2M14 11h2M8 15h2M14 15h2"/></svg><span>Booking Platforms</span></button>
-          <button type="button" data-topic="crm"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="m4 7 8 6 8-6"/></svg><span>CRM &amp; Email</span></button>
-          <button type="button" data-topic="scheduling"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v16H4zM8 3v4M16 3v4M4 10h16M8 14h3M13 14h3M8 18h3"/></svg><span>Scheduling</span></button>
-          <button type="button" data-topic="software"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4V5Zm0 4h16M7 7h.01M10 7h.01M8 13l2 2-2 2m4 0h4"/></svg><span>Software &amp; SaaS</span></button>
-          <button type="button" data-topic="business marketing"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9h5v11m2 0V4h5v16m2 0v-7h3v7M2 20h20"/></svg><span>Business &amp; Marketing</span></button>
-        </div>
-      </section>
-    </div></section>
-
-    <section class="latest-stories"><div class="container">
-      <div class="stories-heading"><div><span>POPULAR STORE GUIDES</span><h2>Reviews from our local directory</h2></div><p>Independent overviews of the brands, tools and offers currently featured across onapqua.</p></div>
-      <article class="featured-story story-card" data-topics="lovo ai voice creator">
-        <div class="story-image brand-story has-product-shot lovo-story"><span>EDITOR'S PICK</span><img class="product-shot" src="assets/product-shots/lovo-official.png" alt="LOVO official website interface" /><span class="story-brand-badge"><img class="story-brand-logo" src="https://www.google.com/s2/favicons?sz=128&amp;domain=lovo.ai" alt="LOVO logo" /><strong>LOVO</strong></span></div>
-        <div class="story-copy"><small>AI Voice &middot; 14 Aug 2026</small><h3>LOVO Review 2026: Is the AI Voice Platform Worth It?</h3><p>LOVO combines realistic text-to-speech, voice generation and creator tools in one workspace. We examine who benefits most, where the platform saves time and what to check before choosing a paid plan.</p><a href="/">Explore LOVO &rarr;</a></div>
-      </article>
-      <div class="story-grid">
-        <article class="small-story story-card" data-topics="lala ai content automation"><div class="story-image brand-story has-product-shot lala-story"><img class="product-shot" src="assets/product-shots/lalal-official.png" alt="LALAL.AI official website interface" /><span class="story-brand-badge"><img class="story-brand-logo" src="https://www.google.com/s2/favicons?sz=128&amp;domain=lalal.ai" alt="Lala AI logo" /><strong>Lala AI</strong></span></div><div><small>AI &amp; automation</small><h3>Lala AI: A Practical Look at Its Creative Workflow</h3><p>Where its AI tools fit, who they serve and how to compare the free and paid experience.</p><a href="/">Explore Lala AI &rarr;</a></div></article>
-        <article class="small-story story-card" data-topics="travelstart travel flights hotel"><div class="story-image brand-story has-product-shot travelstart-story"><img class="product-shot" src="assets/product-shots/travelstart-official.png" alt="Travelstart official website interface" /><span class="story-brand-badge"><img class="story-brand-logo" src="https://www.google.com/s2/favicons?sz=128&amp;domain=travelstart.com" alt="Travelstart logo" /><strong>Travelstart</strong></span></div><div><small>Flights &amp; travel</small><h3>Travelstart Review: Comparing Flights with Less Friction</h3><p>A guide to search flexibility, price comparison and the details worth checking before payment.</p><a href="/">Explore Travelstart &rarr;</a></div></article>
-        <article class="small-story story-card" data-topics="booking booking.com hotel stays travel"><div class="story-image brand-story has-product-shot booking-story"><img class="product-shot" src="assets/product-shots/booking-official.png" alt="Booking.com official website interface" /><span class="story-brand-badge"><img class="story-brand-logo" src="https://www.google.com/s2/favicons?sz=128&amp;domain=booking.com" alt="Booking.com logo" /><strong>Booking.com</strong></span></div><div><small>Hotels &amp; stays</small><h3>Booking.com: How to Find a Better-Value Stay</h3><p>Use filters, cancellation terms and verified guest feedback to compare accommodation confidently.</p><a href="/">Explore Booking.com &rarr;</a></div></article>
-        <article class="small-story story-card" data-topics="fluentcrm crm email marketing wordpress"><div class="story-image brand-story has-product-shot fluentcrm-story"><img class="product-shot" src="assets/product-shots/fluentcrm-official.png" alt="FluentCRM official website interface" /><span class="story-brand-badge"><img class="story-brand-logo" src="https://www.google.com/s2/favicons?sz=128&amp;domain=fluentcrm.com" alt="FluentCRM logo" /><strong>FluentCRM</strong></span></div><div><small>CRM &amp; email</small><h3>FluentCRM Review: Email Automation Inside WordPress</h3><p>We break down its contact management, campaigns and value for teams already using WordPress.</p><a href="/">Explore FluentCRM &rarr;</a></div></article>
-        <article class="small-story story-card" data-topics="fluent booking scheduling calendar business"><div class="story-image brand-story has-product-shot fluentbooking-story"><img class="product-shot" src="assets/product-shots/fluentbooking-official.png" alt="Fluent Booking official website interface" /><span class="story-brand-badge"><img class="story-brand-logo" src="https://www.google.com/s2/favicons?sz=128&amp;domain=fluentbooking.com" alt="Fluent Booking logo" /><strong>Fluent Booking</strong></span></div><div><small>Scheduling</small><h3>Fluent Booking: A Cleaner Way to Schedule Meetings</h3><p>Explore calendar connections, appointment flows and the features useful for client-facing teams.</p><a href="/">Explore Fluent Booking &rarr;</a></div></article>
-        <article class="small-story story-card" data-topics="comparison lovo lala ai tools"><div class="story-image brand-story comparison-story"><span class="compare-logos"><img src="https://www.google.com/s2/favicons?sz=256&amp;domain=lovo.ai" alt="LOVO" /><img src="https://www.google.com/s2/favicons?sz=256&amp;domain=lala.ai" alt="Lala AI" /></span><strong>AI Tool Comparison</strong></div><div><small>Comparison guide</small><h3>LOVO vs Lala AI: Which Workflow Fits You Better?</h3><p>Compare their audiences, everyday use cases and plan considerations before choosing a platform.</p><a href="/">Compare AI tools &rarr;</a></div></article>
+    <section class="rv-hero rv-hero-compact">
+      <div class="container rv-hero-inner">
+        <span class="rv-kicker">ALL REVIEWS</span>
+        <h1>Find an honest <span>review</span></h1>
+        <form class="rv-search" id="archive-search" role="search">
+          <input type="search" name="q" placeholder="Search reviews, products or categories..." aria-label="Search reviews" />
+          <button type="submit">Search</button>
+        </form>
+        <div class="rv-filters" id="category-filters"></div>
       </div>
-      <p class="stories-empty" hidden>No stories match this topic.</p>
-    </div></section>
+    </section>
+
+    <section class="rv-section">
+      <div class="container">
+        <p class="rv-count" id="result-count"></p>
+        <div class="rv-grid" id="all-reviews"><div class="rv-loading">Loading reviews...</div></div>
+      </div>
+    </section>
   </main>
+
   <footer class="site-footer">
     <div class="container site-footer-grid">
-      <div class="site-footer-brand">
-        <a href="index.html"><img class="footer-logo-mark" src="assets/logo.svg" alt="" width="40" height="40" /><strong>onapqua.</strong></a>
-        <p>Independent reviews, practical buying guides and verified savings from the brands in our local directory.</p>
-        <small>Independent insights &middot; Updated regularly</small>
-      </div>
-      <nav class="site-footer-column" aria-label="Platform links"><h2>Platform</h2><a href="products.html">Products</a><a href="coupons.html">Coupons</a><a href="blog.html">Review Blog</a></nav>
-      <nav class="site-footer-column" aria-label="Company links"><h2>Company</h2><a href="index.html#about">About us</a><a href="mailto:hello@onapqua.local">Contact</a><a href="mailto:hello@onapqua.local">Feedback</a></nav>
-      <nav class="site-footer-column" aria-label="Legal links"><h2>Legal</h2><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Affiliate Disclosure</a></nav>
+      <div class="site-footer-brand"><a href="/"><img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="40" height="40" /><strong>onapqua.</strong></a><p>Honest, hands-on reviews with clear pros, cons and where to buy.</p><small>Independent reviews &middot; Updated regularly</small></div>
+      <nav class="site-footer-column" aria-label="Site links"><h2>Explore</h2><a href="/blog.html">All reviews</a><a href="/products.html">Products</a><a href="/coupons.html">Coupons</a></nav>
+      <nav class="site-footer-column" aria-label="Company links"><h2>Company</h2><a href="/#about">How we review</a><a href="mailto:hello@onapqua.com">Contact</a></nav>
+      <nav class="site-footer-column" aria-label="Legal links"><h2>Legal</h2><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="/#about">Affiliate Disclosure</a></nav>
     </div>
-    <div class="container site-footer-bottom"><span>&copy; 2026 onapqua. All rights reserved.</span><span>Made for clearer choices and smarter savings.</span></div>
+    <div class="container site-footer-bottom"><span>&copy; 2026 onapqua. All rights reserved.</span><span>Some links are affiliate links. We may earn a commission at no extra cost to you.</span></div>
   </footer>
-  <script src="blog.js?v=4"></script>
+  <script src="/reviews.js?v=1"></script>
+  <script src="/blog.js?v=5"></script>
 </body>
 </html>

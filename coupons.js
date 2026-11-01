@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="trend-copy"><h3>${escapeHtml(offer.title)}</h3><a href="products.html?search=${encodeURIComponent(offer.brand)}">${escapeHtml(offer.brand)}</a></div>
         <a class="trend-button" href="${dealUrl(offer)}">${offer.hasCode ? 'Get Code' : 'Get Deal'}</a></article>`;
     }).join('');
+  } else {
+    document.querySelector('.coupon-carousel-wrap')?.setAttribute('hidden', '');
+    const trending = document.querySelector('.trending-list');
+    if (trending) trending.innerHTML = '<p class="coupon-page-lead">No coupons yet. New offers will appear here soon &mdash; meanwhile, <a href="/blog.html">read our reviews</a>.</p>';
   }
 
   const originalCards = [...carousel.querySelectorAll('.feature-coupon')];

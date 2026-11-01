@@ -8,7 +8,9 @@ The site runs as a Node.js service and keeps the existing HTML/CSS frontend.
 - `/api/offers` - public offers with coupon codes hidden
 - `/api/offers/:id/code` - reveal one active coupon code
 - `/api/stores` - public stores
-- `/api/blog` - published blog posts
+- `/api/blog` - published reviews (affiliate URLs are never exposed)
+- `/review/:slug` - public review page (served by `post.html`)
+- `/go/review/:id` - tracked affiliate redirect for a review
 - `/go/:id` - tracked affiliate redirect
 - `/admin` - protected store and offer manager
 - `/admin-blog.html` - protected blog CMS

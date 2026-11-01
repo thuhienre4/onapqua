@@ -274,9 +274,20 @@ function prepareBatchOffers(items, currentOffers = [], currentStores = []) {
   return { items: ready, storesToCreate: [...plannedStores.values()], storeGroups: [...storeGroups.values()].map((group) => ({ ...group, affiliateLinks: group.affiliateLinks.size })), errors, duplicates, total: items.length };
 }
 
+function lines(value, max = 12) {
+  const items = Array.isArray(value) ? value : String(value ?? '').split(/\r?\n/);
+  return items.map((item) => text(item, 240)).filter(Boolean).slice(0, max);
+}
+
+function rating(value) {
+  const number = Math.round(Number(value) * 2) / 2;
+  return Number.isFinite(number) ? Math.min(5, Math.max(0, number)) : 0;
+}
+
 function cleanPost(payload, previous = {}) {
   const title = text(payload.title ?? previous.title, 240);
   if (!title) throw new Error('Post title is required.');
+  const affiliateUrl = text(payload.affiliateUrl ?? previous.affiliateUrl, 2000);
   return {
     ...previous,
     id: previous.id || text(payload.id, 100) || identifier('post'),
@@ -288,6 +299,14 @@ function cleanPost(payload, previous = {}) {
     brand: text(payload.brand ?? previous.brand, 160),
     image: safeImageUrl(payload.image ?? previous.image),
     sourceUrl: payload.sourceUrl || previous.sourceUrl ? safeUrl(payload.sourceUrl ?? previous.sourceUrl) : '',
+    affiliateUrl: affiliateUrl ? safeUrl(affiliateUrl) : '',
+    ctaLabel: text(payload.ctaLabel ?? previous.ctaLabel, 60),
+    rating: rating(payload.rating ?? previous.rating),
+    price: text(payload.price ?? previous.price, 120),
+    pros: lines(payload.pros ?? previous.pros),
+    cons: lines(payload.cons ?? previous.cons),
+    author: text(payload.author ?? previous.author, 100),
+    clicks: Number(previous.clicks || 0),
     published: payload.published === true,
     featured: payload.featured === true,
     publishedAt: text(payload.publishedAt ?? previous.publishedAt, 40) || new Date().toISOString(),
@@ -380,6 +399,12 @@ function cleanStore(payload, previous = {}) {
   };
 }
 
+// Affiliate URLs stay server-side; readers follow the tracked /go/review/:id redirect.
+function publicPost(post) {
+  const { affiliateUrl, clicks, ...safe } = post;
+  return { ...safe, hasLink: Boolean(affiliateUrl) };
+}
+
 function publicOffer(offer) {
   const { code, ...safe } = offer;
   return { ...safe, hasCode: Boolean(text(code)) };
@@ -390,6 +415,7 @@ function clientIp(req) { return text(req.headers['x-forwarded-for'] || req.socke
 function serveStatic(req, res, pathname) {
   if (pathname === '/') pathname = '/index.html';
   if (pathname === '/admin') pathname = '/admin.html';
+  if (/^\/review\/[^/]+\/?$/.test(pathname)) pathname = '/post.html';
   const decoded = decodeURIComponent(pathname);
   if (decoded.includes('\0') || decoded.startsWith('/seed/') || decoded.startsWith('/.data/') || /^\/(server\.js|package(?:-lock)?\.json|Procfile|\.env)/i.test(decoded)) return send(res, 404, 'Not found');
   const file = path.resolve(root, `.${decoded}`);
@@ -456,13 +482,21 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/api/blog') {
       const posts = readArray(postsFile).filter((post) => post.published === true).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
-      return publicJson(req, res, posts);
+      return publicJson(req, res, posts.map(publicPost));
     }
 
     const publicPostMatch = url.pathname.match(/^\/api\/blog\/([^/]+)$/);
     if (req.method === 'GET' && publicPostMatch) {
       const post = readArray(postsFile).find((item) => item.slug === decodeURIComponent(publicPostMatch[1]) && item.published === true);
-      return post ? publicJson(req, res, post) : json(res, 404, { error: 'Post not found.' });
+      return post ? publicJson(req, res, publicPost(post)) : json(res, 404, { error: 'Post not found.' });
+    }
+
+    const reviewGoMatch = url.pathname.match(/^\/go\/review\/([^/]+)$/);
+    if (req.method === 'GET' && reviewGoMatch) {
+      const posts = readArray(postsFile); const post = posts.find((item) => item.id === decodeURIComponent(reviewGoMatch[1]) && item.published === true);
+      if (!post?.affiliateUrl) return send(res, 404, 'Link not found');
+      post.clicks = Number(post.clicks || 0) + 1; writeArray(postsFile, posts);
+      res.writeHead(302, { Location: safeUrl(post.affiliateUrl), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow' }); return res.end();
     }
 
     const codeMatch = url.pathname.match(/^\/api\/offers\/([^/]+)\/code$/);
@@ -491,8 +525,8 @@ const server = http.createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/api/admin/dashboard') {
       if (!requireAdmin(req, res)) return;
-      const offers = readArray(offersFile); const stores = readArray(storesFile); const subscribers = readArray(subscribersFile);
-      return json(res, 200, { offers: offers.length, codes: offers.filter((o) => o.type === 'code').length, deals: offers.filter((o) => o.type === 'deal').length, stores: stores.length, subscribers: subscribers.length, clicks: offers.reduce((n, o) => n + Number(o.clicks || 0), 0), reveals: offers.reduce((n, o) => n + Number(o.reveals || 0), 0) });
+      const offers = readArray(offersFile); const stores = readArray(storesFile); const subscribers = readArray(subscribersFile); const posts = readArray(postsFile);
+      return json(res, 200, { reviews: posts.filter((p) => p.published === true).length, reviewClicks: posts.reduce((n, p) => n + Number(p.clicks || 0), 0), offers: offers.length, codes: offers.filter((o) => o.type === 'code').length, deals: offers.filter((o) => o.type === 'deal').length, stores: stores.length, subscribers: subscribers.length, clicks: offers.reduce((n, o) => n + Number(o.clicks || 0), 0), reveals: offers.reduce((n, o) => n + Number(o.reveals || 0), 0) });
     }
 
     if (req.method === 'GET' && url.pathname === '/api/admin/blog') {
