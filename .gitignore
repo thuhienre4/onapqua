@@ -1,0 +1,18 @@
+.venv/
+.agents/
+__pycache__/
+*.py[cod]
+find_logos.py
+
+# Local server and QA artifacts
+server*.log
+*.png
+!assets/product-shots/*-official.png
+!assets/illustrations/hot-deals-discount-tag.png
+.data/
+.env
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/

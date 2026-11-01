@@ -1,0 +1,12 @@
+{
+  "name": "onapqua",
+  "version": "1.0.0",
+  "private": true,
+  "description": "onapqua. coupon marketplace and admin API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check script.js && node --check products.js && node --check coupons.js && node --check detail.js && node --check detail-api.js && node --check blog.js && node --check admin-blog.js"
+  },
+  "engines": { "node": ">=20" }
+}

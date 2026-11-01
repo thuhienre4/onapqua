@@ -1,0 +1,41 @@
+/* onapqua. brand lockup: logo mark + wordmark, shared by every page header and footer. */
+.site-header .brand-text.brand-logo {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  background: none !important;
+  color: #11192b !important;
+  -webkit-text-fill-color: #11192b !important;
+  font-size: clamp(1.45rem, 1.9vw, 1.7rem) !important;
+  font-weight: 800;
+  letter-spacing: -.05em;
+  text-decoration: none;
+}
+
+.site-header .brand-text.brand-logo::before { display: none !important; }
+
+.brand-logo-mark {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(22, 143, 232, .22);
+  transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+}
+
+.brand-text.brand-logo:hover .brand-logo-mark { transform: rotate(-8deg) scale(1.05); }
+
+.site-header .brand-text.brand-logo .brand-logo-name { color: inherit !important; -webkit-text-fill-color: inherit !important; }
+
+.site-header .brand-text.brand-logo .brand-dot {
+  color: #168fe8 !important;
+  -webkit-text-fill-color: #168fe8 !important;
+}
+
+.site-footer-brand .footer-logo-mark {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 12px;
+  box-shadow: 0 9px 20px rgba(83, 113, 177, .18);
+}
