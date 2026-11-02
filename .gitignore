@@ -7,8 +7,7 @@ find_logos.py
 # Local server and QA artifacts
 server*.log
 *.png
-!assets/product-shots/*-official.png
-!assets/illustrations/hot-deals-discount-tag.png
+!assets/**/*.png
 .data/
 .env
 
