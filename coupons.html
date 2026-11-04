@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/site.css?v=4" />
-  <link rel="stylesheet" href="/reviews.css?v=9" />
+  <link rel="stylesheet" href="/reviews.css?v=11" />
 </head>
 <body class="rv-page">
   <!--@header:coupons-->
@@ -18,17 +18,47 @@
       <div class="container rv-hero-inner">
         <span class="rv-kicker">COUPONS &amp; DEALS</span>
         <h1>Verified <span>coupons &amp; deals</span></h1>
-        <p class="rv-lead">Promo codes and offers for the products we review. Click to reveal a code, then finish your purchase on the official site.</p>
+        <p class="rv-lead">Promo codes and offers checked on each brand's official site. Reveal a code, it's copied automatically, then finish your purchase on the official site.</p>
+        <ul class="rv-trust" aria-label="Coupon stats">
+          <li><b id="stat-codes">0</b> coupon codes</li>
+          <li><b id="stat-deals">0</b> deals</li>
+          <li><b id="stat-brands">0</b> brands</li>
+        </ul>
       </div>
     </section>
+
+    <section class="rv-section" id="top-codes-section" hidden>
+      <div class="container">
+        <div class="rv-section-head"><div><span class="rv-kicker">BIGGEST SAVINGS</span><h2>Top coupon codes</h2></div></div>
+        <div class="rv-top-codes" id="top-codes"></div>
+      </div>
+    </section>
+
     <section class="rv-section">
       <div class="container">
+        <div class="rv-coupon-filters" role="search" aria-label="Filter coupons">
+          <label class="rv-sr" for="coupon-q">Search coupons</label>
+          <input id="coupon-q" type="search" placeholder="Search brand, product or offer..." />
+          <div class="rv-segment" id="type-filter" role="group" aria-label="Offer type">
+            <button type="button" data-type="" class="active" aria-pressed="true">All</button>
+            <button type="button" data-type="code" aria-pressed="false">Coupon codes</button>
+            <button type="button" data-type="deal" aria-pressed="false">Deals</button>
+          </div>
+          <label class="rv-sort">Brand
+            <select id="brand-filter"><option value="">All brands</option></select>
+          </label>
+        </div>
+        <div class="rv-filters rv-filters-left" id="category-filter" aria-label="Filter by category"></div>
+        <div class="rv-toolbar">
+          <p class="rv-count" id="offer-count" role="status"></p>
+          <button class="rv-link rv-clear" id="clear-filters" type="button" hidden>Clear filters</button>
+        </div>
         <div class="rv-offers" id="offers"><div class="rv-loading">Loading offers...</div></div>
       </div>
     </section>
   </main>
   <!--@footer-->
   <script src="/reviews.js?v=4"></script>
-  <script src="/coupons.js?v=3"></script>
+  <script src="/coupons.js?v=4"></script>
 </body>
 </html>

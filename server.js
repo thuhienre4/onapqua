@@ -488,7 +488,9 @@ function cleanStore(payload, previous = {}) {
 
 function publicOffer(offer) {
   const { code, ...safe } = offer;
-  return { ...safe, hasCode: Boolean(text(code)) };
+  const value = text(code);
+  // A short tail ("••••20") shows readers a real code exists without giving it away.
+  return { ...safe, hasCode: Boolean(value), codeHint: value ? value.slice(-Math.min(2, Math.floor(value.length / 3))) : '' };
 }
 
 function clientIp(req) { return text(req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown', 100).split(',')[0]; }

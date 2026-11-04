@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     box.setAttribute('aria-labelledby', 'deals');
     box.innerHTML = `<h2 id="deals">${escapeHtml(post.brand)} deals &amp; coupons</h2>${brandOffers.map((offer) => `
       <div class="rv-deal"><strong>${escapeHtml(offer.discount || 'DEAL')}</strong><div><b>${escapeHtml(offer.title)}</b>${offer.description ? `<span>${escapeHtml(offer.description)}</span>` : ''}</div>
-      ${offer.hasCode ? `<button class="rv-btn" type="button" data-reveal="${escapeHtml(offer.id)}">Reveal code</button>` : `<a class="rv-btn" href="/go/${encodeURIComponent(offer.id)}" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}</div>`).join('')}`;
+      ${offer.hasCode ? `<button class="rv-ticket" type="button" data-reveal="${escapeHtml(offer.id)}"><span class="rv-ticket-code" aria-hidden="true">${'•'.repeat(6)}${escapeHtml(offer.codeHint || '')}</span><span class="rv-ticket-cta">Reveal code</span></button>` : `<a class="rv-btn rv-btn-ghost" href="/go/${encodeURIComponent(offer.id)}" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}</div>`).join('')}`;
     const anchor = document.querySelector('.rv-sources') || document.querySelector('.rv-final-cta');
     anchor ? anchor.before(box) : document.querySelector('.rv-article-main')?.append(box);
     box.addEventListener('click', async (event) => {
@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(`/api/offers/${encodeURIComponent(button.dataset.reveal)}/code`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Code unavailable');
-        button.outerHTML = `<button class="rv-code" type="button" title="Copied">${escapeHtml(data.code)}</button>`;
+        button.outerHTML = `<button class="rv-ticket revealed" type="button" title="Copied"><span class="rv-ticket-code">${escapeHtml(data.code)}</span><span class="rv-ticket-cta">Copied!</span></button>`;
         navigator.clipboard?.writeText(data.code).catch(() => {});
         if (store) store.location = data.redirect;
       } catch (error) {
         store?.close();
-        button.textContent = error.message;
+        (button.querySelector('.rv-ticket-cta') || button).textContent = error.message;
       }
     });
   }

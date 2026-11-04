@@ -616,3 +616,43 @@
 .rv-deal span { display: block; margin-top: 2px; color: var(--rv-muted); font-size: .85rem; }
 .rv-deal .rv-btn { min-height: 40px; padding: 0 16px; font-size: .88rem; }
 @media (max-width: 640px) { .rv-deal { grid-template-columns: minmax(0, 1fr); } .rv-deal > strong { text-align: left; } }
+
+/* Coupon filters */
+.rv-coupon-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--rv-line); border-radius: 18px; background: var(--rv-card); box-shadow: 0 10px 28px rgba(30, 35, 50, .06); }
+.rv-coupon-filters input { flex: 1 1 260px; min-height: 44px; padding: 0 14px; border: 1px solid var(--rv-line); border-radius: 12px; background: #fff; color: var(--rv-ink); font: inherit; }
+.rv-coupon-filters input:focus { outline: 0; border-color: var(--rv-line-strong); box-shadow: var(--rv-glow); }
+.rv-segment { display: inline-flex; padding: 4px; border: 1px solid var(--rv-line); border-radius: 12px; background: var(--rv-soft); }
+.rv-segment button { padding: 8px 14px; border: 0; border-radius: 9px; background: transparent; color: var(--rv-text); font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer; }
+.rv-segment button.active { background: var(--rv-gradient); color: #1d1604; box-shadow: 0 0 16px rgba(245, 200, 76, .35); }
+.rv-filters-left { justify-content: flex-start; margin: 14px 0 6px; }
+.rv-clear { border: 0; background: none; cursor: pointer; font: inherit; }
+
+/* Top coupon codes */
+.rv-top-codes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.rv-top-code { display: flex; flex-direction: column; gap: 10px; padding: 20px; border: 1px solid var(--rv-line-strong); border-radius: 20px; background: radial-gradient(90% 120% at 100% 0%, rgba(245, 200, 76, .2), transparent 60%), #fff; box-shadow: 0 0 26px rgba(245, 200, 76, .16); }
+.rv-top-code .rv-offer-brand strong { color: var(--rv-ink); }
+.rv-top-discount { background: var(--rv-gold-text); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 2rem; font-weight: 800; line-height: 1; }
+.rv-top-code p { flex: 1; margin: 0; color: var(--rv-text); font-size: .9rem; line-height: 1.5; }
+
+/* Ticket-style coupon code */
+.rv-ticket { position: relative; display: inline-flex; align-items: stretch; min-height: 48px; padding: 0; overflow: hidden; border: 2px dashed var(--rv-gold); border-radius: 12px; background: rgba(245, 200, 76, .08); font: inherit; cursor: pointer; transition: box-shadow .2s ease, transform .2s ease; }
+.rv-ticket:hover { box-shadow: var(--rv-glow); transform: translateY(-1px); }
+.rv-ticket-code { display: grid; place-items: center; min-width: 120px; padding: 0 14px; color: var(--rv-gold-soft); font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: 1rem; font-weight: 800; letter-spacing: .12em; }
+.rv-ticket-cta { display: grid; place-items: center; padding: 0 16px; background: var(--rv-gradient); color: #1d1604; font-size: .88rem; font-weight: 800; white-space: nowrap; clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%); padding-left: 22px; }
+.rv-ticket.revealed { border-style: solid; background: #fff; }
+.rv-ticket.revealed .rv-ticket-code { color: var(--rv-ink); }
+.rv-top-code .rv-ticket { width: 100%; }
+.rv-top-code .rv-ticket-code { flex: 1; }
+
+.rv-offer-code { border-color: rgba(201, 150, 40, .35); box-shadow: inset 4px 0 0 var(--rv-gold); }
+.rv-verified { padding: 3px 8px; border-radius: 999px; background: rgba(16, 150, 100, .08); color: #0f7a55; font-size: .72rem; font-weight: 800; }
+
+@media (max-width: 640px) {
+  .rv-coupon-filters { flex-direction: column; align-items: stretch; }
+  .rv-segment { justify-content: space-between; }
+  .rv-offer-action .rv-ticket { width: 100%; }
+  .rv-offer-action .rv-ticket-code { flex: 1; }
+}
+.rv-ticket-code { min-width: 0; overflow-wrap: anywhere; text-align: center; }
+.rv-ticket.revealed .rv-ticket-code { min-width: 0; padding: 6px 12px; font-size: .9rem; letter-spacing: .05em; }
+.rv-ticket-cta { flex: none; }
