@@ -8,81 +8,102 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/site.css?v=4" />
-    <link rel="stylesheet" href="/reviews.css?v=11" />
+    <link rel="stylesheet" href="/site.css?v=6" />
+    <link rel="stylesheet" href="/reviews.css?v=15" />
   </head>
   <body class="rv-page">
     <!--@header:home-->
 
     <main id="main">
-      <section class="rv-hero">
+      <!-- B. Hero -->
+      <section class="rv-hero rv-hero-home">
         <div class="container rv-hero-inner">
-          <span class="rv-kicker">INDEPENDENT REVIEWS &middot; CLEAR VERDICTS</span>
-          <h1>Reviews that help you <span>buy smarter</span></h1>
-          <p class="rv-lead">We dig through specs, pricing and thousands of real user reviews, then tell you plainly what's good, what isn't, and where to get the best deal.</p>
+          <span class="rv-kicker">INDEPENDENT SOFTWARE REVIEWS</span>
+          <h1>Find the Best Software. <span>Make Smarter Decisions.</span></h1>
+          <p class="rv-lead">Independent reviews, honest comparisons, and expert recommendations to help you choose the right tools.</p>
           <form class="rv-search" action="/blog.html" role="search">
             <label class="rv-sr" for="home-search">Search reviews</label>
-            <input id="home-search" type="search" name="q" placeholder="Search hosting, WordPress plugins, AI tools..." />
+            <input id="home-search" type="search" name="q" placeholder="Search software, e.g. FluentCRM, VPS hosting, backup plugin..." />
             <button type="submit">Search</button>
           </form>
+          <div class="rv-hero-actions">
+            <a class="rv-btn" href="/blog.html">Explore Reviews</a>
+            <a class="rv-btn rv-btn-ghost" href="/comparisons.html">Compare Software</a>
+          </div>
+          <div class="rv-popular" aria-label="Popular searches">
+            <span>Popular:</span>
+            <a href="/blog.html?q=FluentCRM">FluentCRM</a>
+            <a href="/best-software.html#hosting">VPS hosting</a>
+            <a href="/blog.html?q=backup">WordPress backup</a>
+            <a href="/blog.html?q=proxy">Proxies</a>
+            <a href="/blog.html?q=automation">Automation</a>
+            <a href="/coupons.html">Coupons</a>
+          </div>
           <ul class="rv-trust" aria-label="Why readers trust us">
-            <li><b id="stat-reviews">14+</b> in-depth reviews</li>
+            <li><b><!--@count--></b> products reviewed</li>
             <li><b>Sources</b> cited in every review</li>
             <li><b>$0</b> extra cost to you</li>
           </ul>
         </div>
       </section>
 
-      <section class="rv-section" id="guides-section" hidden>
-        <div class="container">
-          <div class="rv-section-head">
-            <div><span class="rv-kicker">BUYER'S GUIDES</span><h2>Best of 2026</h2></div>
-            <a class="rv-link" href="/blog.html?category=Best%20Of">All guides &rarr;</a>
-          </div>
-          <div class="rv-guides" id="guides"></div>
-        </div>
-      </section>
-
-      <section class="rv-section" id="featured-section">
-        <div class="container"><div id="featured-review"></div></div>
-      </section>
-
+      <!-- C. Featured categories -->
       <section class="rv-section">
         <div class="container">
-          <div class="rv-section-head">
-            <div><span class="rv-kicker">FRESH OFF THE DESK</span><h2>Latest reviews</h2></div>
-            <a class="rv-link" href="/blog.html">View all reviews &rarr;</a>
-          </div>
-          <div class="rv-grid" id="latest-reviews"><!--@latest--></div>
+          <div class="rv-section-head"><div><span class="rv-kicker">BROWSE BY CATEGORY</span><h2>Featured categories</h2></div><a class="rv-link" href="/best-software.html">All categories &rarr;</a></div>
+          <div class="rv-hubs"><!--@home-hubs--></div>
         </div>
       </section>
 
-      <section class="rv-section" id="categories-section" hidden>
+      <!-- D. Featured reviews -->
+      <section class="rv-section">
         <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">BROWSE</span><h2>Explore by category</h2></div></div>
-          <div class="rv-cats" id="categories"></div>
+          <div class="rv-section-head"><div><span class="rv-kicker">TOP RATED</span><h2>Featured reviews</h2></div><a class="rv-link" href="/blog.html?sort=rating">All reviews &rarr;</a></div>
+          <div class="rv-pcards"><!--@home-featured--></div>
         </div>
       </section>
 
-      <section class="rv-section rv-how">
+      <!-- E. Best software & comparisons -->
+      <section class="rv-section rv-band">
         <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">HOW WE REVIEW</span><h2>Clear verdicts, no fluff</h2></div><a class="rv-link" href="/about.html#how-we-review">Our method &rarr;</a></div>
-          <div class="rv-steps">
-            <article><b>01</b><h3>We research it</h3><p>Official specs and pricing, plus user and expert reviews on Trustpilot, G2, Capterra and trusted tech sites.</p></article>
-            <article><b>02</b><h3>We score it</h3><p>A rating out of 5, an honest list of pros and cons, and links to every source we used.</p></article>
-            <article><b>03</b><h3>You decide</h3><p>Compare, then follow our link to the official site. We may earn a commission, at no extra cost to you.</p></article>
+          <div class="rv-section-head"><div><span class="rv-kicker">BEST SOFTWARE &amp; COMPARISONS</span><h2>Top picks in every category</h2></div><a class="rv-link" href="/comparisons.html">Compare side by side &rarr;</a></div>
+          <!--@home-best-->
+        </div>
+      </section>
+
+      <!-- F. Latest reviews -->
+      <section class="rv-section">
+        <div class="container">
+          <div class="rv-section-head"><div><span class="rv-kicker">FRESH OFF THE DESK</span><h2>Latest reviews</h2></div><a class="rv-link" href="/blog.html">View all reviews &rarr;</a></div>
+          <div class="rv-latest-list"><!--@latest--></div>
+        </div>
+      </section>
+
+      <!-- G. How we review -->
+      <section class="rv-section rv-how" id="how-we-review">
+        <div class="container">
+          <div class="rv-section-head"><div><span class="rv-kicker">HOW WE REVIEW</span><h2>Why you can trust our recommendations</h2></div><a class="rv-link" href="/methodology.html">Full methodology &rarr;</a></div>
+          <div class="rv-trust-grid">
+            <article><b>01</b><h3>Product research</h3><p>We study official documentation, feature pages and live pricing for every product.</p></article>
+            <article><b>02</b><h3>Verification</h3><p>We cross-check claims against user reviews on Trustpilot, G2, Capterra and WordPress.org, plus trusted expert sites.</p></article>
+            <article><b>03</b><h3>Evaluation criteria</h3><p>Features, ease of use, pricing and value, support quality and reputation.</p></article>
+            <article><b>04</b><h3>Rating methodology</h3><p>Each product gets a score out of 5 with clear pros and cons. <a href="/methodology.html#scores">What scores mean</a>.</p></article>
+            <article><b>05</b><h3>Editorial independence</h3><p>Commissions never decide a rating. We publish the weaknesses of every product. <a href="/editorial-policy.html">Editorial policy</a>.</p></article>
+            <article><b>06</b><h3>Affiliate disclosure</h3><p>Some links earn us a commission at no extra cost to you. Sponsored reviews are always labelled. <a href="/affiliate-disclosure.html">Learn more</a>.</p></article>
           </div>
         </div>
       </section>
 
+      <!-- H. Newsletter -->
       <section class="rv-section">
         <div class="container">
           <div class="rv-newsletter">
-            <div><span class="rv-kicker">NEWSLETTER</span><h2>New reviews &amp; deals, once a month</h2><p>No spam. Unsubscribe any time.</p></div>
+            <div><span class="rv-kicker">NEWSLETTER</span><h2>Get Smarter Software Recommendations.</h2><p>New reviews, comparisons and verified deals, once a month.</p></div>
             <form id="newsletter-form" class="rv-newsletter-form">
               <label class="rv-sr" for="newsletter-email">Email address</label>
               <input id="newsletter-email" type="email" name="email" placeholder="you@example.com" required autocomplete="email" />
               <button type="submit" class="rv-btn">Subscribe</button>
+              <p class="rv-privacy-note">We only use your email to send the newsletter. Unsubscribe any time. <a href="/privacy.html">Privacy policy</a>.</p>
               <p class="rv-form-note" id="newsletter-note" role="status"></p>
             </form>
           </div>
@@ -92,7 +113,6 @@
 
     <!--@footer-->
 
-    <script src="/reviews.js?v=4"></script>
-    <script src="/home.js?v=1"></script>
+    <script src="/home.js?v=2"></script>
   </body>
 </html>

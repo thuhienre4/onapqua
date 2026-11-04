@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!--@head-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/site.css?v=6" />
+  <link rel="stylesheet" href="/reviews.css?v=15" />
+</head>
+<body class="rv-page">
+  <!--@header:comparisons-->
+  <main id="main">
+    <section class="rv-hero rv-hero-compact">
+      <div class="container rv-hero-inner">
+        <span class="rv-kicker">COMPARISONS</span>
+        <h1>Compare software <span>side by side</span></h1>
+        <p class="rv-lead">Pick up to three products to compare ratings, pricing, pros, cons and who each one is best for.</p>
+      </div>
+    </section>
+
+    <section class="rv-section">
+      <div class="container">
+        <div class="rv-compare-tool">
+          <div class="rv-compare-pickers" id="compare-pickers">
+            <label>Product 1<select data-slot="0"></select></label>
+            <label>Product 2<select data-slot="1"></select></label>
+            <label>Product 3 <small>(optional)</small><select data-slot="2"></select></label>
+          </div>
+          <div class="rv-compare-quick" id="compare-quick" aria-label="Popular comparisons"></div>
+          <div id="compare-result" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rv-section rv-band">
+      <div class="container">
+        <div class="rv-section-head"><div><span class="rv-kicker">IN-DEPTH</span><h2>Comparison guides</h2></div><a class="rv-link" href="/best-software.html">Best software by category &rarr;</a></div>
+        <div class="rv-guides"><!--@guides--></div>
+      </div>
+    </section>
+  </main>
+  <!--@footer-->
+  <script src="/reviews.js?v=4"></script>
+  <script src="/catalog.js?v=1"></script>
+  <script src="/compare.js?v=1"></script>
+</body>
+</html>

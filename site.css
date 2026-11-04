@@ -163,10 +163,6 @@ button, input, select { font-family: inherit; }
 
 @media (max-width: 640px) {
   .header-inner { min-height: 60px; gap: 10px; }
-  .brand-logo-name { display: none; }
-  .main-nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
-  .main-nav::-webkit-scrollbar { display: none; }
-  .main-nav a { padding: 7px 11px; font-size: .8rem; }
   .site-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   body { background-attachment: scroll; }
 }
@@ -174,3 +170,34 @@ button, input, select { font-family: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* Header tools: search toggle, mobile menu */
+.header-tools { display: flex; align-items: center; gap: 6px; }
+.icon-btn { display: grid; place-items: center; width: 42px; height: 42px; padding: 0; border: 1px solid var(--line); border-radius: 12px; background: rgba(255, 255, 255, .7); color: var(--ink); cursor: pointer; }
+.icon-btn:hover { border-color: rgba(201, 150, 40, .45); color: var(--gold); }
+.icon-btn svg { width: 20px; height: 20px; }
+.nav-toggle { display: none; gap: 4px; align-content: center; }
+.nav-toggle span { display: block; width: 18px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .2s ease, opacity .2s ease; }
+.nav-open .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.main-nav { margin-left: auto; }
+.main-nav a { padding: 8px 12px; font-size: .84rem; }
+
+.site-search { border-top: 1px solid var(--line); background: rgba(255, 255, 255, .96); }
+.site-search form { display: flex; gap: 8px; padding: 12px 0; }
+.site-search input { flex: 1; min-height: 46px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink); font: inherit; }
+.site-search input:focus { outline: 0; border-color: rgba(201, 150, 40, .6); }
+.site-search button { padding: 0 20px; border: 0; border-radius: 12px; background: var(--gradient); color: #1d1604; font: inherit; font-weight: 800; cursor: pointer; }
+
+@media (max-width: 1100px) {
+  .nav-toggle { display: grid; }
+  .site-header .main-nav { position: absolute; top: 100%; right: 16px; left: 16px; display: none; flex-direction: column; align-items: stretch; gap: 2px; margin: 0; padding: 8px; overflow: visible; border-radius: 16px; background: #fff; box-shadow: 0 20px 44px rgba(30, 35, 50, .16); }
+  .site-header.nav-open .main-nav { display: flex; }
+  .site-header .main-nav a { padding: 12px 14px; border-radius: 10px; font-size: .95rem; }
+  .site-header .brand-logo-name { display: inline; }
+}
+
+/* Never let wide tables widen the page on phones; they scroll inside their wrapper. */
+html, body { max-width: 100%; overflow-x: clip; }
+.rv-table-wrap { max-width: 100%; }

@@ -106,6 +106,11 @@
     ? `<div class="rv-pc rv-${kind}"><h3>${kind === 'pros' ? 'Pros' : 'Cons'}</h3><ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div>`
     : '';
 
+  // Optional per-criterion scores ("Features | 4.5"), shown as bars in the verdict box.
+  const criteriaBars = (criteria) => Array.isArray(criteria) && criteria.length
+    ? `<div class="rv-criteria"><h3>Score breakdown</h3>${criteria.map((item) => `<div class="rv-criterion"><span>${escapeHtml(item.label)}</span><span class="rv-bar" aria-hidden="true"><i style="width:${Math.max(0, Math.min(100, Number(item.score) * 20))}%"></i></span><b>${Number(item.score).toFixed(1)}</b></div>`).join('')}<a class="rv-read" href="/methodology.html">How we score &rarr;</a></div>`
+    : '';
+
   // Full single-review markup, shared by server pre-rendering and the client.
   const article = (post) => {
     const verdictList = `${prosCons(post.pros, 'pros')}${prosCons(post.cons, 'cons')}`;
@@ -115,9 +120,11 @@
     <article class="rv-article">
       <header class="rv-article-head container">
         <nav class="rv-crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/blog.html">Reviews</a><span aria-hidden="true">/</span><a href="/blog.html?category=${encodeURIComponent(post.category || '')}">${escapeHtml(post.category || 'Review')}</a></nav>
-        <h1>${escapeHtml(post.title)}</h1>
+        ${post.sponsored ? '<span class="rv-sponsored">Sponsored review</span>' : ''}
+        <div class="rv-title-row">${logoMark(post, 'rv-logo rv-title-logo')}<h1>${escapeHtml(post.title)}</h1></div>
         <div class="rv-byline">${stars(post.rating)}${post.author ? `<span>By ${escapeHtml(post.author)}</span>` : ''}<span>Updated <time datetime="${escapeHtml(updated)}">${escapeHtml(formatDate(updated))}</time></span><span>${readingTime(post.content)} min read</span></div>
         ${post.excerpt ? `<p class="rv-article-lead">${escapeHtml(post.excerpt)}</p>` : ''}
+        ${post.bestFor ? `<p class="rv-bestfor rv-bestfor-lg"><b>Best for:</b> ${escapeHtml(post.bestFor)}</p>` : ''}
       </header>
       <div class="container rv-article-grid${post.rating || post.hasLink || (post.pros || []).length || (post.cons || []).length ? '' : ' rv-article-solo'}">
         <div class="rv-article-main">
@@ -126,6 +133,7 @@
           <div class="rv-prose">${renderContent(post.content)}</div>
           ${sourcesBlock(post)}
           ${verdictList ? `<section class="rv-verdict-inline" aria-label="Pros and cons"><h2>Pros &amp; cons</h2><div class="rv-pc-grid">${verdictList}</div></section>` : ''}
+          <!--@alternatives-->
           ${post.hasLink ? `<section class="rv-final-cta"><div><h2>Ready to try ${escapeHtml(post.brand || 'it')}?</h2>${post.price ? `<p>${escapeHtml(post.price)}</p>` : '<p>Check the latest price and availability.</p>'}</div>${cta()}</section>` : ''}
         </div>
         ${post.rating || post.hasLink || verdictList ? `<aside class="rv-verdict" aria-label="Our verdict">
@@ -134,7 +142,9 @@
             <div class="rv-verdict-brand">${logoMark(post)}<h2>${escapeHtml(post.brand || post.title)}</h2></div>
             ${post.rating ? `<div class="rv-score"><strong>${Number(post.rating).toFixed(1)}</strong><span>/ 5</span></div>${stars(post.rating)}` : ''}
             ${post.price ? `<p class="rv-price">${escapeHtml(post.price)}</p>` : ''}
+            ${post.bestFor ? `<p class="rv-bestfor"><b>Best for:</b> ${escapeHtml(post.bestFor)}</p>` : ''}
             ${cta('rv-btn-block')}
+            ${criteriaBars(post.criteria)}
             ${verdictList ? `<div class="rv-pc-stack">${verdictList}</div>` : ''}
           </div>
         </aside>` : ''}

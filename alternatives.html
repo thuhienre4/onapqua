@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!--@head-->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/site.css?v=6" />
+  <link rel="stylesheet" href="/reviews.css?v=15" />
+</head>
+<body class="rv-page">
+  <!--@header:alternatives-->
+  <main id="main">
+    <section class="rv-hero rv-hero-compact">
+      <div class="container rv-hero-inner">
+        <span class="rv-kicker">ALTERNATIVES</span>
+        <h1>Find a <span>better-fit alternative</span></h1>
+        <p class="rv-lead">Not sure about a tool? See the top-rated alternatives in the same category, based on our reviews.</p>
+        <form class="rv-search" id="alt-search" role="search">
+          <label class="rv-sr" for="alt-q">Find alternatives to</label>
+          <input id="alt-q" type="search" placeholder="Alternatives to... (e.g. FluentCRM, MonoVM)" />
+          <button type="submit">Find</button>
+        </form>
+      </div>
+    </section>
+    <section class="rv-section">
+      <div class="container">
+        <p class="rv-count" id="alt-count" role="status"></p>
+        <div class="rv-alts" id="alts"><!--@alternatives--></div>
+      </div>
+    </section>
+  </main>
+  <!--@footer-->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.querySelector('#alt-q');
+      const blocks = [...document.querySelectorAll('.rv-alt')];
+      const count = document.querySelector('#alt-count');
+      const filter = () => {
+        const query = input.value.trim().toLowerCase();
+        let shown = 0;
+        blocks.forEach((block) => { block.hidden = Boolean(query) && !block.dataset.search.includes(query); if (!block.hidden) shown += 1; });
+        count.textContent = query ? `${shown} product${shown === 1 ? '' : 's'} match "${input.value.trim()}"` : `${blocks.length} products`;
+        history.replaceState(null, '', query ? `?q=${encodeURIComponent(input.value.trim())}` : location.pathname);
+      };
+      input.value = new URLSearchParams(location.search).get('q') || '';
+      input.addEventListener('input', filter);
+      document.querySelector('#alt-search').addEventListener('submit', (event) => { event.preventDefault(); filter(); });
+      filter();
+    });
+  </script>
+</body>
+</html>

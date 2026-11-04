@@ -1,6 +1,7 @@
 // Server-side page shell and SEO for the public review pages.
 // HTML files opt in with <!--@head-->, <!--@header:name-->, <!--@footer--> placeholders.
 const Reviews = require('./reviews.js');
+const Catalog = require('./catalog.js');
 
 const { escapeHtml } = Reviews;
 const siteName = 'onapqua.';
@@ -9,28 +10,40 @@ const defaultDescription = 'Honest, research-based reviews of hosting, WordPress
 const nav = [
   ['home', '/', 'Home'],
   ['reviews', '/blog.html', 'Reviews'],
-  ['products', '/products.html', 'Products'],
-  ['coupons', '/coupons.html', 'Coupons'],
+  ['best', '/best-software.html', 'Best Software'],
+  ['comparisons', '/comparisons.html', 'Comparisons'],
+  ['alternatives', '/alternatives.html', 'Alternatives'],
+  ['coupons', '/coupons.html', 'Deals & Coupons'],
+  ['about', '/about.html', 'About Us'],
 ];
+
+const searchIcon = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>';
 
 function header(active) {
   return `<a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header"><div class="container header-inner">
     <a class="brand-logo" href="/" aria-label="onapqua. home"><img class="brand-logo-mark" src="/assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span></a>
-    <nav class="main-nav" aria-label="Main navigation">${nav.map(([key, href, label]) => `<a${key === active ? ' class="active" aria-current="page"' : ''} href="${href}">${label}</a>`).join('')}</nav>
-  </div></header>`;
+    <nav class="main-nav" id="main-nav" aria-label="Main navigation">${nav.map(([key, href, label]) => `<a${key === active ? ' class="active" aria-current="page"' : ''} href="${href}">${escapeHtml(label)}</a>`).join('')}</nav>
+    <div class="header-tools">
+      <button class="icon-btn" type="button" data-search-toggle aria-expanded="false" aria-controls="site-search" aria-label="Search">${searchIcon}</button>
+      <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="main-nav" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="site-search" id="site-search" hidden><form class="container" action="/blog.html" role="search"><label class="rv-sr" for="site-search-q">Search reviews</label><input id="site-search-q" type="search" name="q" placeholder="Search software, reviews or comparisons..." autocomplete="off" /><button type="submit">Search</button></form></div>
+  </header>`;
 }
 
 function footer() {
   return `<footer class="site-footer">
     <div class="container site-footer-grid">
       <div class="site-footer-brand"><a href="/"><img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="40" height="40" loading="lazy" /><strong>onapqua.</strong></a><p>Honest, research-based reviews with clear pros, cons and where to buy.</p><small>Independent reviews &middot; Updated regularly</small></div>
-      <nav class="site-footer-column" aria-label="Review categories"><h2>Explore</h2><a href="/blog.html">All reviews</a><a href="/blog.html?category=Best%20Of">Best of guides</a><a href="/blog.html?category=Hosting%20%26%20Servers">Hosting &amp; Servers</a><a href="/blog.html?category=WordPress">WordPress</a></nav>
-      <nav class="site-footer-column" aria-label="Company"><h2>Company</h2><a href="/about.html">About us</a><a href="/about.html#how-we-review">How we review</a><a href="mailto:hello@onapqua.com">Contact</a></nav>
-      <nav class="site-footer-column" aria-label="Legal"><h2>Legal</h2><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms of Use</a><a href="/affiliate-disclosure.html">Affiliate Disclosure</a></nav>
+      <nav class="site-footer-column" aria-label="Explore"><h2>Explore</h2><a href="/blog.html">All reviews</a><a href="/best-software.html">Best software</a><a href="/comparisons.html">Comparisons</a><a href="/alternatives.html">Alternatives</a><a href="/coupons.html">Deals &amp; coupons</a><a href="/products.html">Product directory</a></nav>
+      <nav class="site-footer-column" aria-label="Company"><h2>Company</h2><a href="/about.html">About Onapqua</a><a href="/editorial-policy.html">Editorial policy</a><a href="/methodology.html">Review methodology</a><a href="mailto:hello@onapqua.com">Contact</a></nav>
+      <nav class="site-footer-column" aria-label="Legal"><h2>Legal</h2><a href="/affiliate-disclosure.html">Affiliate disclosure</a><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of service</a><a href="/sitemap.html">Sitemap</a></nav>
     </div>
     <div class="container site-footer-bottom"><span>&copy; ${new Date().getUTCFullYear()} onapqua. All rights reserved.</span><span>Some links are affiliate links. We may earn a commission at no extra cost to you.</span></div>
-  </footer>`;
+  </footer>
+  <script src="/site.js?v=1" defer></script>`;
 }
 
 function jsonLd(value) {
@@ -62,6 +75,12 @@ const pages = {
   '/terms.html': { title: 'Terms of Use | onapqua.', description: 'The terms that apply when you use onapqua.' },
   '/products.html': { title: 'Product Directory | onapqua.', description: 'Every product we review, with our score and a direct link to the official site.' },
   '/coupons.html': { title: 'Coupons & Deals | onapqua.', description: 'Promo codes and deals for the hosting, WordPress and AI tools we review.' },
+  '/best-software.html': { title: 'Best Software 2026: Top-Rated Tools by Category | onapqua.', description: 'The best WordPress plugins, hosting, marketing, productivity and business software, ranked by our review scores with pricing and key features.' },
+  '/comparisons.html': { title: 'Software Comparisons: Compare Tools Side by Side | onapqua.', description: 'Compare software side by side: ratings, pricing, pros, cons and best use cases, plus in-depth comparison guides.' },
+  '/alternatives.html': { title: 'Software Alternatives: Find a Better Fit | onapqua.', description: 'Top-rated alternatives to popular software, hosting and WordPress plugins, based on our reviews.' },
+  '/editorial-policy.html': { title: 'Editorial Policy | onapqua.', description: 'How onapqua. keeps reviews independent, accurate and up to date.' },
+  '/methodology.html': { title: 'Review Methodology | onapqua.', description: 'How onapqua. researches, scores and updates software reviews.' },
+  '/sitemap.html': { title: 'Sitemap | onapqua.', description: 'Every page and review on onapqua.' },
   '/404.html': { title: 'Page not found | onapqua.', description: defaultDescription },
   '/affiliate-disclosure.html': { title: 'Affiliate Disclosure | onapqua.', description: 'How affiliate links work on onapqua. and how they affect (and do not affect) our reviews.' },
 };
@@ -79,21 +98,31 @@ function siteSchema(siteUrl) {
 
 const newestFirst = (posts) => [...posts].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 
-// Server-rendered review lists, so search engines see real links instead of a loading message.
-function latestReviews(posts) {
-  const reviews = newestFirst(posts).filter((post) => post.category !== 'Best Of');
-  const featured = reviews.find((post) => post.featured) || reviews[0];
-  return reviews.filter((post) => post !== featured).slice(0, 6).map((post) => Reviews.card(publicPost(post))).join('');
-}
+// Server-rendered sections, so search engines see real content and links instead of a loading message.
+const sitemapList = (posts) => {
+  const links = [['/', 'Home'], ['/blog.html', 'All reviews'], ['/best-software.html', 'Best software'], ['/comparisons.html', 'Comparisons'], ['/alternatives.html', 'Alternatives'], ['/coupons.html', 'Deals & coupons'], ['/products.html', 'Product directory'], ['/about.html', 'About Onapqua'], ['/editorial-policy.html', 'Editorial policy'], ['/methodology.html', 'Review methodology'], ['/affiliate-disclosure.html', 'Affiliate disclosure'], ['/privacy.html', 'Privacy policy'], ['/terms.html', 'Terms of service']];
+  const item = ([href, label]) => `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`;
+  return `<h2>Pages</h2><ul>${links.map(item).join('')}</ul><h2>Reviews &amp; guides</h2><ul>${newestFirst(posts).map((post) => item([Reviews.reviewUrl(post), post.title])).join('')}</ul>`;
+};
 
 // Fills placeholders in a static page. Returns the original HTML when it has none.
 function renderPage(html, { siteUrl, path, posts = [] }) {
   if (!html.includes('<!--@')) return html;
   const meta = pages[path] || { title: siteName, description: defaultDescription };
   const loading = '<div class="rv-loading">Loading reviews...</div>';
+  const safe = posts.map(publicPost);
+  const products = Catalog.topRated(safe);
   return html
-    .replace('<!--@latest-->', () => latestReviews(posts) || loading)
-    .replace('<!--@all-->', () => newestFirst(posts).map((post) => Reviews.card(publicPost(post))).join('') || loading)
+    .replace('<!--@home-hubs-->', () => Catalog.hubCards(safe))
+    .replace('<!--@home-featured-->', () => products.slice(0, 6).map(Catalog.productCard).join('') || loading)
+    .replace('<!--@home-best-->', () => Catalog.bestTabs(safe))
+    .replace('<!--@latest-->', () => newestFirst(safe).filter((post) => !Catalog.isGuide(post)).slice(0, 6).map(Catalog.latestItem).join('') || loading)
+    .replace('<!--@all-->', () => newestFirst(safe).map(Reviews.card).join('') || loading)
+    .replace('<!--@best-->', () => Catalog.bestSections(safe))
+    .replace('<!--@guides-->', () => Catalog.guideCards(newestFirst(safe)))
+    .replace('<!--@alternatives-->', () => Catalog.alternativesDirectory(safe))
+    .replace('<!--@sitemap-->', () => sitemapList(safe))
+    .replace('<!--@count-->', () => String(products.length))
     .replace('<!--@head-->', head({ siteUrl, path: path === '/index.html' ? '/' : path, ...meta, extra: path === '/index.html' ? siteSchema(siteUrl) : '' }))
     .replace(/<!--@header:(\w+)-->/, (_, active) => header(active))
     .replace('<!--@footer-->', footer());
@@ -113,7 +142,7 @@ function renderReview(html, { siteUrl, post, posts = [] }) {
       .replace('<!--@footer-->', footer())
       .replace('<!--@article-->', '<div class="container rv-section"><div class="rv-empty"><h1>Review not found</h1><p>This review may have been moved or unpublished.</p><a class="rv-btn" href="/blog.html">Browse all reviews</a></div></div>');
   }
-  const safe = publicPost(post);
+  const safe = { ...publicPost(post), bestFor: Catalog.bestForOf(post) };
   const path = `/review/${encodeURIComponent(post.slug)}`;
   const url = `${siteUrl}${path}`;
   const image = post.image ? (post.image.startsWith('/') ? `${siteUrl}${post.image}` : post.image) : `${siteUrl}/assets/og-default.png`;
@@ -144,7 +173,15 @@ function renderReview(html, { siteUrl, post, posts = [] }) {
     .replace('<!--@head-->', head({ siteUrl, path, title: post.seoTitle || `${post.title} | onapqua.`, description: post.metaDescription || post.excerpt || post.title, image: post.image, type: 'article', extra }))
     .replace(/<!--@header:(\w+)-->/, header('reviews'))
     .replace('<!--@footer-->', footer())
-    .replace('<!--@article-->', () => withRelated(Reviews.article(safe), post, posts));
+    .replace('<!--@article-->', () => withRelated(Reviews.article(safe), post, posts).replace('<!--@alternatives-->', () => alternativesBlock(safe, posts)));
+}
+
+// "Alternatives to X" comparison table inside a review.
+function alternativesBlock(post, posts) {
+  if (Catalog.isGuide(post)) return '';
+  const items = Catalog.alternativesFor(post, posts.map(publicPost));
+  if (!items.length) return '';
+  return `<section class="rv-alternatives" aria-labelledby="alternatives"><h2 id="alternatives">${escapeHtml(post.brand)} alternatives</h2><p class="rv-sources-note">Other top-rated options in the same category, ranked by our review score.</p>${Catalog.compareTable(items)}</section>`;
 }
 
 // Fills the "More reviews" block on the server: same category first, then the rest.
@@ -160,7 +197,7 @@ function withRelated(markup, post, posts) {
 
 function sitemap(siteUrl, posts) {
   const urls = [
-    ['/', null, '1.0'], ['/blog.html', null, '0.9'], ['/products.html', null, '0.6'], ['/coupons.html', null, '0.5'], ['/about.html', null, '0.5'],
+    ['/', null, '1.0'], ['/blog.html', null, '0.9'], ['/best-software.html', null, '0.9'], ['/comparisons.html', null, '0.8'], ['/alternatives.html', null, '0.8'], ['/editorial-policy.html', null, '0.3'], ['/methodology.html', null, '0.4'], ['/sitemap.html', null, '0.2'], ['/products.html', null, '0.6'], ['/coupons.html', null, '0.5'], ['/about.html', null, '0.5'],
     ['/affiliate-disclosure.html', null, '0.3'], ['/privacy.html', null, '0.2'], ['/terms.html', null, '0.2'],
     ...posts.map((post) => [`/review/${encodeURIComponent(post.slug)}`, post.updatedAt || post.publishedAt, '0.8']),
   ];

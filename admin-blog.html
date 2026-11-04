@@ -26,6 +26,8 @@
             <label for="affiliate-url">Affiliate link</label><input id="affiliate-url" type="url" maxlength="2000" placeholder="https://partner.example.com/?ref=onapqua">
             <p class="hint">Readers click a button that goes through <code>/go/review/…</code> so each click is counted.</p>
             <div class="three"><div><label for="cta-label">Button text</label><input id="cta-label" maxlength="60" placeholder="Check price"></div><div><label for="rating">Rating (0–5)</label><input id="rating" type="number" min="0" max="5" step="0.5" placeholder="4.5"></div><div><label for="price">Price</label><input id="price" maxlength="120" placeholder="From $12.99/month"></div></div>
+            <label for="best-for">Best for <small>(one short phrase, e.g. "Email marketing without per-contact fees")</small></label><input id="best-for" maxlength="120">
+            <div class="two"><div><label for="hubs">Software categories <small>(comma separated)</small></label><input id="hubs" placeholder="wordpress, marketing"><p class="hint">Use: <code>wordpress</code>, <code>seo</code>, <code>marketing</code>, <code>hosting</code>, <code>proxy</code>, <code>productivity</code>, <code>business</code>. Controls Best Software, Comparisons and Alternatives.</p></div><div><label for="criteria">Score breakdown <small>(optional, one per line: Criterion | score)</small></label><textarea id="criteria" maxlength="600" placeholder="Features | 4.5&#10;Ease of use | 4.0&#10;Pricing | 4.5&#10;Support | 4.0"></textarea></div></div>
             <div class="two"><div><label for="pros">Pros <small>(one per line)</small></label><textarea id="pros" maxlength="3000"></textarea></div><div><label for="cons">Cons <small>(one per line)</small></label><textarea id="cons" maxlength="3000"></textarea></div></div>
           </div>
 
@@ -48,13 +50,13 @@
             <div class="serp" aria-label="Google preview"><span class="serp-url" id="serp-url">www.onapqua.com › review › …</span><span class="serp-title" id="serp-title">Review title | onapqua.</span><span class="serp-desc" id="serp-desc">Your meta description appears here.</span></div>
             <ul class="hint seo-tips"><li>Put the main keyword (e.g. "Time4VPS review", "Make vs Zapier") at the start of the title and in the slug.</li><li>Use <code>## Headings</code> for each section and link to 2–3 related reviews.</li><li>Update the review when prices change: the "Updated" date changes automatically.</li></ul>
           </div>
-          <div class="checks"><label><input id="featured" type="checkbox"> Featured on homepage</label><label><input id="published" type="checkbox"> Published</label></div>
+          <div class="checks"><label><input id="featured" type="checkbox"> Featured on homepage</label><label><input id="published" type="checkbox"> Published</label><label><input id="sponsored" type="checkbox"> Sponsored review</label></div>
           <div id="notice" class="notice" role="status"></div><div class="actions"><button type="submit">Save review</button><button id="new-post" class="secondary" type="button">New review</button></div>
         </form>
       </section>
       <aside class="panel"><h2>All reviews</h2><p class="muted">Drafts and published reviews, with affiliate clicks.</p><div id="posts" class="posts"><div class="empty">Loading...</div></div></aside>
     </div>
   </main>
-  <script src="admin-blog.js?v=5"></script>
+  <script src="admin-blog.js?v=6"></script>
 </body>
 </html>

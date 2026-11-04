@@ -388,6 +388,13 @@ function cleanPost(payload, previous = {}) {
     ctaLabel: text(payload.ctaLabel ?? previous.ctaLabel, 60),
     seoTitle: text(payload.seoTitle ?? previous.seoTitle, 90),
     metaDescription: text(payload.metaDescription ?? previous.metaDescription, 200),
+    bestFor: text(payload.bestFor ?? previous.bestFor, 120),
+    hubs: lines(payload.hubs ?? previous.hubs, 7).flatMap((item) => item.split(',')).map((item) => item.trim().toLowerCase()).filter((item) => ['wordpress', 'seo', 'marketing', 'hosting', 'proxy', 'productivity', 'business'].includes(item)),
+    criteria: lines(payload.criteria ?? (previous.criteria || []).map((item) => `${item.label} | ${item.score}`), 8).map((line) => {
+      const [label, score] = String(typeof line === 'string' ? line : `${line.label} | ${line.score}`).split('|').map((part) => part.trim());
+      return { label: text(label, 40), score: rating(score) };
+    }).filter((item) => item.label && item.score),
+    sponsored: payload.sponsored === undefined ? previous.sponsored === true : payload.sponsored === true,
     rating: rating(payload.rating ?? previous.rating),
     price: text(payload.price ?? previous.price, 120),
     pros: lines(payload.pros ?? previous.pros),
