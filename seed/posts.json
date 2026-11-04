@@ -770,9 +770,9 @@
     "slug": "best-wordpress-plugins-tools",
     "brand": "WordPress buyer’s guide",
     "title": "Best WordPress Plugins & Tools to Grow Your Site in 2026",
-    "excerpt": "The plugins and services we recommend for backups, CRM automation, affiliate programs, live chat and workflow automation on WordPress.",
+    "excerpt": "The plugins and services we recommend for backups, CRM automation, WooCommerce product tables, affiliate programs, live chat and workflow automation.",
     "image": "/assets/og-default.png",
-    "content": "A fast theme gets visitors in the door. These tools help you keep your site safe, turn visitors into customers and automate the busywork. Every pick below is based on official documentation plus published user and expert reviews.\n\n## Quick picks\n\n- **Best backup & migration plugin:** [WPvivid](/review/wpvivid-review)\n- **Best CRM integration:** [WP Fusion](/review/wp-fusion-review)\n- **Best affiliate program plugin:** [Easy Affiliate](/review/easy-affiliate-review)\n- **Best live chat for stores:** [Smartsupp](/review/smartsupp-review)\n- **Best automation platform:** [Make](/review/make-review)\n\n## Comparison table\n\n| Tool | What it does | Free option | Our score | Link |\n|---|---|---|---|---|\n| WP Fusion | Sync WordPress with your CRM | Lite version | 4.5 / 5 | [Get WP Fusion](/go/review/review_wp_fusion) |\n| Make | No-code automation | Free plan | 4.5 / 5 | [Start free](/go/review/review_make) |\n| WPvivid | Backups, migration, staging | Free version | 4.4 / 5 | [Get WPvivid Pro](/go/review/review_wpvivid) |\n| Easy Affiliate | Run your own affiliate program | No | 4.3 / 5 | [See plans](/go/review/review_easy_affiliate) |\n| Smartsupp | Live chat & chatbots | Free plan | 4.1 / 5 | [Try free](/go/review/review_smartsupp) |\n\n## 1. WPvivid: protect your site first\n\nScheduled backups to the cloud, one-click migration and staging sites. The free version is generous, and Pro adds incremental backups. [Read our WPvivid review](/review/wpvivid-review).\n\n## 2. WP Fusion: connect WordPress to your CRM\n\nTag users by purchases, course progress and form submissions, then trigger email automations in your CRM. Essential for membership sites and online courses. [Read our WP Fusion review](/review/wp-fusion-review).\n\n## 3. Easy Affiliate: let partners sell for you\n\nLaunch a self-hosted affiliate program with tracking links, a partner dashboard and fraud protection, without per-affiliate fees. [Read our Easy Affiliate review](/review/easy-affiliate-review).\n\n## 4. Smartsupp: answer questions in real time\n\nLive chat, chatbots and visitor recordings help online stores convert more visitors. Start on the free plan. [Read our Smartsupp review](/review/smartsupp-review).\n\n## 5. Make: automate everything else\n\nConnect WordPress and WooCommerce to thousands of apps with a visual builder, from order notifications to content workflows. [Read our Make review](/review/make-review).\n\n## Our recommended starter stack\n\n- **Every site:** WPvivid for backups.\n- **Selling courses or memberships:** add WP Fusion.\n- **Running an online store:** add Smartsupp and Make.\n- **Ready to scale with partners:** add Easy Affiliate.\n\nScores and summaries come from our individual reviews, which list every source we used.",
+    "content": "A fast theme gets visitors in the door. These tools help you keep your site safe, turn visitors into customers and automate the busywork. Every pick below is based on official documentation plus published user and expert reviews.\n\n## Quick picks\n\n- **Best backup & migration plugin:** [WPvivid](/review/wpvivid-review)\n- **Best CRM integration:** [WP Fusion](/review/wp-fusion-review)\n- **Best affiliate program plugin:** [Easy Affiliate](/review/easy-affiliate-review)\n- **Best WooCommerce product tables:** [Barn2](/review/barn2-review)\n- **Best live chat for stores:** [Smartsupp](/review/smartsupp-review)\n- **Best automation platform:** [Make](/review/make-review)\n\n## Comparison table\n\n| Tool | What it does | Free option | Our score | Link |\n|---|---|---|---|---|\n| WP Fusion | Sync WordPress with your CRM | Lite version | 4.5 / 5 | [Get WP Fusion](/go/review/review_wp_fusion) |\n| Make | No-code automation | Free plan | 4.5 / 5 | [Start free](/go/review/review_make) |\n| Barn2 | WooCommerce product tables & add-ons | Demos, 30-day refund | 4.6 / 5 | [See Barn2 plugins](/go/review/review_barn2) |\n| WPvivid | Backups, migration, staging | Free version | 4.4 / 5 | [Get WPvivid Pro](/go/review/review_wpvivid) |\n| Easy Affiliate | Run your own affiliate program | No | 4.3 / 5 | [See plans](/go/review/review_easy_affiliate) |\n| Smartsupp | Live chat & chatbots | Free plan | 4.1 / 5 | [Try free](/go/review/review_smartsupp) |\n\n## 1. WPvivid: protect your site first\n\nScheduled backups to the cloud, one-click migration and staging sites. The free version is generous, and Pro adds incremental backups. [Read our WPvivid review](/review/wpvivid-review).\n\n## 2. WP Fusion: connect WordPress to your CRM\n\nTag users by purchases, course progress and form submissions, then trigger email automations in your CRM. Essential for membership sites and online courses. [Read our WP Fusion review](/review/wp-fusion-review).\n\n## 3. Easy Affiliate: let partners sell for you\n\nLaunch a self-hosted affiliate program with tracking links, a partner dashboard and fraud protection, without per-affiliate fees. [Read our Easy Affiliate review](/review/easy-affiliate-review).\n\n## 4. Barn2: sell faster with product tables\n\nWooCommerce Product Table turns your catalog into a one-page order form, and add-ons like Product Options and Wholesale Pro cover B2B stores. Backed by a 4.7 Trustpilot score and a 30-day refund. [Read our Barn2 review](/review/barn2-review).\n\n## 5. Smartsupp: answer questions in real time\n\nLive chat, chatbots and visitor recordings help online stores convert more visitors. Start on the free plan. [Read our Smartsupp review](/review/smartsupp-review).\n\n## 6. Make: automate everything else\n\nConnect WordPress and WooCommerce to thousands of apps with a visual builder, from order notifications to content workflows. [Read our Make review](/review/make-review).\n\n## Our recommended starter stack\n\n- **Every site:** WPvivid for backups.\n- **Selling courses or memberships:** add WP Fusion.\n- **Running an online store:** add Barn2 product tables, Smartsupp and Make.\n- **Ready to scale with partners:** add Easy Affiliate.\n\nScores and summaries come from our individual reviews, which list every source we used.",
     "category": "Best Of",
     "sourceUrl": "",
     "affiliateUrl": "",
@@ -789,7 +789,7 @@
     "createdAt": "2026-11-01T12:00:00.000Z",
     "updatedAt": "2026-11-01T12:00:00.000Z",
     "logo": "",
-    "seedVersion": 2,
+    "seedVersion": 3,
     "sources": [
       {
         "label": "WP Fusion official website",
@@ -830,7 +830,66 @@
       {
         "label": "G2 – Smartsupp",
         "url": "https://www.g2.com/products/smartsupp"
+      },
+      {
+        "label": "Barn2 official website",
+        "url": "https://barn2.com"
+      },
+      {
+        "label": "Trustpilot – Barn2 reviews",
+        "url": "https://www.trustpilot.com/review/barn2.com"
       }
     ]
+  },
+  {
+    "id": "review_barn2",
+    "title": "Barn2 Plugins Review 2026: Product Tables & WooCommerce Add-ons",
+    "slug": "barn2-review",
+    "excerpt": "Barn2 makes premium WooCommerce and WordPress plugins such as Product Table, Product Options and Wholesale Pro. Here is what they do, what they cost and who they suit.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nBarn2 is a UK-based developer of premium WordPress and WooCommerce plugins. Its best-known product is **WooCommerce Product Table**, which turns a store into a fast, one-page order form. The catalog also includes WooCommerce Product Options, Product Filters, Wholesale Pro, Quick View Pro, Bulk Variations, Document Library Pro and Posts Table Pro.\n\n## Key features\n\n- **WooCommerce Product Table:** list products in a searchable, sortable table and let customers add many items or variations to the cart at once\n- **Table builder:** a step-by-step wizard, seven design templates, and a block or shortcode to place tables anywhere\n- **Product Options:** extra fields, add-ons and conditional logic on product pages\n- **Wholesale Pro:** B2B pricing, wholesale roles and registration forms\n- **Built for large catalogs:** tables load one page at a time with a background index\n- **Works in many languages** with common translation plugins\n\n## Pricing\n\nPlugins are sold as annual or lifetime licenses. According to the official pricing page, **WooCommerce Product Table** costs **$79/year for one site** (or $279 lifetime), with 5-site and 50-site tiers. The **All Access** plan includes all 19 plugins from **$399/year**. Every purchase has a **30-day money-back guarantee**. There is no free version of the Pro plugins, but you can try front-end and admin demos first.\n\n## What users say\n\nBarn2 holds an **Excellent TrustScore of 4.7 on Trustpilot**, with 93% five-star reviews. Customers repeatedly praise **fast, helpful support**, intuitive settings and the ability to handle complex setups such as conditional product options. Critical reviews mention occasional quirks with variable products and the Product Filters plugin on some themes, and that custom development work is not cheap.\n\n## Who it's for\n\n- **B2B and wholesale stores** that need quick re-ordering\n- **Stores with large catalogs** (restaurants, parts, office supplies) where a table is faster than a grid\n- **Agencies** building WooCommerce sites, who benefit from the All Access bundle\n\n## Verdict\n\nBarn2 makes some of the most polished WooCommerce extensions available, backed by excellent support. It is not the cheapest option, but for stores that need one-page ordering or wholesale features it is well worth trying, risk-free thanks to the 30-day refund.\n\nSee how it fits with other tools in our [best WordPress plugins guide](/review/best-wordpress-plugins-tools).",
+    "category": "WordPress",
+    "brand": "Barn2",
+    "image": "",
+    "logo": "/assets/logos/barn2.png",
+    "sourceUrl": "https://barn2.com",
+    "affiliateUrl": "https://barn2.com/ref/1356/",
+    "ctaLabel": "See Barn2 plugins",
+    "seoTitle": "Barn2 Plugins Review 2026: WooCommerce Product Table & Pricing",
+    "metaDescription": "Barn2 review: WooCommerce Product Table, Product Options and Wholesale Pro features, pricing from $79/year, pros, cons and Trustpilot rating.",
+    "rating": 4.6,
+    "price": "From $79/year per plugin; All Access from $399/year",
+    "pros": [
+      "Polished WooCommerce Product Table for one-page ordering",
+      "Excellent Trustpilot rating and fast support",
+      "Annual or lifetime licenses",
+      "30-day money-back guarantee"
+    ],
+    "cons": [
+      "No free version of the Pro plugins",
+      "Premium pricing compared with basic alternatives",
+      "Some reports of quirks with filters on certain themes"
+    ],
+    "sources": [
+      {
+        "label": "Barn2 official website",
+        "url": "https://barn2.com"
+      },
+      {
+        "label": "Barn2 – WooCommerce Product Table features & pricing",
+        "url": "https://barn2.com/wordpress-plugins/woocommerce-product-table/"
+      },
+      {
+        "label": "Trustpilot – Barn2 reviews",
+        "url": "https://www.trustpilot.com/review/barn2.com"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T08:00:00.000Z",
+    "createdAt": "2026-11-04T08:00:00.000Z",
+    "updatedAt": "2026-11-04T08:00:00.000Z",
+    "seedVersion": 2
   }
 ]
