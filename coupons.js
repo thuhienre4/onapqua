@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     <article class="rv-offer">
       <div class="rv-offer-value"><strong>${escapeHtml(offer.discount || 'DEAL')}</strong><span>${offer.hasCode ? 'Code' : 'Deal'}</span></div>
       <div class="rv-offer-body">
-        <span class="rv-chip">${escapeHtml(offer.brand)}</span>
+        <div class="rv-offer-brand">${offer.logo ? `<span class="rv-logo rv-logo-sm"><img src="${escapeHtml(offer.logo)}" alt="" width="28" height="28" loading="lazy"></span>` : ''}<span class="rv-chip">${escapeHtml(offer.brand)}</span></div>
         <h2>${escapeHtml(offer.title)}</h2>
         ${offer.description ? `<p>${escapeHtml(offer.description)}</p>` : ''}
         ${offer.expiry ? `<small>Expires ${escapeHtml(offer.expiry)}</small>` : ''}

@@ -21,6 +21,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggle();
   }
 
+  // Coupons and deals for this brand, revealed the same way as on the Coupons page.
+  const offers = await fetch('/api/offers', { signal: AbortSignal.timeout(8000) }).then((response) => response.ok ? response.json() : []).catch(() => []);
+  const brandOffers = offers.filter((offer) => String(offer.brand).toLowerCase() === String(post.brand || '').toLowerCase());
+  if (brandOffers.length) {
+    const box = document.createElement('section');
+    box.className = 'rv-deals';
+    box.setAttribute('aria-labelledby', 'deals');
+    box.innerHTML = `<h2 id="deals">${escapeHtml(post.brand)} deals &amp; coupons</h2>${brandOffers.map((offer) => `
+      <div class="rv-deal"><strong>${escapeHtml(offer.discount || 'DEAL')}</strong><div><b>${escapeHtml(offer.title)}</b>${offer.description ? `<span>${escapeHtml(offer.description)}</span>` : ''}</div>
+      ${offer.hasCode ? `<button class="rv-btn" type="button" data-reveal="${escapeHtml(offer.id)}">Reveal code</button>` : `<a class="rv-btn" href="/go/${encodeURIComponent(offer.id)}" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}</div>`).join('')}`;
+    const anchor = document.querySelector('.rv-sources') || document.querySelector('.rv-final-cta');
+    anchor ? anchor.before(box) : document.querySelector('.rv-article-main')?.append(box);
+    box.addEventListener('click', async (event) => {
+      const button = event.target.closest('[data-reveal]');
+      if (!button) return;
+      const store = window.open('', '_blank');
+      try {
+        const response = await fetch(`/api/offers/${encodeURIComponent(button.dataset.reveal)}/code`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Code unavailable');
+        button.outerHTML = `<button class="rv-code" type="button" title="Copied">${escapeHtml(data.code)}</button>`;
+        navigator.clipboard?.writeText(data.code).catch(() => {});
+        if (store) store.location = data.redirect;
+      } catch (error) {
+        store?.close();
+        button.textContent = error.message;
+      }
+    });
+  }
+
   const others = (await fetchPosts()).filter((item) => item.id !== post.id);
   const related = [...others.filter((item) => item.category === post.category), ...others.filter((item) => item.category !== post.category)].slice(0, 3);
   if (related.length) {

@@ -603,3 +603,16 @@
 .rv-sources li { margin: 6px 0; }
 .rv-sources li::marker { color: var(--rv-gold); font-weight: 800; }
 .rv-sources li span { color: var(--rv-muted); font-size: .8rem; }
+
+/* Coupons inside reviews and on the Coupons page */
+.rv-offer-brand { display: flex; align-items: center; gap: 8px; }
+.rv-logo-sm { width: 32px; height: 32px; border-radius: 9px; }
+.rv-deals { margin-top: 30px; padding: 22px 24px; border: 1px dashed var(--rv-line-strong); border-radius: 18px; background: rgba(245, 200, 76, .06); }
+.rv-deals h2 { margin: 0 0 12px; color: var(--rv-ink); font-size: 1.3rem; scroll-margin-top: 90px; }
+.rv-deal { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid var(--rv-line); }
+.rv-deal:first-of-type { border-top: 0; }
+.rv-deal > strong { color: var(--rv-gold); font-size: 1rem; text-align: center; }
+.rv-deal b { display: block; color: var(--rv-ink); }
+.rv-deal span { display: block; margin-top: 2px; color: var(--rv-muted); font-size: .85rem; }
+.rv-deal .rv-btn { min-height: 40px; padding: 0 16px; font-size: .88rem; }
+@media (max-width: 640px) { .rv-deal { grid-template-columns: minmax(0, 1fr); } .rv-deal > strong { text-align: left; } }

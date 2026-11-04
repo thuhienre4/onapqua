@@ -44,6 +44,25 @@ function ensureData() {
   }
   if (!fs.existsSync(subscribersFile)) fs.writeFileSync(subscribersFile, '[]\n');
   importSeedPosts();
+  importSeedOffers();
+}
+
+// Seed coupons are added once each (by id), so offers an admin deletes stay deleted.
+function importSeedOffers() {
+  const ledgerFile = path.join(dataDir, 'seeded-offers.json');
+  let imported = [];
+  try { imported = JSON.parse(fs.readFileSync(ledgerFile, 'utf8')); } catch { /* first run */ }
+  let seedOffers = [];
+  try { seedOffers = JSON.parse(fs.readFileSync(path.join(root, 'seed', 'offers.json'), 'utf8')); } catch { return; }
+  const seen = new Set(imported);
+  const pending = seedOffers.filter((offer) => offer.id && !seen.has(offer.id));
+  if (!pending.length) return;
+  let offers = [];
+  try { offers = JSON.parse(fs.readFileSync(offersFile, 'utf8')); } catch { /* treat as empty */ }
+  const existing = new Set(offers.map((offer) => offer.id));
+  offers.push(...pending.filter((offer) => !existing.has(offer.id)));
+  fs.writeFileSync(offersFile, `${JSON.stringify(offers, null, 2)}\n`);
+  fs.writeFileSync(ledgerFile, `${JSON.stringify([...imported, ...pending.map((offer) => offer.id)], null, 2)}\n`);
 }
 
 // Seed reviews added after a site already has data are imported once each; the

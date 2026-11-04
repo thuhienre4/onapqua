@@ -891,5 +891,471 @@
     "createdAt": "2026-11-04T08:00:00.000Z",
     "updatedAt": "2026-11-04T08:00:00.000Z",
     "seedVersion": 2
+  },
+  {
+    "id": "review_fluentcrm",
+    "title": "FluentCRM Review 2026: Self-Hosted Email Marketing for WordPress",
+    "slug": "fluentcrm-review",
+    "excerpt": "FluentCRM is an email marketing and CRM plugin that runs inside WordPress, with no per-contact fees. Here is what it does, what it costs and who it suits.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nFluentCRM is a CRM and email marketing automation plugin from WPManageNinja. Because it runs inside your WordPress site, your contact data stays on your own server and you do not pay per subscriber like with many SaaS email tools.\n\n## Key features\n\n- Contact management with tags, lists, custom fields and segments\n- Email campaigns and drag-and-drop email builder\n- Visual automation funnels triggered by purchases, form submissions, course progress and more\n- Integrations with WooCommerce, LearnDash, MemberPress, Fluent Forms and many other plugins\n- Reports on opens, clicks and revenue\n\n## Pricing\n\nA free version is available on WordPress.org. FluentCRM Pro starts at **$129/year for a single site**. Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page). You send emails through your own SMTP provider (for example Amazon SES), which is usually far cheaper than per-contact pricing.\n\n## What users say\n\nFluentCRM has **4.8 out of 5 stars from about 250 ratings** and **80,000+ active installations** on WordPress.org. Users praise the value compared with SaaS email tools and the depth of its automations. The main trade-off is that you must set up email sending yourself.\n\n## Who it's for\n\nWordPress store owners, course creators and membership sites that want powerful email automation without monthly per-contact bills.\n\n## Verdict\n\nOne of the best-value email marketing tools for WordPress. If your list is growing, FluentCRM can save hundreds of dollars a year versus SaaS alternatives.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "FluentCRM",
+    "image": "",
+    "logo": "/assets/logos/fluentcrm.png",
+    "sourceUrl": "https://fluentcrm.com",
+    "affiliateUrl": "https://fluentcrm.com/?ref=4213",
+    "ctaLabel": "Get FluentCRM",
+    "seoTitle": "FluentCRM Review 2026: Pricing, Features, Pros & Cons",
+    "metaDescription": "FluentCRM review: self-hosted email marketing for WordPress with unlimited contacts, automations, pricing from $129/year and a 20% coupon.",
+    "rating": 4.7,
+    "price": "Free version; Pro from $129/year (20% off first year)",
+    "pros": [
+      "Unlimited contacts and emails with no per-contact fees",
+      "Visual automations, tags, lists and segmentation",
+      "Deep integrations with WooCommerce, LMS and membership plugins",
+      "4.8★ from 250 WordPress.org ratings"
+    ],
+    "cons": [
+      "You need an SMTP/email-sending service",
+      "Runs on your hosting, so large lists need a solid server",
+      "Fewer ready-made templates than SaaS tools"
+    ],
+    "sources": [
+      {
+        "label": "FluentCRM official website",
+        "url": "https://fluentcrm.com"
+      },
+      {
+        "label": "FluentCRM pricing",
+        "url": "https://fluentcrm.com/pricing/"
+      },
+      {
+        "label": "WordPress.org – FluentCRM ratings",
+        "url": "https://wordpress.org/plugins/fluent-crm/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T10:00:00.000Z",
+    "createdAt": "2026-11-04T10:00:00.000Z",
+    "updatedAt": "2026-11-04T10:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_fluentbooking",
+    "title": "FluentBooking Review 2026: Appointment Scheduling Inside WordPress",
+    "slug": "fluentbooking-review",
+    "excerpt": "FluentBooking adds appointment scheduling, event booking and payments to WordPress. We look at features, pricing and how it compares with SaaS schedulers.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nFluentBooking is a scheduling plugin for WordPress. Clients pick a time on your booking page, the event is added to your calendar, and reminders go out automatically, similar to Calendly but without a monthly subscription per user.\n\n## Key features\n\n- One-to-one and group bookings, round-robin team scheduling\n- Calendar sync with Google and Outlook, plus video meeting links\n- Payments for paid appointments\n- Email and SMS-style reminders, custom booking fields\n- Integrations with FluentCRM and other Fluent plugins\n\n## Pricing\n\nThe official pricing page lists **Solo at $79/year** (1 site), Small Business at $199/year (5 sites) and Agency at $399/year (50 sites). **Lifetime licenses start at $249.** Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page).\n\n## What users say\n\nFluentBooking holds **4.7 out of 5 stars on WordPress.org** with **20,000+ active installations**. Reviewers like the clean booking interface and the lifetime pricing option.\n\n## Who it's for\n\nCoaches, consultants, agencies and small businesses that already run a WordPress site and want to stop paying per-seat scheduling fees.\n\n## Verdict\n\nA strong, affordable Calendly alternative for WordPress, especially attractive with the lifetime license.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "FluentBooking",
+    "image": "",
+    "logo": "/assets/logos/fluentbooking.png",
+    "sourceUrl": "https://fluentbooking.com",
+    "affiliateUrl": "https://fluentbooking.com/?ref=4213",
+    "ctaLabel": "Get FluentBooking",
+    "seoTitle": "FluentBooking Review 2026: Calendly Alternative for WordPress",
+    "metaDescription": "FluentBooking review: WordPress appointment and event booking plugin, pricing from $79/year or lifetime, pros, cons and a 20% coupon.",
+    "rating": 4.5,
+    "price": "From $79/year or $249 lifetime (20% off with coupon)",
+    "pros": [
+      "Calendly-style booking pages on your own site",
+      "One-time lifetime license available",
+      "Google/Outlook calendar sync and online meeting links",
+      "4.7★ on WordPress.org"
+    ],
+    "cons": [
+      "Smaller ecosystem than long-running SaaS schedulers",
+      "Advanced features require Pro",
+      "You manage updates and hosting yourself"
+    ],
+    "sources": [
+      {
+        "label": "FluentBooking official website",
+        "url": "https://fluentbooking.com"
+      },
+      {
+        "label": "FluentBooking pricing",
+        "url": "https://fluentbooking.com/pricing/"
+      },
+      {
+        "label": "WordPress.org – FluentBooking ratings",
+        "url": "https://wordpress.org/plugins/fluent-booking/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T11:00:00.000Z",
+    "createdAt": "2026-11-04T11:00:00.000Z",
+    "updatedAt": "2026-11-04T11:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_ninja_tables",
+    "title": "Ninja Tables Review 2026: The Easiest Table Builder for WordPress?",
+    "slug": "ninja-tables-review",
+    "excerpt": "Ninja Tables lets you build responsive data, pricing and WooCommerce product tables in WordPress without code. Here are its features, pricing and limits.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nNinja Tables is one of the most popular table plugins for WordPress. You can create comparison tables, pricing tables, data tables and WooCommerce product tables with sorting, search and filters.\n\n## Key features\n\n- Drag-and-drop table builder with ready-made designs\n- Responsive layouts for mobile\n- Import from CSV, JSON, Google Sheets and other sources\n- Conditional formatting, filters and pagination\n- WooCommerce product tables and custom SQL tables in Pro\n\n## Pricing\n\nA free version handles basic tables. Pro annual plans start at **$79/year for a single site** (20 sites $129/year, unlimited $299/year), and lifetime licenses start at **$309**. Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page). The official page offers a **14-day money-back guarantee**.\n\n## What users say\n\nNinja Tables has **4.6 out of 5 stars from about 470 ratings** and **70,000+ active installations** on WordPress.org. Users like how quickly they can build good-looking tables; a few mention a learning curve for advanced options.\n\n## Who it's for\n\nBloggers publishing comparisons, affiliate sites, and stores that need product tables or data displays.\n\n## Verdict\n\nA reliable, flexible table builder. Start with the free version and upgrade if you need WooCommerce or advanced data sources.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "Ninja Tables",
+    "image": "",
+    "logo": "/assets/logos/ninja-tables.webp",
+    "sourceUrl": "https://ninjatables.com",
+    "affiliateUrl": "https://ninjatables.com/?ref=4213",
+    "ctaLabel": "Get Ninja Tables",
+    "seoTitle": "Ninja Tables Review 2026: WordPress Table Plugin Pricing & Pros",
+    "metaDescription": "Ninja Tables review: responsive WordPress table builder, free version, Pro from $79/year, 14-day refund, pros, cons and 20% coupon.",
+    "rating": 4.5,
+    "price": "Free version; Pro from $79/year (20% off first year)",
+    "pros": [
+      "Drag-and-drop builder with responsive tables",
+      "Import from CSV, Google Sheets and more",
+      "WooCommerce product tables in Pro",
+      "14-day money-back guarantee"
+    ],
+    "cons": [
+      "Best features are in Pro",
+      "Very large tables can slow pages",
+      "Interface has many options for first-time users"
+    ],
+    "sources": [
+      {
+        "label": "Ninja Tables official website",
+        "url": "https://ninjatables.com"
+      },
+      {
+        "label": "Ninja Tables pricing",
+        "url": "https://ninjatables.com/pricing/"
+      },
+      {
+        "label": "WordPress.org – Ninja Tables ratings",
+        "url": "https://wordpress.org/plugins/ninja-tables/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T12:00:00.000Z",
+    "createdAt": "2026-11-04T12:00:00.000Z",
+    "updatedAt": "2026-11-04T12:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_fluent_support",
+    "title": "Fluent Support Review 2026: A Helpdesk Ticket System in WordPress",
+    "slug": "fluent-support-review",
+    "excerpt": "Fluent Support turns WordPress into a customer support helpdesk with tickets, email piping and automations. We cover features, pricing and who should use it.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nFluent Support is a helpdesk plugin for WordPress. Customers open tickets from your site or by email, and your team answers them from one dashboard, without paying per agent like many SaaS helpdesks.\n\n## Key features\n\n- Ticket portal for customers and a dashboard for agents\n- Email piping (Pro): replies by email become ticket updates\n- Saved replies, workflows and auto-assignment\n- Integrations with WooCommerce, Easy Digital Downloads, LearnDash and FluentCRM\n- Reports on response times and agent activity\n\n## Pricing\n\nThe official pricing page lists **Single Site at $129/year** with 10 business emails for piping, Agency (5 sites) at $249/year and 50 Sites at $399/year. Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page). It also mentions a **14-day money-back guarantee**.\n\n## What users say\n\nFluent Support has **4.6 out of 5 stars on WordPress.org** with **10,000+ active installations**. Users highlight the clean interface and value versus per-agent SaaS pricing.\n\n## Who it's for\n\nPlugin and theme sellers, online stores and SaaS businesses on WordPress that want an in-house helpdesk.\n\n## Verdict\n\nA capable, cost-effective helpdesk for WordPress businesses, especially if you already use FluentCRM.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "Fluent Support",
+    "image": "",
+    "logo": "/assets/logos/fluent-support.png",
+    "sourceUrl": "https://fluentsupport.com",
+    "affiliateUrl": "https://fluentsupport.com/?ref=4213",
+    "ctaLabel": "Get Fluent Support",
+    "seoTitle": "Fluent Support Review 2026: WordPress Helpdesk Pricing & Pros",
+    "metaDescription": "Fluent Support review: WordPress helpdesk and ticket system, Pro from $129/year, email piping, pros, cons and a 20% coupon code.",
+    "rating": 4.4,
+    "price": "Free version; Pro from $129/year (20% off first year)",
+    "pros": [
+      "Unlimited agents and tickets with no per-seat fees",
+      "Email piping turns emails into tickets",
+      "Integrates with WooCommerce, EDD and LMS plugins",
+      "14-day money-back guarantee"
+    ],
+    "cons": [
+      "Email piping limits depend on the plan",
+      "Not as feature-rich as large SaaS helpdesks",
+      "Runs on your own hosting"
+    ],
+    "sources": [
+      {
+        "label": "Fluent Support official website",
+        "url": "https://fluentsupport.com"
+      },
+      {
+        "label": "Fluent Support pricing",
+        "url": "https://fluentsupport.com/pricing/"
+      },
+      {
+        "label": "WordPress.org – Fluent Support ratings",
+        "url": "https://wordpress.org/plugins/fluent-support/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T13:00:00.000Z",
+    "createdAt": "2026-11-04T13:00:00.000Z",
+    "updatedAt": "2026-11-04T13:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_wp_social_ninja",
+    "title": "WP Social Ninja Review 2026: Social Feeds, Reviews & Chat in One Plugin",
+    "slug": "wp-social-ninja-review",
+    "excerpt": "WP Social Ninja embeds Instagram, Facebook, YouTube and TikTok feeds, Google reviews and chat widgets on WordPress. Here is what you get free and in Pro.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nWP Social Ninja is a social proof plugin. It shows social media feeds, customer reviews and chat buttons on your WordPress site, replacing several separate plugins.\n\n## Key features\n\n- Social feeds: Instagram, Facebook, YouTube and TikTok (free), more platforms in Pro\n- Review widgets: Google Reviews and Airbnb (free), plus many review sites in Pro\n- Chat widgets: WhatsApp, Messenger and Telegram\n- Templates, carousels and grid layouts\n- Built for speed with caching\n\n## Pricing\n\nThe free version is on WordPress.org. Pro starts at **$89/year for a single site**, with agency and unlimited plans; the vendor frequently runs discounts on its pricing page.\n\n## What users say\n\nWP Social Ninja has **4.8 out of 5 stars on WordPress.org** with **30,000+ active installations**. Users like having feeds and reviews in one tool and the responsive support team.\n\n## Who it's for\n\nLocal businesses showing Google reviews, creators embedding social feeds and stores adding chat buttons.\n\n## Verdict\n\nAn excellent all-in-one social proof plugin. The free version alone covers most small sites.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "WP Social Ninja",
+    "image": "",
+    "logo": "/assets/logos/wp-social-ninja.png",
+    "sourceUrl": "https://wpsocialninja.com",
+    "affiliateUrl": "https://wpsocialninja.com/?ref=4213",
+    "ctaLabel": "Get WP Social Ninja",
+    "seoTitle": "WP Social Ninja Review 2026: Social Feed & Reviews Plugin",
+    "metaDescription": "WP Social Ninja review: embed social feeds, Google reviews and WhatsApp chat in WordPress. Free version, Pro pricing, pros and cons.",
+    "rating": 4.5,
+    "price": "Free version; Pro from $89/year",
+    "pros": [
+      "Feeds, reviews and chat widgets in one plugin",
+      "Generous free version",
+      "Lightweight and cache-friendly",
+      "4.8★ on WordPress.org"
+    ],
+    "cons": [
+      "Some platforms only in Pro",
+      "Social APIs can change and need re-connecting",
+      "Design options take time to explore"
+    ],
+    "sources": [
+      {
+        "label": "WP Social Ninja official website",
+        "url": "https://wpsocialninja.com"
+      },
+      {
+        "label": "WP Social Ninja free vs Pro",
+        "url": "https://wpsocialninja.com/free-vs-pro/"
+      },
+      {
+        "label": "WordPress.org – WP Social Ninja ratings",
+        "url": "https://wordpress.org/plugins/wp-social-reviews/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T14:00:00.000Z",
+    "createdAt": "2026-11-04T14:00:00.000Z",
+    "updatedAt": "2026-11-04T14:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_paymattic",
+    "title": "Paymattic Review 2026: Payments and Donations for WordPress",
+    "slug": "paymattic-review",
+    "excerpt": "Paymattic lets you accept payments, subscriptions and donations on WordPress with no extra transaction fees. We cover gateways, pricing and use cases.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nPaymattic (formerly WPPayForm) is a payment and donation form plugin for WordPress. It is ideal for selling a single product, taking deposits or running fundraisers without installing a full e-commerce system.\n\n## Key features\n\n- Drag-and-drop payment and donation forms\n- One-time payments, subscriptions and recurring donations\n- Stripe in the free version; PayPal, Square, Razorpay, Mollie and more in Pro\n- Customer and donor management, receipts and reports\n- Coupon codes and payment summaries\n\n## Pricing\n\nThe free version includes Stripe and offline payments. Pro starts at **$119/year for one site** or **$349 lifetime**, with agency and unlimited tiers. Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page).\n\n## What users say\n\nPaymattic has **4.8 out of 5 stars on WordPress.org** (44 ratings, 3,000+ active installations). Users like the simple setup for donations and payments.\n\n## Who it's for\n\nNonprofits, event organizers, coaches and freelancers who need payment forms rather than a full online store.\n\n## Verdict\n\nA focused, easy payment and donation plugin. Great value if you just need forms that take money.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "Paymattic",
+    "image": "",
+    "logo": "/assets/logos/paymattic.png",
+    "sourceUrl": "https://paymattic.com",
+    "affiliateUrl": "https://paymattic.com/?ref=4213",
+    "ctaLabel": "Get Paymattic",
+    "seoTitle": "Paymattic Review 2026: WordPress Payment & Donation Plugin",
+    "metaDescription": "Paymattic review: WordPress payment and donation forms, Stripe in the free version, Pro from $119/year or lifetime, and a 20% coupon.",
+    "rating": 4.3,
+    "price": "Free version; Pro from $119/year or $349 lifetime (20% off)",
+    "pros": [
+      "Payment and donation forms without per-transaction plugin fees",
+      "Subscriptions and recurring donations",
+      "Free version with Stripe",
+      "Lifetime license option"
+    ],
+    "cons": [
+      "Most gateways besides Stripe need Pro",
+      "Smaller user base than big form plugins",
+      "Not a full e-commerce cart"
+    ],
+    "sources": [
+      {
+        "label": "Paymattic official website",
+        "url": "https://paymattic.com"
+      },
+      {
+        "label": "Paymattic pricing",
+        "url": "https://paymattic.com/pricing/"
+      },
+      {
+        "label": "WordPress.org – Paymattic ratings",
+        "url": "https://wordpress.org/plugins/wp-payment-form/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T15:00:00.000Z",
+    "createdAt": "2026-11-04T15:00:00.000Z",
+    "updatedAt": "2026-11-04T15:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_azonpress",
+    "title": "AzonPress Review 2026: Amazon Affiliate Product Boxes & Comparison Tables",
+    "slug": "azonpress-review",
+    "excerpt": "AzonPress helps affiliate bloggers show products, comparison tables and cloaked links in WordPress, even without the Amazon API. Features, pricing and verdict.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nAzonPress is an affiliate marketing plugin from WPManageNinja. It helps bloggers present products attractively and manage affiliate links, especially for Amazon.\n\n## Key features\n\n- Comparison tables and product showcases (grid, box, list, table, widget)\n- **Zero API** feature to add products from anywhere without Amazon API keys\n- Link management with cloaking\n- Geo-targeting for international visitors\n- Gutenberg blocks and an advanced reports dashboard\n\n## Pricing\n\nAnnual plans start at about **$39/year for one site** (shown as $3.25/month billed yearly), with agency and unlimited tiers. **Lifetime licenses start at $249.** Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page). The official page states a **14-day refund** policy.\n\n## What users say\n\nAzonPress is newer than other Fluent products, so there are fewer independent reviews. The vendor's track record with FluentCRM and Ninja Tables is a good sign, but test it during the refund window.\n\n## Who it's for\n\nAmazon affiliates and review bloggers who want professional product boxes and comparison tables.\n\n## Verdict\n\nA promising affiliate toolkit with a fair price and lifetime option. Worth trying if you publish product roundups.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "AzonPress",
+    "image": "",
+    "logo": "/assets/logos/azonpress.png",
+    "sourceUrl": "https://azonpress.com",
+    "affiliateUrl": "https://azonpress.com/?ref=4213",
+    "ctaLabel": "Get AzonPress",
+    "seoTitle": "AzonPress Review 2026: Amazon Affiliate Plugin for WordPress",
+    "metaDescription": "AzonPress review: WordPress affiliate plugin for Amazon product boxes, comparison tables and link cloaking. Pricing, pros, cons and 20% coupon.",
+    "rating": 4.1,
+    "price": "From about $39/year or $249 lifetime (20% off)",
+    "pros": [
+      "Product boxes, grids and comparison tables for affiliates",
+      "\"Zero API\" mode works without Amazon API access",
+      "Link cloaking and geo-targeting",
+      "14-day money-back guarantee"
+    ],
+    "cons": [
+      "No free version",
+      "Newer plugin with fewer independent reviews",
+      "Focused mainly on Amazon-style affiliate content"
+    ],
+    "sources": [
+      {
+        "label": "AzonPress official website",
+        "url": "https://azonpress.com"
+      },
+      {
+        "label": "AzonPress pricing",
+        "url": "https://azonpress.com/pricing/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T16:00:00.000Z",
+    "createdAt": "2026-11-04T16:00:00.000Z",
+    "updatedAt": "2026-11-04T16:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "review_fluentcommunity",
+    "title": "FluentCommunity Review 2026: Build a Community & Courses on WordPress",
+    "slug": "fluentcommunity-review",
+    "excerpt": "FluentCommunity is a fast community and course platform for WordPress, a self-hosted alternative to Circle or Skool. Features, pricing and verdict.",
+    "content": "This review summarizes official product information together with user feedback and expert reviews from trusted sources (listed at the end). Prices change often, so always confirm the current offer on the official site.\n\n## Overview\n\nFluentCommunity turns a WordPress site into a social community and course platform. It is often compared with Circle, Skool and BuddyBoss, but runs on your own site without per-member fees.\n\n## Key features\n\n- Community spaces, activity feeds, posts, comments and reactions\n- Member profiles, mentions, hashtags, polls and chat\n- Course builder with modules, lessons, discussions and progress tracking\n- Leaderboards and badges (Pro)\n- Integrations with FluentCRM, Fluent Support, FluentSMTP and Fluent Forms\n\n## Pricing\n\nA free version is available on WordPress.org. Pro starts at **$199/year for a single site** (about $159 with the current 20% discount) or **$399 lifetime**. Use code **NINJASURPRISE20** for 20% off the first year (it is also applied automatically from the official pricing page). The official page offers a **14-day money-back guarantee**.\n\n## What users say\n\nFluentCommunity has **4.8 out of 5 stars from about 96 ratings** with **8,000+ active installations** on WordPress.org. Users praise its speed and modern interface compared with older community plugins.\n\n## Who it's for\n\nCourse creators, coaches and membership businesses that want to own their community instead of paying a monthly SaaS fee.\n\n## Verdict\n\nOne of the most impressive new community plugins for WordPress. A strong choice if you want Circle-style features on your own site.\n\nSee how it compares with the rest of the suite in our [Fluent plugins guide](/review/fluent-plugins-compared).",
+    "category": "WordPress",
+    "brand": "FluentCommunity",
+    "image": "",
+    "logo": "/assets/logos/fluentcommunity.png",
+    "sourceUrl": "https://fluentcommunity.co",
+    "affiliateUrl": "https://fluentcommunity.co/?ref=4213",
+    "ctaLabel": "Get FluentCommunity",
+    "seoTitle": "FluentCommunity Review 2026: WordPress Community & LMS Plugin",
+    "metaDescription": "FluentCommunity review: self-hosted community and online course plugin for WordPress. Pricing from $199/year, pros, cons and 20% coupon.",
+    "rating": 4.6,
+    "price": "Free version; Pro from $199/year or $399 lifetime (20% off yearly)",
+    "pros": [
+      "Fast, modern community app on your own site",
+      "Spaces, feeds, chat, courses and progress tracking",
+      "No per-member fees",
+      "4.8★ on WordPress.org"
+    ],
+    "cons": [
+      "Pro is pricier than other Fluent plugins",
+      "Newer product, still adding features",
+      "You manage hosting and performance"
+    ],
+    "sources": [
+      {
+        "label": "FluentCommunity official website",
+        "url": "https://fluentcommunity.co"
+      },
+      {
+        "label": "FluentCommunity pricing",
+        "url": "https://fluentcommunity.co/pricing/"
+      },
+      {
+        "label": "WordPress.org – FluentCommunity ratings",
+        "url": "https://wordpress.org/plugins/fluent-community/"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T17:00:00.000Z",
+    "createdAt": "2026-11-04T17:00:00.000Z",
+    "updatedAt": "2026-11-04T17:00:00.000Z",
+    "seedVersion": 2
+  },
+  {
+    "id": "guide_fluent_plugins",
+    "title": "Fluent Plugins Compared (2026): Which WPManageNinja Tool Do You Need?",
+    "slug": "fluent-plugins-compared",
+    "excerpt": "FluentCRM, FluentBooking, Fluent Support, FluentCommunity, Ninja Tables, WP Social Ninja, Paymattic and AzonPress compared side by side, with a 20% coupon.",
+    "content": "WPManageNinja makes a family of WordPress plugins that share one philosophy: run on your own site, with no per-user or per-contact fees. Here is what each one does and which to choose.\n\n## Quick picks\n\n- **Email marketing & CRM:** [FluentCRM](/review/fluentcrm-review)\n- **Appointment scheduling:** [FluentBooking](/review/fluentbooking-review)\n- **Customer support helpdesk:** [Fluent Support](/review/fluent-support-review)\n- **Community & online courses:** [FluentCommunity](/review/fluentcommunity-review)\n- **Tables & comparisons:** [Ninja Tables](/review/ninja-tables-review)\n- **Social feeds & reviews:** [WP Social Ninja](/review/wp-social-ninja-review)\n- **Payments & donations:** [Paymattic](/review/paymattic-review)\n- **Amazon affiliate boxes:** [AzonPress](/review/azonpress-review)\n\n## Comparison table\n\n| Plugin | What it does | Our score | Link |\n|---|---|---|---|\n| FluentCRM | Email marketing & CRM, unlimited contacts | 4.7 / 5 | [Get FluentCRM](/go/review/review_fluentcrm) |\n| FluentCommunity | Community, chat & online courses | 4.6 / 5 | [Get FluentCommunity](/go/review/review_fluentcommunity) |\n| FluentBooking | Appointment & event booking | 4.5 / 5 | [Get FluentBooking](/go/review/review_fluentbooking) |\n| Ninja Tables | Responsive data & product tables | 4.5 / 5 | [Get Ninja Tables](/go/review/review_ninja_tables) |\n| WP Social Ninja | Social feeds, reviews & chat widgets | 4.5 / 5 | [Get WP Social Ninja](/go/review/review_wp_social_ninja) |\n| Fluent Support | Helpdesk & ticket system | 4.4 / 5 | [Get Fluent Support](/go/review/review_fluent_support) |\n| Paymattic | Payment & donation forms | 4.3 / 5 | [Get Paymattic](/go/review/review_paymattic) |\n| AzonPress | Amazon affiliate product boxes | 4.1 / 5 | [Get AzonPress](/go/review/review_azonpress) |\n\n## Save 20% on any Fluent plugin\n\nAt the time of writing, code **NINJASURPRISE20** gives 20% off the first year on the official pricing pages of FluentCRM, FluentBooking, Fluent Support, FluentCommunity, Ninja Tables, Paymattic and AzonPress. See all codes on our [coupons page](/coupons.html).\n\n## Recommended combinations\n\n- **Online store:** FluentCRM + Fluent Support + WP Social Ninja (reviews)\n- **Coach or consultant:** FluentBooking + FluentCRM + Paymattic\n- **Course creator:** FluentCommunity + FluentCRM\n- **Affiliate blogger:** Ninja Tables + AzonPress\n\nScores and summaries come from our individual reviews, which list every source we used.",
+    "category": "Best Of",
+    "brand": "WordPress buyer’s guide",
+    "image": "/assets/og-default.png",
+    "logo": "",
+    "sourceUrl": "",
+    "affiliateUrl": "",
+    "ctaLabel": "",
+    "seoTitle": "Fluent Plugins Compared 2026: FluentCRM, FluentBooking & More",
+    "metaDescription": "Compare every WPManageNinja plugin: FluentCRM, FluentBooking, Fluent Support, FluentCommunity, Ninja Tables and more, plus a 20% coupon.",
+    "rating": 0,
+    "price": "",
+    "pros": [],
+    "cons": [],
+    "sources": [
+      {
+        "label": "FluentCRM official website",
+        "url": "https://fluentcrm.com"
+      },
+      {
+        "label": "FluentBooking official website",
+        "url": "https://fluentbooking.com"
+      },
+      {
+        "label": "Ninja Tables official website",
+        "url": "https://ninjatables.com"
+      },
+      {
+        "label": "Fluent Support official website",
+        "url": "https://fluentsupport.com"
+      },
+      {
+        "label": "WP Social Ninja official website",
+        "url": "https://wpsocialninja.com"
+      },
+      {
+        "label": "Paymattic official website",
+        "url": "https://paymattic.com"
+      },
+      {
+        "label": "AzonPress official website",
+        "url": "https://azonpress.com"
+      },
+      {
+        "label": "FluentCommunity official website",
+        "url": "https://fluentcommunity.co"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": false,
+    "publishedAt": "2026-11-04T18:00:00.000Z",
+    "createdAt": "2026-11-04T18:00:00.000Z",
+    "updatedAt": "2026-11-04T18:00:00.000Z",
+    "seedVersion": 2
   }
 ]
