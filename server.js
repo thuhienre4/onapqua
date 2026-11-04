@@ -19,10 +19,14 @@ const subscribersFile = path.join(dataDir, 'subscribers.json');
 const postsFile = path.join(dataDir, 'posts.json');
 // Keep compatibility with the misspelled Railway variable that existed before
 // the production backend was added. ADMIN_PASSWORD remains the canonical key.
-const adminPassword = String(process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWRD || '');
+// Trimmed so a stray space or newline pasted into Railway does not lock the admin out.
+const adminPassword = String(process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWRD || '').trim();
 const adminEmails = new Set(String(process.env.ADMIN_EMAILS || 'hn084933@gmail.com,ecorpenglishbtl@gmail.com')
   .split(',').map((email) => email.trim().toLowerCase()).filter(Boolean));
-const sessions = new Map();
+// Sessions are signed tokens rather than in-memory entries, so admins stay signed in
+// across deploys, restarts and multiple instances. Changing ADMIN_PASSWORD signs everyone out.
+const sessionSecret = crypto.createHash('sha256').update(`onapqua-admin-session:${process.env.SESSION_SECRET || adminPassword}`).digest();
+const sessionMaxAge = 7 * 24 * 60 * 60;
 const loginAttempts = new Map();
 const dataCache = new Map();
 
@@ -137,12 +141,19 @@ function cookies(req) {
     .filter(([key, value]) => key && value).map(([key, value]) => [key, decodeURIComponent(value)]));
 }
 
+function signSession(email) {
+  const payload = Buffer.from(JSON.stringify({ email, exp: Date.now() + sessionMaxAge * 1000 })).toString('base64url');
+  return `${payload}.${crypto.createHmac('sha256', sessionSecret).update(payload).digest('base64url')}`;
+}
+
 function session(req) {
-  const token = cookies(req).review_admin;
-  const current = token && sessions.get(token);
-  if (!current || current.expiresAt < Date.now()) { if (token) sessions.delete(token); return null; }
-  current.expiresAt = Date.now() + 8 * 60 * 60 * 1000;
-  return current;
+  const [payload, signature] = String(cookies(req).review_admin || '').split('.');
+  if (!payload || !signature || !adminPassword) return null;
+  if (!safeEqual(signature, crypto.createHmac('sha256', sessionSecret).update(payload).digest('base64url'))) return null;
+  try {
+    const current = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    return current.exp > Date.now() && adminEmails.has(current.email) ? current : null;
+  } catch { return null; }
 }
 
 function requireAdmin(req, res) {
@@ -537,20 +548,18 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/api/login') {
       const ip = clientIp(req); const attempt = loginAttempts.get(ip) || { count: 0, resetAt: Date.now() + 15 * 60 * 1000 };
       if (Date.now() > attempt.resetAt) { attempt.count = 0; attempt.resetAt = Date.now() + 15 * 60 * 1000; }
-      if (attempt.count >= 10) return json(res, 429, { error: 'Too many login attempts. Try again later.' });
+      if (attempt.count >= 10) return json(res, 429, { error: `Too many login attempts. Try again in ${Math.max(1, Math.ceil((attempt.resetAt - Date.now()) / 60000))} minutes.` });
       if (!adminPassword) return json(res, 503, { error: 'Set ADMIN_PASSWORD in Railway before using Admin.' });
       const payload = await body(req, 20_000); const email = text(payload.email, 254).toLowerCase();
-      if (!adminEmails.has(email) || !safeEqual(payload.password, adminPassword)) {
+      if (!adminEmails.has(email) || !safeEqual(String(payload.password ?? '').trim(), adminPassword)) {
         attempt.count += 1; loginAttempts.set(ip, attempt); return json(res, 401, { error: 'Invalid email or password.' });
       }
-      loginAttempts.delete(ip); const token = crypto.randomBytes(32).toString('hex');
-      sessions.set(token, { email, expiresAt: Date.now() + 8 * 60 * 60 * 1000 });
-      return json(res, 200, { ok: true, email }, { 'Set-Cookie': `review_admin=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=28800${production ? '; Secure' : ''}` });
+      loginAttempts.delete(ip);
+      return json(res, 200, { ok: true, email }, { 'Set-Cookie': `review_admin=${signSession(email)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${sessionMaxAge}${production ? '; Secure' : ''}` });
     }
 
     if (req.method === 'POST' && url.pathname === '/api/logout') {
-      const token = cookies(req).review_admin; if (token) sessions.delete(token);
-      return json(res, 200, { ok: true }, { 'Set-Cookie': `review_admin=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0${production ? '; Secure' : ''}` });
+      return json(res, 200, { ok: true }, { 'Set-Cookie': `review_admin=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${production ? '; Secure' : ''}` });
     }
 
     if (req.method === 'GET' && url.pathname === '/api/admin/session') {
