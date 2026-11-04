@@ -17,6 +17,12 @@ const nav = [
   ['about', '/about.html', 'About Us'],
 ];
 
+// Set by the server: affiliate link metadata for analytics, and the public GA4 config.
+let linkInfo = () => new Map();
+let publicConfig = () => ({});
+const setLinkInfo = (fn) => { linkInfo = fn; };
+const setPublicConfig = (fn) => { publicConfig = fn; };
+
 const searchIcon = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>';
 
 function header(active) {
@@ -39,11 +45,12 @@ function footer() {
       <div class="site-footer-brand"><a href="/"><img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="40" height="40" loading="lazy" /><strong>onapqua.</strong></a><p>Honest, research-based reviews with clear pros, cons and where to buy.</p><small>Independent reviews &middot; Updated regularly</small></div>
       <nav class="site-footer-column" aria-label="Explore"><h2>Explore</h2><a href="/blog.html">All reviews</a><a href="/best-software.html">Best software</a><a href="/comparisons.html">Comparisons</a><a href="/alternatives.html">Alternatives</a><a href="/coupons.html">Deals &amp; coupons</a><a href="/products.html">Product directory</a></nav>
       <nav class="site-footer-column" aria-label="Company"><h2>Company</h2><a href="/about.html">About Onapqua</a><a href="/editorial-policy.html">Editorial policy</a><a href="/methodology.html">Review methodology</a><a href="mailto:hello@onapqua.com">Contact</a></nav>
-      <nav class="site-footer-column" aria-label="Legal"><h2>Legal</h2><a href="/affiliate-disclosure.html">Affiliate disclosure</a><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of service</a><a href="/sitemap.html">Sitemap</a></nav>
+      <nav class="site-footer-column" aria-label="Legal"><h2>Legal</h2><a href="/affiliate-disclosure.html">Affiliate disclosure</a><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of service</a><a href="/sitemap.html">Sitemap</a><a href="#cookie-settings" data-cookie-settings>Cookie settings</a></nav>
     </div>
     <div class="container site-footer-bottom"><span>&copy; ${new Date().getUTCFullYear()} onapqua. All rights reserved.</span><span>Some links are affiliate links. We may earn a commission at no extra cost to you.</span></div>
   </footer>
-  <script src="/site.js?v=1" defer></script>`;
+  <script>window.OQ_CONFIG = ${JSON.stringify(publicConfig()).replace(/</g, '\\u003c')};</script>
+  <script src="/site.js?v=2" defer></script>`;
 }
 
 function jsonLd(value) {
@@ -130,7 +137,8 @@ function renderPage(html, { siteUrl, path, posts = [] }) {
 
 function publicPost(post) {
   const { affiliateUrl, clicks, ...safe } = post;
-  return { ...safe, hasLink: Boolean(affiliateUrl) };
+  const info = post.linkId ? linkInfo().get(post.linkId) : null;
+  return { ...safe, hasLink: Boolean(affiliateUrl), aff: info ? { id: post.linkId, ...info } : null };
 }
 
 // Pre-renders a single review: SEO tags, structured data and the article body.
@@ -181,7 +189,7 @@ function alternativesBlock(post, posts) {
   if (Catalog.isGuide(post)) return '';
   const items = Catalog.alternativesFor(post, posts.map(publicPost));
   if (!items.length) return '';
-  return `<section class="rv-alternatives" aria-labelledby="alternatives"><h2 id="alternatives">${escapeHtml(post.brand)} alternatives</h2><p class="rv-sources-note">Other top-rated options in the same category, ranked by our review score.</p>${Catalog.compareTable(items)}</section>`;
+  return `<section class="rv-alternatives" aria-labelledby="alternatives"><h2 id="alternatives">${escapeHtml(post.brand)} alternatives</h2><p class="rv-sources-note">Other top-rated options in the same category, ranked by our review score.</p>${Catalog.compareTable(items, 'alternatives_table')}</section>`;
 }
 
 // Fills the "More reviews" block on the server: same category first, then the rest.
@@ -221,4 +229,4 @@ Sitemap: ${siteUrl}/sitemap.xml
 `;
 }
 
-module.exports = { renderPage, renderReview, sitemap, robots, publicPost };
+module.exports = { renderPage, renderReview, sitemap, robots, publicPost, setLinkInfo, setPublicConfig };

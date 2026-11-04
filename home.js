@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || 'Please try again.');
       note.textContent = "Thanks! You're on the list.";
+      window.oqTrack?.('newsletter_signup', { form_location: 'homepage' });
       form.reset();
     } catch (error) {
       note.textContent = error.message;

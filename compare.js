@@ -1,7 +1,7 @@
 // Side-by-side comparison of up to three reviewed products. Selections live in the URL
 // (?p=slug,slug) so a comparison can be shared.
 document.addEventListener('DOMContentLoaded', async () => {
-  const { escapeHtml, stars, logoMark, reviewUrl, goUrl, fetchPosts } = window.Reviews;
+  const { escapeHtml, stars, logoMark, reviewUrl, goUrl, affAttrs, fetchPosts } = window.Reviews;
   const { topRated, bestForOf, hubsOf, HUBS } = window.Catalog;
   const products = topRated(await fetchPosts());
   const selects = [...document.querySelectorAll('#compare-pickers select')];
@@ -36,8 +36,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${row('Best for', unique.map((post) => escapeHtml(bestForOf(post))))}
         ${row('Pros', unique.map((post) => list(post.pros, 'pros')))}
         ${row('Cons', unique.map((post) => list(post.cons, 'cons')))}
-        ${row('', unique.map((post) => `${post.hasLink ? `<a class="rv-btn rv-btn-sm" href="${goUrl(post)}" target="_blank" rel="sponsored nofollow noopener">Visit website &#8599;</a>` : ''}<a class="rv-read" href="${reviewUrl(post)}">Read review</a>`))}
+        ${row('', unique.map((post) => `${post.hasLink ? `<a class="rv-btn rv-btn-sm" href="${goUrl(post, 'compare_tool')}" ${affAttrs(post, 'compare_tool')} target="_blank" rel="sponsored nofollow noopener">Visit website &#8599;</a>` : ''}<a class="rv-read" href="${reviewUrl(post)}">Read review</a>`))}
       </tbody></table></div>`;
+    window.oqTrack?.('comparison_view', { comparison_type: 'compare_tool', products: unique.map((post) => post.brand).join(' vs '), product_count: unique.length });
   };
 
   const initial = (new URLSearchParams(location.search).get('p') || '').split(',').filter((slug) => bySlug.has(slug));

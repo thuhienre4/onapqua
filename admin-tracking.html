@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>Affiliate Tracking | onapqua. Admin</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0e0d10;--panel:#18171a;--line:#39383b;--text:#f3f5f9;--muted:#9aa1ad;--gold:#f5c84c;--danger:#ff8d82;--ok:#9fd18b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,sans-serif}button,input,select,textarea{font:inherit}a{color:var(--gold)}
+    .shell{max-width:1360px;margin:auto;padding:24px}.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.brand img{width:40px;height:40px;border-radius:12px}.top h1{margin:0;font-size:24px}.muted{color:var(--muted)}.links{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .button,button{border:0;border-radius:10px;background:var(--gold);color:#0e0d10;font-weight:800;padding:9px 14px;cursor:pointer;text-decoration:none;display:inline-block}.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.danger{color:var(--danger);border:1px solid #6b3531;background:transparent}.small{padding:5px 9px;font-size:12px}
+    .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}.tabs button{background:transparent;color:var(--muted);border:1px solid var(--line)}.tabs button.active{background:var(--gold);color:#0e0d10;border-color:var(--gold)}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}.panel h2{margin:0 0 6px;font-size:18px}.panel h3{margin:14px 0 8px;font-size:15px}
+    .metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}.metric{padding:14px;border:1px solid var(--line);border-radius:12px;background:#121114}.metric span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.metric strong{display:block;margin-top:4px;color:var(--gold);font-size:22px}.metric small{color:var(--muted)}
+    .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:640px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid #2a292c;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase;cursor:pointer;white-space:nowrap}th.sorted{color:var(--gold)}td.num,th.num{text-align:right}.tag{display:inline-block;padding:2px 8px;border-radius:99px;border:1px solid var(--line);font-size:11px;color:var(--muted)}.tag.approved,.tag.active{color:var(--ok);border-color:#3f5f34}.tag.pending{color:var(--gold);border-color:#6b5520}.tag.rejected,.tag.reversed,.tag.paused{color:var(--danger);border-color:#6b3531}
+    label{display:block;font-weight:700;margin:10px 0 4px}label small{font-weight:400;color:var(--muted)}input,select,textarea{width:100%;color:var(--text);background:#100f12;border:1px solid var(--line);border-radius:9px;padding:9px 10px}textarea{min-height:140px;font-family:ui-monospace,Consolas,monospace;font-size:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.check{display:flex;align-items:center;gap:8px;font-weight:600}.check input{width:auto}
+    .split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,1fr);gap:16px;align-items:start}.notice{min-height:20px;margin-top:8px;color:var(--muted)}.notice.error{color:var(--danger)}.code{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#100f12;border:1px solid var(--line);border-radius:8px;padding:8px;word-break:break-all}.bar{height:8px;border-radius:9px;background:#2a292c;overflow:hidden;min-width:60px}.bar i{display:block;height:100%;background:var(--gold)}
+    #daily table{min-width:0}.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}.toolbar select,.toolbar input{width:auto}.hidden{display:none!important}
+    @media(max-width:900px){.split,.grid2,.grid3{grid-template-columns:1fr}.shell{padding:14px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <div class="brand"><img src="assets/logo.svg" alt=""><div><h1>Affiliate tracking</h1><div class="muted" id="admin-email"></div></div></div>
+      <nav class="links">
+        <label class="muted" style="margin:0">Period <select id="days"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option><option value="0">All time</option></select></label>
+        <a class="button secondary" href="/admin-blog.html">Reviews</a><a class="button secondary" href="/admin">Coupons</a><a class="button secondary" href="/" target="_blank" rel="noopener">View site</a>
+      </nav>
+    </header>
+    <nav class="tabs" id="tabs">
+      <button data-tab="overview" class="active">Overview</button><button data-tab="articles">Articles</button><button data-tab="products">Products</button><button data-tab="networks">Networks &amp; merchants</button><button data-tab="ctas">CTA positions</button><button data-tab="audience">Sources &amp; devices</button><button data-tab="links">Links</button><button data-tab="transactions">Transactions</button><button data-tab="import">Import</button><button data-tab="settings">Settings</button><button data-tab="logs">Logs</button>
+    </nav>
+
+    <section data-view="overview">
+      <div class="panel"><h2>Overview</h2><p class="muted">Clicks are outbound affiliate clicks recorded by our redirect. Conversions and commissions come only from confirmed network data (postbacks, CSV imports or manual entries) &mdash; a click is never counted as a sale.</p><div class="metrics" id="metrics"></div></div>
+      <div class="split"><div class="panel"><h2>Top products</h2><div class="table-wrap" id="top-products"></div></div><div class="panel"><h2>Clicks per day</h2><div id="daily"></div></div></div>
+    </section>
+    <section data-view="articles" class="hidden"><div class="panel"><h2>Article performance</h2><p class="muted">Views are server-side page views (bots excluded). Click a column to sort.</p><div class="table-wrap" id="articles"></div></div></section>
+    <section data-view="products" class="hidden"><div class="panel"><h2>Product performance</h2><div class="table-wrap" id="products"></div></div></section>
+    <section data-view="networks" class="hidden"><div class="panel"><h2>Affiliate networks</h2><div class="table-wrap" id="networks"></div></div><div class="panel"><h2>Merchants</h2><div class="table-wrap" id="merchants"></div></div></section>
+    <section data-view="ctas" class="hidden"><div class="panel"><h2>CTA performance</h2><p class="muted">Which placement drives clicks and confirmed conversions.</p><div class="table-wrap" id="ctas"></div></div></section>
+    <section data-view="audience" class="hidden"><div class="split"><div class="panel"><h2>Traffic sources</h2><p class="muted">Sources are recorded only for visitors who accepted analytics cookies.</p><div class="table-wrap" id="sources"></div></div><div class="panel"><h2>Devices</h2><div class="table-wrap" id="devices"></div></div></div></section>
+
+    <section data-view="links" class="hidden">
+      <div class="split">
+        <div class="panel"><h2>Affiliate links</h2><p class="muted">Public URL: <span class="code">/go/&lt;slug&gt;/</span>. Destinations stay on the server.</p><div class="table-wrap" id="links"></div></div>
+        <div class="panel"><h2 id="link-form-title">Add link</h2>
+          <form id="link-form">
+            <input type="hidden" name="editing">
+            <div class="grid2"><div><label>Slug <small>(/go/slug/)</small></label><input name="id" required pattern="[a-z0-9-]+"></div><div><label>Name</label><input name="name" required></div></div>
+            <div class="grid2"><div><label>Merchant</label><input name="merchant"></div><div><label>Product</label><input name="product"></div></div>
+            <label>Affiliate destination URL <small>(existing parameters are preserved)</small></label><input name="destination" type="url" required>
+            <div class="grid3"><div><label>Network</label><select name="network" id="network-select"></select></div><div><label>Sub-ID parameter <small>(optional)</small></label><input name="subIdParam" placeholder="e.g. subId1"></div><div><label>Status</label><select name="status"><option value="active">Active</option><option value="paused">Paused</option></select></div></div>
+            <div class="grid2"><div><label>Expires <small>(optional)</small></label><input name="expiresAt" type="date"></div><div><label>Fallback URL <small>(when paused/expired)</small></label><input name="fallbackUrl" type="url"></div></div>
+            <label>Category</label><input name="category">
+            <div class="toolbar" style="margin-top:12px"><button type="submit">Save link</button><button type="button" class="secondary" id="link-reset">New link</button></div>
+            <div class="notice" id="link-notice"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section data-view="transactions" class="hidden">
+      <div class="split">
+        <div class="panel"><h2>Transactions</h2><div class="toolbar"><select id="tx-status"><option value="">All statuses</option><option>pending</option><option>approved</option><option>rejected</option><option>reversed</option></select><a class="button secondary small" href="/api/admin/tracking/export?type=transactions">Export CSV</a></div><div class="table-wrap" id="transactions"></div></div>
+        <div class="panel"><h2>Manual entry</h2><p class="muted">Use the transaction ID from the network so imports and postbacks can update it later.</p>
+          <form id="tx-form">
+            <div class="grid2"><div><label>Transaction ID</label><input name="txId" required></div><div><label>Network</label><select name="network" id="tx-network"></select></div></div>
+            <div class="grid2"><div><label>Affiliate link</label><select name="linkId" id="tx-link"></select></div><div><label>Click ID <small>(sub-ID, optional)</small></label><input name="clickId"></div></div>
+            <div class="grid3"><div><label>Order value</label><input name="orderValue" type="number" step="0.01" min="0"></div><div><label>Commission</label><input name="commission" type="number" step="0.01" required></div><div><label>Currency</label><input name="currency" maxlength="3" value="USD"></div></div>
+            <div class="grid2"><div><label>Status</label><select name="status"><option>pending</option><option>approved</option><option>rejected</option><option>reversed</option></select></div><div><label>Date</label><input name="convertedAt" type="date"></div></div>
+            <div class="toolbar" style="margin-top:12px"><button type="submit">Save transaction</button></div><div class="notice" id="tx-notice"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section data-view="import" class="hidden">
+      <div class="panel"><h2>Import transaction report (CSV)</h2>
+        <p class="muted">Export the transactions report from your affiliate network and paste or upload it. Recognized columns: transaction/order ID, status, commission/payout, sale amount, currency, date, sub-ID/click ref (subId1, clickref, sid, afftrack), merchant. Rows are matched by network + transaction ID, so re-importing updates statuses instead of duplicating.</p>
+        <div class="grid2"><div><label>Network</label><select id="import-network"></select></div><div><label>File</label><input type="file" id="import-file" accept=".csv,text/csv,text/plain"></div></div>
+        <label>CSV data</label><textarea id="import-csv" placeholder="transaction_id,status,commission,sale_amount,currency,date,subid&#10;TX-1001,approved,12.50,99.00,USD,2026-11-01,AbC123"></textarea>
+        <div class="toolbar" style="margin-top:10px"><button type="button" class="secondary" id="import-preview">Preview</button><button type="button" id="import-run">Import</button></div>
+        <div class="notice" id="import-notice"></div><div class="table-wrap" id="import-table"></div>
+      </div>
+    </section>
+
+    <section data-view="settings" class="hidden">
+      <div class="split">
+        <div class="panel"><h2>Settings</h2>
+          <form id="settings-form">
+            <label class="check"><input type="checkbox" name="trackingEnabled"> Enable click tracking</label>
+            <div class="grid2"><div><label>GA4 Measurement ID <small>(G-XXXXXXXXXX)</small></label><input name="ga4Id" placeholder="G-XXXXXXXXXX"></div><div><label>GA4 Measurement Protocol API secret <small>(server-only)</small></label><input name="ga4ApiSecret" type="password" placeholder="Leave blank to keep" autocomplete="off"></div></div>
+            <p class="muted">GA4 loads on the site only for visitors who accept analytics cookies. The API secret is used only by the server to send <code>affiliate_conversion</code>/<code>affiliate_refund</code> for confirmed transactions; it is never sent to browsers.</p>
+            <label class="check"><input type="checkbox" name="appendUtm"> Append UTM parameters to affiliate destinations</label>
+            <div class="grid3"><div><label>utm_source</label><input name="utmSource"></div><div><label>utm_medium</label><input name="utmMedium"></div><div><label>Reporting currency</label><input name="currency" maxlength="3"></div></div>
+            <p class="muted">utm_campaign is set to <code>product_review</code> (or <code>site</code>) and utm_content to the CTA position. Off by default because some programs reject extra parameters &mdash; test a link after enabling.</p>
+            <div class="grid2"><div><label>Keep click logs for <small>(days)</small></label><input name="retentionDays" type="number" min="30" max="1095"></div><div><label>Ignore repeat clicks within <small>(seconds)</small></label><input name="dedupSeconds" type="number" min="0" max="600"></div></div>
+            <div class="toolbar" style="margin-top:12px"><button type="submit">Save settings</button><button type="button" class="secondary" id="clear-secret">Remove API secret</button></div><div class="notice" id="settings-notice"></div>
+          </form>
+        </div>
+        <div class="panel"><h2>Postback &amp; webhook URLs</h2><p class="muted">Paste these into each network's postback / webhook settings, replacing the macros with the network's own placeholders. Keep the token private.</p><div id="postbacks"></div><div class="toolbar" style="margin-top:10px"><button type="button" class="secondary small" id="rotate-token">Rotate token</button><a class="button secondary small" href="/api/admin/tracking/export?type=clicks">Export clicks CSV</a></div></div>
+      </div>
+    </section>
+
+    <section data-view="logs" class="hidden"><div class="panel"><h2>Recent clicks</h2><p class="muted">Latest 200 recorded clicks. No IP addresses or user agents are stored.</p><div class="table-wrap" id="logs"></div></div></section>
+  </main>
+  <script src="admin-tracking.js?v=1"></script>
+</body>
+</html>

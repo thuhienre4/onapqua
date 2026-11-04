@@ -10,7 +10,10 @@
   }[char]));
 
   const reviewUrl = (post) => `/review/${encodeURIComponent(post.slug)}`;
-  const goUrl = (post) => `/go/review/${encodeURIComponent(post.id)}`;
+  // Affiliate links go through the central /go/<link>/ redirect; ?c= records the CTA position.
+  const goUrl = (post, cta = 'unknown') => post.aff?.id ? `/go/${encodeURIComponent(post.aff.id)}/?c=${cta}` : `/go/review/${encodeURIComponent(post.id)}?c=${cta}`;
+  // Data attributes read by site.js for the GA4 affiliate_click event (no secrets, no destinations).
+  const affAttrs = (post, cta) => `data-aff="${escapeHtml(post.aff?.id || post.id)}" data-aff-network="${escapeHtml(post.aff?.network || '')}" data-aff-merchant="${escapeHtml(post.aff?.merchant || post.brand || '')}" data-aff-domain="${escapeHtml(post.aff?.domain || '')}" data-product="${escapeHtml(post.brand || '')}" data-category="${escapeHtml(post.category || '')}" data-cta="${cta}"`;
 
   const formatDate = (value) => {
     const date = new Date(value);
@@ -53,7 +56,7 @@
     return `<section class="rv-sources" aria-labelledby="sources"><h2 id="sources">Sources &amp; references</h2><p class="rv-sources-note">This review is based on the official product information and the independent sources below. Last checked ${escapeHtml(formatDate(post.updatedAt || post.publishedAt))}.</p>${official}${list}</section>`;
   };
 
-  const ctaLink = (post, className, label) => `<a class="${className}" href="${goUrl(post)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(label || post.ctaLabel || 'Check price')} <span aria-hidden="true">&#8599;</span></a>`;
+  const ctaLink = (post, className, label, cta = 'unknown') => `<a class="${className}" href="${goUrl(post, cta)}" ${affAttrs(post, cta)} target="_blank" rel="sponsored nofollow noopener">${escapeHtml(label || post.ctaLabel || 'Check price')} <span aria-hidden="true">&#8599;</span></a>`;
 
   const card = (post) => `
     <article class="rv-card">
@@ -62,7 +65,7 @@
         <div class="rv-meta"><span class="rv-chip">${escapeHtml(post.category || 'Review')}</span>${stars(post.rating)}</div>
         <h3><a href="${reviewUrl(post)}">${escapeHtml(post.title)}</a></h3>
         <p>${escapeHtml(post.excerpt)}</p>
-        <div class="rv-card-foot"><a class="rv-read" href="${reviewUrl(post)}">Read review <span aria-hidden="true">&rarr;</span></a>${post.hasLink ? ctaLink(post, 'rv-mini-cta') : ''}</div>
+        <div class="rv-card-foot"><a class="rv-read" href="${reviewUrl(post)}">Read review <span aria-hidden="true">&rarr;</span></a>${post.hasLink ? ctaLink(post, 'rv-mini-cta', '', 'card') : ''}</div>
       </div>
     </article>`;
 
@@ -114,7 +117,7 @@
   // Full single-review markup, shared by server pre-rendering and the client.
   const article = (post) => {
     const verdictList = `${prosCons(post.pros, 'pros')}${prosCons(post.cons, 'cons')}`;
-    const cta = (extra = '') => post.hasLink ? ctaLink(post, `rv-btn ${extra}`, post.ctaLabel || `Visit ${post.brand || 'website'}`) : '';
+    const cta = (extra = '', position = 'review_top') => post.hasLink ? ctaLink(post, `rv-btn ${extra}`, post.ctaLabel || `Visit ${post.brand || 'website'}`, position) : '';
     const updated = post.updatedAt || post.publishedAt;
     return `
     <article class="rv-article">
@@ -134,7 +137,7 @@
           ${sourcesBlock(post)}
           ${verdictList ? `<section class="rv-verdict-inline" aria-label="Pros and cons"><h2>Pros &amp; cons</h2><div class="rv-pc-grid">${verdictList}</div></section>` : ''}
           <!--@alternatives-->
-          ${post.hasLink ? `<section class="rv-final-cta"><div><h2>Ready to try ${escapeHtml(post.brand || 'it')}?</h2>${post.price ? `<p>${escapeHtml(post.price)}</p>` : '<p>Check the latest price and availability.</p>'}</div>${cta()}</section>` : ''}
+          ${post.hasLink ? `<section class="rv-final-cta"><div><h2>Ready to try ${escapeHtml(post.brand || 'it')}?</h2>${post.price ? `<p>${escapeHtml(post.price)}</p>` : '<p>Check the latest price and availability.</p>'}</div>${cta('', 'final_verdict')}</section>` : ''}
         </div>
         ${post.rating || post.hasLink || verdictList ? `<aside class="rv-verdict" aria-label="Our verdict">
           <div class="rv-verdict-card">
@@ -143,7 +146,7 @@
             ${post.rating ? `<div class="rv-score"><strong>${Number(post.rating).toFixed(1)}</strong><span>/ 5</span></div>${stars(post.rating)}` : ''}
             ${post.price ? `<p class="rv-price">${escapeHtml(post.price)}</p>` : ''}
             ${post.bestFor ? `<p class="rv-bestfor"><b>Best for:</b> ${escapeHtml(post.bestFor)}</p>` : ''}
-            ${cta('rv-btn-block')}
+            ${cta('rv-btn-block', 'review_top')}
             ${criteriaBars(post.criteria)}
             ${verdictList ? `<div class="rv-pc-stack">${verdictList}</div>` : ''}
           </div>
@@ -158,5 +161,5 @@
     .then((posts) => Array.isArray(posts) ? posts : [])
     .catch(() => []);
 
-  return { escapeHtml, reviewUrl, goUrl, formatDate, readingTime, stars, logoMark, cover, card, renderContent, tableOfContents, article, fetchPosts };
+  return { escapeHtml, reviewUrl, goUrl, affAttrs, formatDate, readingTime, stars, logoMark, cover, card, renderContent, tableOfContents, article, fetchPosts };
 });

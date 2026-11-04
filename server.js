@@ -6,6 +6,7 @@ const dns = require('dns').promises;
 const net = require('net');
 const zlib = require('zlib');
 const render = require('./render.js');
+const Tracking = require('./tracking.js');
 
 const root = __dirname;
 const host = process.env.HOST || '0.0.0.0';
@@ -510,11 +511,12 @@ function serveStatic(req, res, pathname) {
     const slugValue = decodeURIComponent(reviewMatch[1]);
     const posts = readArray(postsFile).filter((item) => item.published === true);
     const post = posts.find((item) => item.slug === slugValue);
+    if (post && req.method === 'GET') tracking.recordView(`/review/${post.slug}`, req.headers['user-agent']);
     const html = render.renderReview(fs.readFileSync(path.join(root, 'post.html'), 'utf8'), { siteUrl, post, posts });
     return send(res, post ? 200 : 404, req.method === 'HEAD' ? '' : html, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
   }
   const decoded = decodeURIComponent(pathname);
-  if (decoded.includes('\0') || decoded.startsWith('/seed/') || decoded.startsWith('/.data/') || /^\/(server\.js|render\.js|package(?:-lock)?\.json|Procfile|\.env)/i.test(decoded)) return send(res, 404, 'Not found');
+  if (decoded.includes('\0') || decoded.startsWith('/seed/') || decoded.startsWith('/.data/') || /^\/(server\.js|render\.js|tracking\.js|tests\/|package(?:-lock)?\.json|Procfile|\.env|TRACKING\.md|BACKEND\.md)/i.test(decoded)) return send(res, 404, 'Not found');
   const file = path.resolve(root, `.${decoded}`);
   if (!file.startsWith(`${root}${path.sep}`) || !fs.existsSync(file) || !fs.statSync(file).isFile()) {
     if (path.extname(decoded) && !decoded.endsWith('.html')) return send(res, 404, 'Not found');
@@ -524,6 +526,7 @@ function serveStatic(req, res, pathname) {
   // Pages are rendered with live review data, so they skip file-based ETags.
   if (file.endsWith('.html')) {
     const posts = readArray(postsFile).filter((item) => item.published === true);
+    if (req.method === 'GET' && !decoded.startsWith('/admin')) tracking.recordView(decoded === '/index.html' ? '/' : decoded, req.headers['user-agent']);
     const page = render.renderPage(fs.readFileSync(file, 'utf8'), { siteUrl, path: decoded, posts });
     return send(res, 200, req.method === 'HEAD' ? '' : page, mimeTypes['.html'], { 'Cache-Control': 'no-cache' });
   }
@@ -546,6 +549,52 @@ function serveStatic(req, res, pathname) {
 ensureData();
 // Warm frequently requested datasets once. Writes keep these references current.
 [offersFile, storesFile, subscribersFile, postsFile].forEach(readArray);
+const tracking = Tracking.create({ dataDir, readArray, writeArray, safeUrl, text });
+tracking.syncFrom(postsFile, offersFile);
+const linkInfo = () => new Map(tracking.links().map((link) => { let domain = ''; try { domain = new URL(link.destination).hostname.replace(/^www\./, ''); } catch { /* invalid */ } return [link.id, { network: link.network, merchant: link.merchant, domain }]; }));
+render.setLinkInfo(linkInfo);
+render.setPublicConfig(() => tracking.publicConfig());
+
+// Same-origin check for state-changing admin requests (CSRF defence alongside SameSite cookies).
+function sameOrigin(req) {
+  const origin = req.headers.origin || req.headers.referer || '';
+  if (!origin) return true;
+  try { return new URL(origin).host === req.headers.host; } catch { return false; }
+}
+
+async function rawBody(req, limit = 2_000_000) {
+  let value = '';
+  for await (const chunk of req) { value += chunk; if (Buffer.byteLength(value) > limit) throw new Error('Request is too large.'); }
+  return value;
+}
+
+// Resolves which article a click came from using the same-origin Referer.
+function articleFrom(req, posts) {
+  let referer;
+  try { referer = new URL(req.headers.referer || ''); } catch { return { articleId: '', articleTitle: '', articlePath: '' }; }
+  if (referer.host !== req.headers.host) return { articleId: '', articleTitle: '', articlePath: '' };
+  const match = referer.pathname.match(/^\/review\/([^/]+)/);
+  const post = match ? posts.find((item) => item.slug === decodeURIComponent(match[1])) : null;
+  return post ? { articleId: post.id, articleTitle: post.title, articlePath: referer.pathname } : { articleId: '', articleTitle: '', articlePath: referer.pathname === '/index.html' ? '/' : referer.pathname };
+}
+
+// Central affiliate redirect: records the click, then 302s to the stored destination only.
+function affiliateRedirect(req, res, url, link, extra) {
+  const posts = readArray(postsFile);
+  const article = articleFrom(req, posts);
+  const expired = link.expiresAt && Date.parse(link.expiresAt) < Date.now();
+  if (link.status !== 'active' || expired) {
+    res.writeHead(302, { Location: link.fallbackUrl || '/', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' });
+    return res.end();
+  }
+  const { destination, clickId } = tracking.recordClick({ link, req, url, cookieMap: cookies(req), ...article, ...extra });
+  if (clickId && extra.postId) { const index = posts.findIndex((post) => post.id === extra.postId); if (index >= 0) { posts[index].clicks = Number(posts[index].clicks || 0) + 1; writeArray(postsFile, posts); } }
+  if (clickId && extra.offerId) { const offers = readArray(offersFile); const index = offers.findIndex((offer) => offer.id === extra.offerId); if (index >= 0) { offers[index].clicks = Number(offers[index].clicks || 0) + 1; writeArray(offersFile, offers); } }
+  res.writeHead(302, { Location: destination, 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow' });
+  return res.end();
+}
+
+const postbackHits = new Map();
 
 const server = http.createServer(async (req, res) => {
   try {
@@ -614,12 +663,12 @@ const server = http.createServer(async (req, res) => {
       return post ? publicJson(req, res, render.publicPost(post)) : json(res, 404, { error: 'Post not found.' });
     }
 
-    const reviewGoMatch = url.pathname.match(/^\/go\/review\/([^/]+)$/);
-    if (req.method === 'GET' && reviewGoMatch) {
-      const posts = readArray(postsFile); const post = posts.find((item) => item.id === decodeURIComponent(reviewGoMatch[1]) && item.published === true);
-      if (!post?.affiliateUrl) return send(res, 404, 'Link not found');
-      post.clicks = Number(post.clicks || 0) + 1; writeArray(postsFile, posts);
-      res.writeHead(302, { Location: safeUrl(post.affiliateUrl), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', 'X-Robots-Tag': 'noindex, nofollow' }); return res.end();
+    const reviewGoMatch = url.pathname.match(/^\/go\/review\/([^/]+)\/?$/);
+    if ((req.method === 'GET' || req.method === 'HEAD') && reviewGoMatch) {
+      const post = readArray(postsFile).find((item) => item.id === decodeURIComponent(reviewGoMatch[1]) && item.published === true);
+      const link = post && tracking.links().find((item) => item.id === post.linkId);
+      if (!link) return send(res, 404, 'Link not found');
+      return affiliateRedirect(req, res, url, link, { postId: post.id });
     }
 
     const codeMatch = url.pathname.match(/^\/api\/offers\/([^/]+)\/code$/);
@@ -627,15 +676,36 @@ const server = http.createServer(async (req, res) => {
       const offers = readArray(offersFile); const offer = offers.find((item) => item.id === decodeURIComponent(codeMatch[1]) && item.visible !== false);
       if (!offer || !text(offer.code)) return json(res, 404, { error: 'Coupon code is unavailable.' });
       offer.reveals = Number(offer.reveals || 0) + 1; offer.updatedAt = new Date().toISOString(); writeArray(offersFile, offers);
-      return json(res, 200, { code: offer.code, redirect: `/go/${encodeURIComponent(offer.id)}` });
+      return json(res, 200, { code: offer.code, redirect: `/go/${encodeURIComponent(offer.id)}?c=coupon_page` });
     }
 
-    const goMatch = url.pathname.match(/^\/go\/([^/]+)$/);
-    if (req.method === 'GET' && goMatch) {
-      const offers = readArray(offersFile); const offer = offers.find((item) => item.id === decodeURIComponent(goMatch[1]) && item.visible !== false);
-      if (!offer) return send(res, 404, 'Offer not found');
-      offer.clicks = Number(offer.clicks || 0) + 1; offer.updatedAt = new Date().toISOString(); writeArray(offersFile, offers);
-      res.writeHead(302, { Location: safeUrl(offer.link), 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' }); return res.end();
+    const goMatch = url.pathname.match(/^\/go\/([^/]+)\/?$/);
+    if ((req.method === 'GET' || req.method === 'HEAD') && goMatch) {
+      const id = decodeURIComponent(goMatch[1]);
+      const offer = readArray(offersFile).find((item) => item.id === id && item.visible !== false);
+      const link = tracking.links().find((item) => item.id === (offer ? offer.linkId : id));
+      if (!link) return send(res, 404, 'Link not found');
+      const postId = offer ? '' : (readArray(postsFile).find((post) => post.linkId === link.id && post.published === true)?.id || '');
+      return affiliateRedirect(req, res, url, link, { offerId: offer?.id || '', postId });
+    }
+
+    // Affiliate network postbacks / webhooks: /api/postback/<network>?token=...
+    const postbackMatch = url.pathname.match(/^\/api\/postback\/([a-z]+)$/);
+    if (postbackMatch && (req.method === 'GET' || req.method === 'POST')) {
+      const ip = clientIp(req); const hits = (postbackHits.get(ip) || []).filter((time) => Date.now() - time < 60000);
+      if (hits.length >= 120) return json(res, 429, { error: 'Too many requests.' });
+      postbackHits.set(ip, [...hits, Date.now()]);
+      const token = url.searchParams.get('token') || req.headers['x-postback-token'] || '';
+      if (!safeEqual(token, tracking.settings.postbackToken)) return json(res, 403, { error: 'Invalid token.' });
+      let payload = Object.fromEntries(url.searchParams);
+      if (req.method === 'POST') {
+        const raw = await rawBody(req, 200000);
+        try { payload = { ...payload, ...(raw.trim().startsWith('{') ? JSON.parse(raw) : Object.fromEntries(new URLSearchParams(raw))) }; } catch { return json(res, 400, { error: 'Unreadable body.' }); }
+      }
+      delete payload.token;
+      const result = tracking.upsertTransaction({ ...payload, network: postbackMatch[1] }, 'postback');
+      tracking.sendToGa(result.tx);
+      return json(res, 200, { ok: true, created: result.created, status: result.tx.status });
     }
 
     if (req.method === 'POST' && url.pathname === '/api/newsletter/subscribe') {
@@ -652,6 +722,75 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, { reviews: posts.filter((p) => p.published === true).length, reviewClicks: posts.reduce((n, p) => n + Number(p.clicks || 0), 0), offers: offers.length, codes: offers.filter((o) => o.type === 'code').length, deals: offers.filter((o) => o.type === 'deal').length, stores: stores.length, subscribers: subscribers.length, clicks: offers.reduce((n, o) => n + Number(o.clicks || 0), 0), reveals: offers.reduce((n, o) => n + Number(o.reveals || 0), 0) });
     }
 
+    if (url.pathname.startsWith('/api/admin/tracking/')) {
+      if (!requireAdmin(req, res)) return;
+      if (req.method !== 'GET' && !sameOrigin(req)) return json(res, 403, { error: 'Cross-site request blocked.' });
+      const route = url.pathname.slice('/api/admin/tracking/'.length);
+      const posts = readArray(postsFile);
+      if (req.method === 'GET' && route === 'report') return json(res, 200, tracking.report({ days: Number(url.searchParams.get('days') || 30), posts }));
+      if (req.method === 'GET' && route === 'meta') return json(res, 200, { networks: Tracking.NETWORKS, ctas: Tracking.CTA_POSITIONS, postbackBase: `${siteUrl}/api/postback/` });
+      if (route === 'settings') {
+        if (req.method === 'PUT') { tracking.updateSettings(await body(req, 20000)); render.setPublicConfig(() => tracking.publicConfig()); }
+        return json(res, 200, tracking.safeSettings());
+      }
+      if (route === 'links') {
+        if (req.method === 'GET') return json(res, 200, tracking.links());
+        if (req.method === 'POST') {
+          const all = tracking.links(); const link = tracking.cleanLink(await body(req, 20000));
+          if (all.some((item) => item.id === link.id)) return json(res, 409, { error: 'A link with this slug already exists.' });
+          tracking.saveLinks([...all, link]); return json(res, 201, link);
+        }
+      }
+      const linkMatch = route.match(/^links\/([a-z0-9-]+)$/);
+      if (linkMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
+        const all = tracking.links(); const index = all.findIndex((item) => item.id === linkMatch[1]);
+        if (index < 0) return json(res, 404, { error: 'Link not found.' });
+        if (req.method === 'DELETE') {
+          if (readArray(postsFile).some((post) => post.linkId === all[index].id) || readArray(offersFile).some((offer) => offer.linkId === all[index].id)) return json(res, 409, { error: 'This link is used by a review or offer. Pause it instead.' });
+          const [removed] = all.splice(index, 1); tracking.saveLinks(all); return json(res, 200, removed);
+        }
+        const payload = await body(req, 20000); delete payload.id;
+        all[index] = tracking.cleanLink(payload, all[index]); tracking.saveLinks(all); return json(res, 200, all[index]);
+      }
+      if (route === 'transactions') {
+        if (req.method === 'GET') return json(res, 200, [...tracking.transactions()].sort((a, b) => Date.parse(b.convertedAt) - Date.parse(a.convertedAt)));
+        if (req.method === 'POST') { const result = tracking.upsertTransaction(await body(req, 20000), 'manual'); tracking.sendToGa(result.tx); return json(res, result.created ? 201 : 200, result.tx); }
+      }
+      const txMatch = route.match(/^transactions\/([a-z]+)\/(.+)$/);
+      if (txMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
+        const txId = decodeURIComponent(txMatch[2]);
+        if (req.method === 'DELETE') {
+          const all = tracking.transactions(); const index = all.findIndex((tx) => tx.network === txMatch[1] && tx.txId === txId);
+          if (index < 0) return json(res, 404, { error: 'Transaction not found.' });
+          const [removed] = all.splice(index, 1); writeArray(tracking.files.transactions, all); return json(res, 200, removed);
+        }
+        const result = tracking.upsertTransaction({ ...(await body(req, 20000)), txId, network: txMatch[1] }, 'manual'); tracking.sendToGa(result.tx); return json(res, 200, result.tx);
+      }
+      if (req.method === 'POST' && route === 'import') {
+        const payload = await body(req, 5_000_000);
+        const rows = tracking.parseCsv(payload.csv);
+        if (!rows.length) return json(res, 400, { error: 'No rows found. The first line must be a header row.' });
+        const network = Tracking.NETWORKS[payload.network] ? payload.network : '';
+        const preview = rows.slice(0, 2000).map((row, index) => ({ row: index + 2, ...row, network: network || row.network, status: tracking.normalizeStatus(row.status), valid: Boolean(row.txId) }));
+        if (payload.dryRun) return json(res, 200, { total: rows.length, valid: preview.filter((row) => row.valid).length, preview: preview.slice(0, 50) });
+        const summary = { created: 0, updated: 0, skipped: 0, errors: [] };
+        for (const row of preview) {
+          if (!row.valid) { summary.skipped += 1; continue; }
+          try { const result = tracking.upsertTransaction({ ...row, network: row.network || 'direct' }, 'csv'); summary[result.created ? 'created' : 'updated'] += 1; tracking.sendToGa(result.tx); } catch (error) { summary.errors.push({ row: row.row, error: error.message }); }
+        }
+        return json(res, 200, summary);
+      }
+      if (req.method === 'GET' && route === 'logs') return json(res, 200, tracking.clicks().slice(-Math.min(500, Number(url.searchParams.get('limit') || 100))).reverse());
+      if (req.method === 'GET' && route === 'export') {
+        const type = url.searchParams.get('type');
+        const csv = type === 'transactions'
+          ? tracking.toCsv(tracking.transactions(), ['txId', 'network', 'status', 'merchant', 'product', 'linkId', 'clickId', 'article', 'cta', 'orderValue', 'commission', 'currency', 'convertedAt', 'source'])
+          : tracking.toCsv(tracking.clicks(), ['ts', 'id', 'link', 'product', 'merchant', 'network', 'article', 'articleTitle', 'articlePath', 'cta', 'device', 'source', 'medium', 'campaign', 'consent']);
+        return send(res, 200, csv, 'text/csv; charset=utf-8', { 'Content-Disposition': `attachment; filename="onapqua-${type === 'transactions' ? 'transactions' : 'clicks'}.csv"`, 'Cache-Control': 'no-store' });
+      }
+      return json(res, 404, { error: 'Unknown tracking endpoint.' });
+    }
+
     if (req.method === 'GET' && url.pathname === '/api/admin/blog') {
       if (!requireAdmin(req, res)) return;
       return json(res, 200, readArray(postsFile));
@@ -666,6 +805,7 @@ const server = http.createServer(async (req, res) => {
       if (!requireAdmin(req, res)) return;
       const posts = readArray(postsFile);
       const post = cleanPost(await body(req, 200000));
+      if (post.affiliateUrl) post.linkId = tracking.updateLinkDestination(post.linkId, post.affiliateUrl, { name: post.brand || post.title, merchant: post.brand, product: post.brand, category: post.category });
       posts.unshift(post);
       writeArray(postsFile, posts);
       return json(res, 201, post);
@@ -682,6 +822,7 @@ const server = http.createServer(async (req, res) => {
         return json(res, 200, deleted);
       }
       posts[index] = cleanPost(await body(req, 200000), posts[index]);
+      if (posts[index].affiliateUrl) posts[index].linkId = tracking.updateLinkDestination(posts[index].linkId, posts[index].affiliateUrl, { name: posts[index].brand || posts[index].title, merchant: posts[index].brand, product: posts[index].brand, category: posts[index].category });
       writeArray(postsFile, posts);
       return json(res, 200, posts[index]);
     }
@@ -689,7 +830,7 @@ const server = http.createServer(async (req, res) => {
       if (!requireAdmin(req, res)) return; return json(res, 200, readArray(offersFile));
     }
     if (req.method === 'POST' && url.pathname === '/api/admin/offers') {
-      if (!requireAdmin(req, res)) return; const offers = readArray(offersFile); const offer = cleanOffer(await body(req)); offers.unshift(offer); writeArray(offersFile, offers); return json(res, 201, offer);
+      if (!requireAdmin(req, res)) return; const offers = readArray(offersFile); const offer = cleanOffer(await body(req)); offer.linkId = tracking.ensureLink({ destination: offer.link, name: offer.brand, merchant: offer.brand, product: offer.brand, category: offer.category }); offers.unshift(offer); writeArray(offersFile, offers); return json(res, 201, offer);
     }
     if (req.method === 'POST' && url.pathname === '/api/admin/offers/batch/preview') {
       if (!requireAdmin(req, res)) return; const payload = await body(req, 5_000_000); const items = Array.isArray(payload) ? payload : payload.items;
@@ -701,6 +842,7 @@ const server = http.createServer(async (req, res) => {
       if (!Array.isArray(items) || !items.length || items.length > 500) return json(res, 400, { error: 'Supply between 1 and 500 offers.' });
       const offers = readArray(offersFile); const stores = readArray(storesFile); const prepared = prepareBatchOffers(items, offers, stores);
       if (prepared.storesToCreate.length) writeArray(storesFile, [...stores, ...prepared.storesToCreate]);
+      prepared.items.forEach((offer) => { offer.linkId = tracking.ensureLink({ destination: offer.link, name: offer.brand, merchant: offer.brand, product: offer.brand, category: offer.category }); });
       if (prepared.items.length) writeArray(offersFile, [...prepared.items, ...offers]);
       return json(res, 201, { created: prepared.items, storesCreated: prepared.storesToCreate, storeGroups: prepared.storeGroups, errors: prepared.errors, duplicates: prepared.duplicates, total: prepared.total, imported: prepared.items.length });
     }
@@ -709,7 +851,7 @@ const server = http.createServer(async (req, res) => {
       if (!requireAdmin(req, res)) return; const offers = readArray(offersFile); const index = offers.findIndex((item) => item.id === decodeURIComponent(adminOfferMatch[1]));
       if (index < 0) return json(res, 404, { error: 'Offer not found.' });
       if (req.method === 'DELETE') { const [deleted] = offers.splice(index, 1); writeArray(offersFile, offers); return json(res, 200, deleted); }
-      offers[index] = cleanOffer(await body(req), offers[index]); writeArray(offersFile, offers); return json(res, 200, offers[index]);
+      offers[index] = cleanOffer(await body(req), offers[index]); offers[index].linkId = tracking.updateLinkDestination(offers[index].linkId, offers[index].link, { name: offers[index].brand, merchant: offers[index].brand, product: offers[index].brand, category: offers[index].category }); writeArray(offersFile, offers); return json(res, 200, offers[index]);
     }
 
     if (req.method === 'GET' && url.pathname === '/api/admin/stores') {

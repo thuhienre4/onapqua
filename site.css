@@ -201,3 +201,13 @@ button, input, select { font-family: inherit; }
 /* Never let wide tables widen the page on phones; they scroll inside their wrapper. */
 html, body { max-width: 100%; overflow-x: clip; }
 .rv-table-wrap { max-width: 100%; }
+
+/* Cookie consent banner */
+.cookie-banner { position: fixed; right: 16px; bottom: 16px; left: 16px; z-index: 90; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; max-width: 980px; margin: 0 auto; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 20px 50px rgba(30, 35, 50, .18); }
+.cookie-banner p { flex: 1 1 420px; margin: 0; color: var(--text); font-size: .9rem; line-height: 1.55; }
+.cookie-banner a { color: var(--gold); font-weight: 700; }
+.cookie-banner div { display: flex; gap: 8px; }
+.cookie-banner button { min-height: 42px; padding: 0 16px; border-radius: 12px; font: inherit; font-weight: 800; cursor: pointer; }
+.cookie-reject { border: 1px solid var(--line); background: #fff; color: var(--ink); }
+.cookie-accept { border: 0; background: var(--gradient); color: #1d1604; }
+@media (max-width: 640px) { .cookie-banner div { width: 100%; } .cookie-banner button { flex: 1; } }

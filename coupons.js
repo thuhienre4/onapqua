@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${offer.expiry ? `<small>Expires ${escapeHtml(offer.expiry)}</small>` : ''}
       </div>
       <div class="rv-offer-action">
-        ${offer.hasCode ? ticket(offer) : `<a class="rv-btn rv-btn-ghost" href="/go/${encodeURIComponent(offer.id)}" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}
+        ${offer.hasCode ? ticket(offer) : `<a class="rv-btn rv-btn-ghost" href="/go/${encodeURIComponent(offer.id)}?c=coupon_page" data-coupon="${escapeHtml(offer.id)}" data-product="${escapeHtml(offer.brand)}" data-cta="coupon_page" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}
       </div>
     </article>`;
 
@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Code unavailable');
       revealed.set(button.dataset.reveal, data.code);
+      window.oqTrack?.('coupon_click', { coupon_id: button.dataset.reveal, merchant_name: offers.find((offer) => offer.id === button.dataset.reveal)?.brand || '', cta_position: 'coupon_page', link_type: 'coupon' });
       renderTop();
       render();
       const shown = document.querySelector(`[data-copy="${CSS.escape(data.code)}"]`);

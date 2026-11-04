@@ -1,14 +1,18 @@
 // The review itself is pre-rendered by the server; this adds related reviews
 // and a sticky "check price" bar on small screens.
 document.addEventListener('DOMContentLoaded', async () => {
-  const { escapeHtml, card, goUrl, fetchPosts } = window.Reviews;
+  const { escapeHtml, card, goUrl, affAttrs, fetchPosts } = window.Reviews;
   const post = window.__REVIEW__;
   if (!post) return;
+
+  window.oqTrack?.(post.category === 'Best Of' ? 'comparison_view' : 'product_view', post.category === 'Best Of'
+    ? { comparison_type: 'buyers_guide', article_id: post.id, article_title: post.title }
+    : { product_name: post.brand, product_category: post.category, affiliate_id: post.aff?.id || '', merchant_name: post.aff?.merchant || post.brand, article_id: post.id, article_title: post.title, rating: Number(post.rating) || 0 });
 
   if (post.hasLink) {
     const bar = document.createElement('div');
     bar.className = 'rv-sticky-cta';
-    bar.innerHTML = `<div><strong>${escapeHtml(post.brand || post.title)}</strong>${post.rating ? `<span>&#9733; ${Number(post.rating).toFixed(1)} / 5</span>` : ''}</div><a class="rv-btn" href="${goUrl(post)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(post.ctaLabel || 'Check price')} &#8599;</a>`;
+    bar.innerHTML = `<div><strong>${escapeHtml(post.brand || post.title)}</strong>${post.rating ? `<span>&#9733; ${Number(post.rating).toFixed(1)} / 5</span>` : ''}</div><a class="rv-btn" href="${goUrl(post, 'sticky_mobile')}" ${affAttrs(post, 'sticky_mobile')} target="_blank" rel="sponsored nofollow noopener">${escapeHtml(post.ctaLabel || 'Check price')} &#8599;</a>`;
     document.body.append(bar);
     const verdict = document.querySelector('.rv-final-cta') || document.querySelector('.rv-verdict');
     const lead = document.querySelector('.rv-article-head');
@@ -30,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     box.setAttribute('aria-labelledby', 'deals');
     box.innerHTML = `<h2 id="deals">${escapeHtml(post.brand)} deals &amp; coupons</h2>${brandOffers.map((offer) => `
       <div class="rv-deal"><strong>${escapeHtml(offer.discount || 'DEAL')}</strong><div><b>${escapeHtml(offer.title)}</b>${offer.description ? `<span>${escapeHtml(offer.description)}</span>` : ''}</div>
-      ${offer.hasCode ? `<button class="rv-ticket" type="button" data-reveal="${escapeHtml(offer.id)}"><span class="rv-ticket-code" aria-hidden="true">${'•'.repeat(6)}${escapeHtml(offer.codeHint || '')}</span><span class="rv-ticket-cta">Reveal code</span></button>` : `<a class="rv-btn rv-btn-ghost" href="/go/${encodeURIComponent(offer.id)}" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}</div>`).join('')}`;
+      ${offer.hasCode ? `<button class="rv-ticket" type="button" data-reveal="${escapeHtml(offer.id)}"><span class="rv-ticket-code" aria-hidden="true">${'•'.repeat(6)}${escapeHtml(offer.codeHint || '')}</span><span class="rv-ticket-cta">Reveal code</span></button>` : `<a class="rv-btn rv-btn-ghost" href="/go/${encodeURIComponent(offer.id)}?c=review_deals" data-coupon="${escapeHtml(offer.id)}" data-product="${escapeHtml(offer.brand)}" data-cta="review_deals" target="_blank" rel="sponsored nofollow noopener">Get deal &#8599;</a>`}</div>`).join('')}`;
     const anchor = document.querySelector('.rv-sources') || document.querySelector('.rv-final-cta');
     anchor ? anchor.before(box) : document.querySelector('.rv-article-main')?.append(box);
     box.addEventListener('click', async (event) => {
@@ -43,7 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error(data.error || 'Code unavailable');
         button.outerHTML = `<button class="rv-ticket revealed" type="button" title="Copied"><span class="rv-ticket-code">${escapeHtml(data.code)}</span><span class="rv-ticket-cta">Copied!</span></button>`;
         navigator.clipboard?.writeText(data.code).catch(() => {});
-        if (store) store.location = data.redirect;
+        window.oqTrack?.('coupon_click', { coupon_id: button.dataset.reveal, merchant_name: post.brand, cta_position: 'review_deals', link_type: 'coupon' });
+        if (store) store.location = data.redirect.replace('coupon_page', 'review_deals');
       } catch (error) {
         store?.close();
         (button.querySelector('.rv-ticket-cta') || button).textContent = error.message;

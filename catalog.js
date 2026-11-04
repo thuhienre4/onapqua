@@ -6,7 +6,7 @@
   if (isNode) module.exports = api;
   else window.Catalog = api;
 })((Reviews) => {
-  const { escapeHtml, reviewUrl, goUrl, stars, logoMark, cover, formatDate } = Reviews;
+  const { escapeHtml, reviewUrl, goUrl, affAttrs, stars, logoMark, cover, formatDate } = Reviews;
 
   const icon = (path) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
   const HUBS = [
@@ -54,8 +54,8 @@
   const topRated = (posts) => [...products(posts)].sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0));
   const inHub = (posts, key) => topRated(posts).filter((post) => hubsOf(post).includes(key));
   const hubBy = (key) => HUBS.find((hub) => hub.key === key);
-  const visit = (post, label = 'Visit website', extra = '') => post.hasLink
-    ? `<a class="rv-btn ${extra}" href="${goUrl(post)}" target="_blank" rel="sponsored nofollow noopener">${escapeHtml(label)} <span aria-hidden="true">&#8599;</span></a>` : '';
+  const visit = (post, label = 'Visit website', extra = '', cta = 'unknown') => post.hasLink
+    ? `<a class="rv-btn ${extra}" href="${goUrl(post, cta)}" ${affAttrs(post, cta)} target="_blank" rel="sponsored nofollow noopener">${escapeHtml(label)} <span aria-hidden="true">&#8599;</span></a>` : '';
 
   const hubCards = (posts) => HUBS.map((hub) => [hub, inHub(posts, hub.key).length]).filter(([, count]) => count).map(([hub, count]) => `
     <a class="rv-hub" href="/best-software.html#${hub.key}">
@@ -76,7 +76,7 @@
       <p>${escapeHtml(post.excerpt)}</p>
       ${bestForOf(post) ? `<p class="rv-bestfor"><b>Best for:</b> ${escapeHtml(bestForOf(post))}</p>` : ''}
       <ul class="rv-pcard-pc">${(post.pros || []).slice(0, 2).map((item) => `<li class="pro">${escapeHtml(item)}</li>`).join('')}${(post.cons || []).slice(0, 1).map((item) => `<li class="con">${escapeHtml(item)}</li>`).join('')}</ul>
-      <div class="rv-pcard-actions"><a class="rv-btn rv-btn-ghost" href="${reviewUrl(post)}">Read full review</a>${visit(post)}</div>
+      <div class="rv-pcard-actions"><a class="rv-btn rv-btn-ghost" href="${reviewUrl(post)}">Read full review</a>${visit(post, 'Visit website', '', 'product_card')}</div>
     </article>`;
 
   const latestItem = (post) => `
@@ -91,7 +91,7 @@
     </article>`;
 
   // Comparison table: rank, product, rating, price, key features, best for, CTA.
-  const compareTable = (items) => `
+  const compareTable = (items, cta = 'comparison_table') => `
     <div class="rv-table-wrap rv-compare"><table>
       <thead><tr><th>#</th><th>Product</th><th>Rating</th><th>Pricing</th><th>Key features</th><th>Best for</th><th><span class="rv-sr">Links</span></th></tr></thead>
       <tbody>${items.map((post, index) => `<tr>
@@ -101,7 +101,7 @@
         <td data-label="Pricing">${escapeHtml(post.price || 'See website')}</td>
         <td data-label="Key features"><ul>${(post.pros || []).slice(0, 2).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></td>
         <td data-label="Best for">${escapeHtml(bestForOf(post))}</td>
-        <td class="rv-cta-cell">${visit(post, 'Visit', 'rv-btn-sm')}<a class="rv-read" href="${reviewUrl(post)}">Review</a></td>
+        <td class="rv-cta-cell">${visit(post, 'Visit', 'rv-btn-sm', cta)}<a class="rv-read" href="${reviewUrl(post)}">Review</a></td>
       </tr>`).join('')}</tbody>
     </table></div>`;
 
