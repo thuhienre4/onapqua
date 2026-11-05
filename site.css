@@ -118,6 +118,9 @@ button, input, select { font-family: inherit; }
 }
 .brand-logo-mark { width: 34px; height: 34px; border-radius: 10px; box-shadow: 0 0 18px rgba(245, 200, 76, .45); transition: transform .25s ease; }
 .brand-logo:hover .brand-logo-mark { transform: rotate(-8deg) scale(1.05); }
+.brand-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-logo-tag { color: #5f6675; font-size: .68rem; font-weight: 600; letter-spacing: 0; white-space: nowrap; }
+@media (max-width: 640px) { .brand-logo-tag { font-size: .6rem; } }
 .brand-dot { color: var(--gold); text-shadow: 0 0 10px rgba(245, 200, 76, .9); }
 
 .main-nav {

@@ -5,14 +5,13 @@ const Catalog = require('./catalog.js');
 
 const { escapeHtml } = Reviews;
 const siteName = 'onapqua.';
-const defaultDescription = 'Honest, research-based reviews of hosting, WordPress plugins, AI tools and online services, with clear pros, cons and where to buy.';
+const tagline = 'Software reviews for small online businesses';
+const defaultDescription = 'Honest, research-based reviews of WordPress plugins, hosting and marketing tools for small online businesses, with clear pricing, pros, cons and who each one suits.';
 
 const nav = [
-  ['home', '/', 'Home'],
   ['reviews', '/blog.html', 'Reviews'],
   ['best', '/best-software.html', 'Best Software'],
   ['comparisons', '/comparisons.html', 'Comparisons'],
-  ['alternatives', '/alternatives.html', 'Alternatives'],
   ['coupons', '/coupons.html', 'Deals & Coupons'],
   ['about', '/about.html', 'About Us'],
 ];
@@ -28,7 +27,7 @@ const searchIcon = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stro
 function header(active) {
   return `<a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header"><div class="container header-inner">
-    <a class="brand-logo" href="/" aria-label="onapqua. home"><img class="brand-logo-mark" src="/assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span></a>
+    <a class="brand-logo" href="/" aria-label="onapqua. home"><img class="brand-logo-mark" src="/assets/logo.svg" alt="" width="34" height="34" /><span class="brand-logo-text"><span class="brand-logo-name">onapqua<span class="brand-dot">.</span></span><span class="brand-logo-tag">${tagline}</span></span></a>
     <nav class="main-nav" id="main-nav" aria-label="Main navigation">${nav.map(([key, href, label]) => `<a${key === active ? ' class="active" aria-current="page"' : ''} href="${href}">${escapeHtml(label)}</a>`).join('')}</nav>
     <div class="header-tools">
       <button class="icon-btn" type="button" data-search-toggle aria-expanded="false" aria-controls="site-search" aria-label="Search">${searchIcon}</button>
@@ -42,7 +41,7 @@ function header(active) {
 function footer() {
   return `<footer class="site-footer">
     <div class="container site-footer-grid">
-      <div class="site-footer-brand"><a href="/"><img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="40" height="40" loading="lazy" /><strong>onapqua.</strong></a><p>Honest, research-based reviews with clear pros, cons and where to buy.</p><small>Independent reviews &middot; Updated regularly</small></div>
+      <div class="site-footer-brand"><a href="/"><img class="footer-logo-mark" src="/assets/logo.svg" alt="" width="40" height="40" loading="lazy" /><strong>onapqua.</strong></a><p>${tagline}: what each tool does, what it costs and who it suits.</p><small>Independent reviews &middot; Updated regularly</small></div>
       <nav class="site-footer-column" aria-label="Explore"><h2>Explore</h2><a href="/blog.html">All reviews</a><a href="/best-software.html">Best software</a><a href="/comparisons.html">Comparisons</a><a href="/alternatives.html">Alternatives</a><a href="/coupons.html">Deals &amp; coupons</a><a href="/products.html">Product directory</a></nav>
       <nav class="site-footer-column" aria-label="Company"><h2>Company</h2><a href="/about.html">About Onapqua</a><a href="/editorial-policy.html">Editorial policy</a><a href="/methodology.html">Review methodology</a><a href="mailto:hello@onapqua.com">Contact</a></nav>
       <nav class="site-footer-column" aria-label="Legal"><h2>Legal</h2><a href="/affiliate-disclosure.html">Affiliate disclosure</a><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of service</a><a href="/sitemap.html">Sitemap</a><a href="#cookie-settings" data-cookie-settings>Cookie settings</a></nav>
@@ -78,7 +77,7 @@ function head({ siteUrl, path, title, description, image, type = 'website', extr
 }
 
 const pages = {
-  '/index.html': { title: 'onapqua. | Honest Reviews of Hosting, WordPress & AI Tools', description: defaultDescription },
+  '/index.html': { title: 'onapqua. | Software Reviews for Small Online Businesses', description: defaultDescription },
   '/blog.html': { title: 'All Reviews | onapqua.', description: 'Browse every onapqua. review by category, with ratings, pros, cons and where to buy.' },
   '/about.html': { title: 'About onapqua. & How We Review', description: 'Who we are, how we research and score products, and how onapqua. is funded.' },
   '/privacy.html': { title: 'Privacy Policy | onapqua.', description: 'How onapqua. handles information when you visit the site.' },
@@ -99,7 +98,7 @@ function siteSchema(siteUrl) {
   return jsonLd({
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Organization', '@id': `${siteUrl}/#org`, name: siteName, url: `${siteUrl}/`, logo: `${siteUrl}/assets/logo.svg` },
+      { '@type': 'Organization', '@id': `${siteUrl}/#org`, name: siteName, description: tagline, url: `${siteUrl}/`, logo: `${siteUrl}/assets/logo.svg` },
       { '@type': 'WebSite', '@id': `${siteUrl}/#website`, name: siteName, url: `${siteUrl}/`, publisher: { '@id': `${siteUrl}/#org` },
         potentialAction: { '@type': 'SearchAction', target: `${siteUrl}/blog.html?q={search_term_string}`, 'query-input': 'required name=search_term_string' } },
     ],
@@ -124,9 +123,8 @@ function renderPage(html, { siteUrl, path, posts = [] }) {
   const products = Catalog.topRated(safe);
   return html
     .replace('<!--@home-hubs-->', () => Catalog.hubCards(safe))
-    .replace('<!--@home-featured-->', () => products.slice(0, 6).map(Catalog.productCard).join('') || loading)
-    .replace('<!--@home-best-->', () => Catalog.bestTabs(safe))
-    .replace('<!--@latest-->', () => newestFirst(safe).filter((post) => !Catalog.isGuide(post)).slice(0, 6).map(Catalog.latestItem).join('') || loading)
+    .replace('<!--@home-goals-->', () => Catalog.goalCards(safe))
+    .replace('<!--@home-featured-->', () => products.slice(0, 3).map(Catalog.productCard).join('') || loading)
     .replace('<!--@all-->', () => newestFirst(safe).map(Reviews.card).join('') || loading)
     .replace('<!--@best-->', () => Catalog.bestSections(safe))
     .replace('<!--@guides-->', () => Catalog.guideCards(newestFirst(safe)))

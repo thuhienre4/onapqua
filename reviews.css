@@ -675,6 +675,7 @@
 .rv-hub strong { margin-top: 6px; color: var(--rv-ink); font-size: 1.05rem; }
 .rv-hub span:not(.rv-hub-icon) { color: var(--rv-muted); font-size: .88rem; line-height: 1.5; }
 .rv-hub em { margin-top: auto; color: var(--rv-gold); font-size: .85rem; font-style: normal; font-weight: 800; }
+@media (min-width: 981px) { .rv-hubs.rv-goals { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .rv-hubs-compact { margin-top: 26px; text-align: left; }
 .rv-hubs-compact .rv-hub span:not(.rv-hub-icon) { display: none; }
 

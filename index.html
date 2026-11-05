@@ -8,37 +8,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/site.css?v=7" />
-    <link rel="stylesheet" href="/reviews.css?v=15" />
+    <link rel="stylesheet" href="/site.css?v=8" />
+    <link rel="stylesheet" href="/reviews.css?v=16" />
   </head>
   <body class="rv-page">
     <!--@header:home-->
 
     <main id="main">
-      <!-- B. Hero -->
+      <!-- Hero: who this is for and what they get -->
       <section class="rv-hero rv-hero-home">
         <div class="container rv-hero-inner">
-          <span class="rv-kicker">INDEPENDENT SOFTWARE REVIEWS</span>
-          <h1>Find the Best Software. <span>Make Smarter Decisions.</span></h1>
-          <p class="rv-lead">Independent reviews, honest comparisons, and expert recommendations to help you choose the right tools.</p>
+          <span class="rv-kicker">FOR SMALL ONLINE BUSINESSES</span>
+          <h1>Pick the right software <span>for your online business.</span></h1>
+          <p class="rv-lead">Not sure which WordPress plugin, hosting plan or marketing tool to buy? We show what each one does, what it costs and who it suits, so you can choose faster and pay a fair price.</p>
           <form class="rv-search" action="/blog.html" role="search">
             <label class="rv-sr" for="home-search">Search reviews</label>
-            <input id="home-search" type="search" name="q" placeholder="Search software, e.g. FluentCRM, VPS hosting, backup plugin..." />
+            <input id="home-search" type="search" name="q" placeholder="Search a tool or a need, e.g. FluentCRM, backup, VPS..." />
             <button type="submit">Search</button>
           </form>
-          <div class="rv-hero-actions">
-            <a class="rv-btn" href="/blog.html">Explore Reviews</a>
-            <a class="rv-btn rv-btn-ghost" href="/comparisons.html">Compare Software</a>
-          </div>
-          <div class="rv-popular" aria-label="Popular searches">
-            <span>Popular:</span>
-            <a href="/blog.html?q=FluentCRM">FluentCRM</a>
-            <a href="/best-software.html#hosting">VPS hosting</a>
-            <a href="/blog.html?q=backup">WordPress backup</a>
-            <a href="/blog.html?q=proxy">Proxies</a>
-            <a href="/blog.html?q=automation">Automation</a>
-            <a href="/coupons.html">Coupons</a>
-          </div>
           <ul class="rv-trust" aria-label="Why readers trust us">
             <li><b><!--@count--></b> products reviewed</li>
             <li><b>Sources</b> cited in every review</li>
@@ -47,54 +34,35 @@
         </div>
       </section>
 
-      <!-- C. Featured categories -->
+      <!-- Start here: one path per goal -->
       <section class="rv-section">
         <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">BROWSE BY CATEGORY</span><h2>Featured categories</h2></div><a class="rv-link" href="/best-software.html">All categories &rarr;</a></div>
-          <div class="rv-hubs"><!--@home-hubs--></div>
+          <div class="rv-section-head"><div><span class="rv-kicker">START HERE</span><h2>What do you need to do?</h2></div><a class="rv-link" href="/best-software.html">All categories &rarr;</a></div>
+          <div class="rv-hubs rv-goals"><!--@home-goals--></div>
         </div>
       </section>
 
-      <!-- D. Featured reviews -->
-      <section class="rv-section">
+      <!-- Top picks -->
+      <section class="rv-section rv-band">
         <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">TOP RATED</span><h2>Featured reviews</h2></div><a class="rv-link" href="/blog.html?sort=rating">All reviews &rarr;</a></div>
+          <div class="rv-section-head"><div><span class="rv-kicker">TOP RATED</span><h2>Our top picks right now</h2></div><a class="rv-link" href="/blog.html?sort=rating">See all reviews &rarr;</a></div>
           <div class="rv-pcards"><!--@home-featured--></div>
         </div>
       </section>
 
-      <!-- E. Best software & comparisons -->
-      <section class="rv-section rv-band">
-        <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">BEST SOFTWARE &amp; COMPARISONS</span><h2>Top picks in every category</h2></div><a class="rv-link" href="/comparisons.html">Compare side by side &rarr;</a></div>
-          <!--@home-best-->
-        </div>
-      </section>
-
-      <!-- F. Latest reviews -->
-      <section class="rv-section">
-        <div class="container">
-          <div class="rv-section-head"><div><span class="rv-kicker">FRESH OFF THE DESK</span><h2>Latest reviews</h2></div><a class="rv-link" href="/blog.html">View all reviews &rarr;</a></div>
-          <div class="rv-latest-list"><!--@latest--></div>
-        </div>
-      </section>
-
-      <!-- G. How we review -->
+      <!-- How we review -->
       <section class="rv-section rv-how" id="how-we-review">
         <div class="container">
           <div class="rv-section-head"><div><span class="rv-kicker">HOW WE REVIEW</span><h2>Why you can trust our recommendations</h2></div><a class="rv-link" href="/methodology.html">Full methodology &rarr;</a></div>
           <div class="rv-trust-grid">
-            <article><b>01</b><h3>Product research</h3><p>We study official documentation, feature pages and live pricing for every product.</p></article>
-            <article><b>02</b><h3>Verification</h3><p>We cross-check claims against user reviews on Trustpilot, G2, Capterra and WordPress.org, plus trusted expert sites.</p></article>
-            <article><b>03</b><h3>Evaluation criteria</h3><p>Features, ease of use, pricing and value, support quality and reputation.</p></article>
-            <article><b>04</b><h3>Rating methodology</h3><p>Each product gets a score out of 5 with clear pros and cons. <a href="/methodology.html#scores">What scores mean</a>.</p></article>
-            <article><b>05</b><h3>Editorial independence</h3><p>Commissions never decide a rating. We publish the weaknesses of every product. <a href="/editorial-policy.html">Editorial policy</a>.</p></article>
-            <article><b>06</b><h3>Affiliate disclosure</h3><p>Some links earn us a commission at no extra cost to you. Sponsored reviews are always labelled. <a href="/affiliate-disclosure.html">Learn more</a>.</p></article>
+            <article><b>01</b><h3>Research you can check</h3><p>We read official docs and live pricing, then cross-check claims against user reviews on Trustpilot, G2, Capterra and WordPress.org. Every review lists its sources.</p></article>
+            <article><b>02</b><h3>Straight answers</h3><p>Each review covers what the tool does, what it costs, who it suits and where it falls short, with a score out of 5. <a href="/methodology.html#scores">What scores mean</a>.</p></article>
+            <article><b>03</b><h3>Open about money</h3><p>Some links earn us a commission at no extra cost to you. Commissions never decide a rating. <a href="/affiliate-disclosure.html">Affiliate disclosure</a>.</p></article>
           </div>
         </div>
       </section>
 
-      <!-- H. Newsletter -->
+      <!-- Newsletter -->
       <section class="rv-section">
         <div class="container">
           <div class="rv-newsletter">

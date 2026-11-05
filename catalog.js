@@ -6,7 +6,7 @@
   if (isNode) module.exports = api;
   else window.Catalog = api;
 })((Reviews) => {
-  const { escapeHtml, reviewUrl, goUrl, affAttrs, stars, logoMark, cover, formatDate } = Reviews;
+  const { escapeHtml, reviewUrl, goUrl, affAttrs, stars, logoMark } = Reviews;
 
   const icon = (path) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
   const HUBS = [
@@ -17,6 +17,14 @@
     { key: 'proxy', label: 'Proxy & VPN', short: 'Proxy & VPN', blurb: 'Private proxies and online privacy', icon: icon('<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>') },
     { key: 'productivity', label: 'Productivity Tools', short: 'Productivity', blurb: 'Automation, scheduling and AI tools', icon: icon('<path d="M13 3 5 14h6l-1 7 8-11h-6l1-7Z"/>') },
     { key: 'business', label: 'Business Software', short: 'Business', blurb: 'Support, payments, booking and community', icon: icon('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 13h18"/>') },
+  ];
+
+  // Homepage "Start here" paths: what a small online business is trying to get done.
+  const GOALS = [
+    { hub: 'wordpress', title: 'Improve your WordPress site', blurb: 'Backups, tables, forms and store add-ons' },
+    { hub: 'hosting', title: 'Find reliable hosting', blurb: 'VPS and dedicated servers at a fair price' },
+    { hub: 'marketing', title: 'Win more customers', blurb: 'Email, live chat, social proof and affiliates' },
+    { hub: 'business', title: 'Run your business smoothly', blurb: 'Support desks, bookings, payments and communities' },
   ];
 
   // Defaults for reviews published before hubs and "best for" were editable in the admin.
@@ -65,6 +73,14 @@
       <em>${count} review${count === 1 ? '' : 's'} &rarr;</em>
     </a>`).join('');
 
+  const goalCards = (posts) => GOALS.map((goal) => [goal, inHub(posts, goal.hub).length]).filter(([, count]) => count).map(([goal, count]) => `
+    <a class="rv-hub" href="/best-software.html#${goal.hub}">
+      <span class="rv-hub-icon">${hubBy(goal.hub).icon}</span>
+      <strong>${escapeHtml(goal.title)}</strong>
+      <span>${escapeHtml(goal.blurb)}</span>
+      <em>Compare ${count} tool${count === 1 ? '' : 's'} &rarr;</em>
+    </a>`).join('');
+
   // Product card: logo, score, pros/cons summary and a clear two-button CTA.
   const productCard = (post) => `
     <article class="rv-pcard">
@@ -75,19 +91,9 @@
       </div>
       <p>${escapeHtml(post.excerpt)}</p>
       ${bestForOf(post) ? `<p class="rv-bestfor"><b>Best for:</b> ${escapeHtml(bestForOf(post))}</p>` : ''}
+      ${post.price ? `<p class="rv-bestfor"><b>Cost:</b> ${escapeHtml(post.price)}</p>` : ''}
       <ul class="rv-pcard-pc">${(post.pros || []).slice(0, 2).map((item) => `<li class="pro">${escapeHtml(item)}</li>`).join('')}${(post.cons || []).slice(0, 1).map((item) => `<li class="con">${escapeHtml(item)}</li>`).join('')}</ul>
       <div class="rv-pcard-actions"><a class="rv-btn rv-btn-ghost" href="${reviewUrl(post)}">Read full review</a>${visit(post, 'Visit website', '', 'product_card')}</div>
-    </article>`;
-
-  const latestItem = (post) => `
-    <article class="rv-latest">
-      <a href="${reviewUrl(post)}" class="rv-latest-thumb" tabindex="-1" aria-hidden="true">${cover(post)}</a>
-      <div>
-        <div class="rv-meta"><span class="rv-chip">${escapeHtml(post.category || 'Review')}</span>${stars(post.rating)}</div>
-        <h3><a href="${reviewUrl(post)}">${escapeHtml(post.title)}</a></h3>
-        <p>${escapeHtml(post.excerpt)}</p>
-        <div class="rv-latest-foot"><span>${escapeHtml(post.author || 'onapqua. Editorial')} &middot; Updated ${escapeHtml(formatDate(post.updatedAt || post.publishedAt))}</span><a class="rv-read" href="${reviewUrl(post)}">Read review &rarr;</a></div>
-      </div>
     </article>`;
 
   // Comparison table: rank, product, rating, price, key features, best for, CTA.
@@ -106,17 +112,6 @@
     </table></div>`;
 
   const activeHubs = (posts) => HUBS.filter((hub) => inHub(posts, hub.key).length);
-
-  // Homepage tabs: top 3 per category with a link to the full ranking.
-  const bestTabs = (posts) => {
-    const hubs = activeHubs(posts);
-    if (!hubs.length) return '';
-    return `<div class="rv-tabs" role="tablist" aria-label="Best software by category">${hubs.map((hub, index) => `<button type="button" role="tab" id="tab-${hub.key}" aria-controls="panel-${hub.key}" aria-selected="${index === 0}"${index ? ' tabindex="-1"' : ''}>${escapeHtml(hub.short)}</button>`).join('')}</div>
-      ${hubs.map((hub, index) => `<div class="rv-tab-panel" role="tabpanel" id="panel-${hub.key}" aria-labelledby="tab-${hub.key}"${index ? ' hidden' : ''}>
-        ${compareTable(inHub(posts, hub.key).slice(0, 3))}
-        <a class="rv-link" href="/best-software.html#${hub.key}">See all ${escapeHtml(hub.label.toLowerCase())} &rarr;</a>
-      </div>`).join('')}`;
-  };
 
   const bestSections = (posts) => activeHubs(posts).map((hub) => {
     const items = inHub(posts, hub.key);
@@ -148,5 +143,5 @@
       <em>Read the comparison &rarr;</em>
     </a>`).join('');
 
-  return { HUBS, hubsOf, bestForOf, products, topRated, inHub, hubCards, productCard, latestItem, compareTable, bestTabs, bestSections, alternativesFor, alternativesDirectory, guideCards, isGuide };
+  return { HUBS, hubsOf, bestForOf, products, topRated, inHub, hubCards, goalCards, productCard, compareTable, bestSections, alternativesFor, alternativesDirectory, guideCards, isGuide };
 });
