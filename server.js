@@ -12,7 +12,11 @@ const root = __dirname;
 const host = process.env.HOST || '0.0.0.0';
 const port = Number(process.env.PORT || 3000);
 const production = process.env.NODE_ENV === 'production';
-const siteUrl = String(process.env.SITE_URL || 'https://www.onapqua.com').replace(/\/+$/, '');
+// The one public origin used for canonical URLs, Open Graph, sitemap and JSON-LD.
+// A Railway preview domain is never a valid canonical, so it falls back to the real domain.
+const configuredSiteUrl = String(process.env.SITE_URL || '').trim().replace(/\/+$/, '');
+const siteUrl = configuredSiteUrl && !/\.up\.railway\.app$/i.test(configuredSiteUrl) ? configuredSiteUrl : 'https://www.onapqua.com';
+if (configuredSiteUrl && configuredSiteUrl !== siteUrl) console.warn(`SITE_URL "${configuredSiteUrl}" ignored; using ${siteUrl}. Set SITE_URL=${siteUrl} in Railway.`);
 const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(root, '.data');
 const offersFile = path.join(dataDir, 'offers.json');
 const storesFile = path.join(dataDir, 'stores.json');
@@ -604,8 +608,9 @@ const server = http.createServer(async (req, res) => {
     const canonical = new URL(siteUrl);
     const requestHost = String(req.headers.host || '').toLowerCase().split(':')[0];
     const forwardedProto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
-    const isSiteHost = requestHost === canonical.hostname || requestHost === canonical.hostname.replace(/^www\./, '');
-    if (production && isSiteHost && (requestHost !== canonical.hostname || forwardedProto === 'http')) {
+    // Every other host (onapqua.com, *.up.railway.app) and plain HTTP 301 to the canonical origin.
+    // The health check stays reachable on any host for Railway.
+    if (production && url.pathname !== '/healthz' && requestHost && (requestHost !== canonical.hostname || forwardedProto === 'http')) {
       res.writeHead(301, { Location: `${canonical.origin}${req.url}`, 'Cache-Control': 'public, max-age=3600' });
       return res.end();
     }
