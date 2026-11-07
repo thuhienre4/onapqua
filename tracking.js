@@ -99,7 +99,9 @@ function create({ dataDir, readArray, writeArray, safeUrl, text }) {
   function ensureLink({ destination, name, merchant, product, category, preferredId }) {
     if (!destination) return '';
     const all = links();
-    const existing = all.find((link) => link.destination === destination);
+    // Compare normalized URLs: example.com?a=1 and example.com/?a=1 are the same destination.
+    const normalized = validDestination(destination);
+    const existing = all.find((link) => link.destination === normalized);
     if (existing) return existing.id;
     let id = slugify(preferredId || name) || 'link';
     for (let n = 2; all.some((link) => link.id === id); n += 1) id = `${slugify(preferredId || name)}-${n}`;

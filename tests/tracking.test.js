@@ -36,6 +36,14 @@ test('existing affiliate links were migrated to central /go/<slug>/ links', asyn
   assert.equal(response.headers.get('location'), 'https://fluentcrm.com/?ref=4213', 'existing affiliate parameters preserved');
 });
 
+test('a review and its offers share one link even when the URL has no trailing slash', async () => {
+  const links = await (await admin('/api/admin/tracking/links')).json();
+  const matches = links.filter((link) => link.destination.includes('screenstudio.lemonsqueezy.com'));
+  assert.equal(matches.length, 1);
+  assert.equal(matches[0].id, 'screen-studio');
+  assert.equal(matches[0].destination, 'https://screenstudio.lemonsqueezy.com/?aff=2OWVDk');
+});
+
 test('legacy /go/review/:id and /go/:offerId URLs still redirect', async () => {
   const review = await go('/go/review/review_fluentcrm');
   assert.equal(review.status, 302);
