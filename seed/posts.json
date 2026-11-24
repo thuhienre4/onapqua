@@ -1421,5 +1421,56 @@
     "createdAt": "2026-11-07T08:00:00.000Z",
     "updatedAt": "2026-11-07T08:00:00.000Z",
     "seedVersion": 3
+  },
+  {
+    "id": "deal_affiliatewp_black_friday_2026",
+    "title": "AffiliateWP Black Friday 2026: Up to 70% Off, No Coupon Needed",
+    "slug": "affiliatewp-black-friday-2026",
+    "excerpt": "AffiliateWP is up to 70% off for the first year until December 4, 2026, with no coupon code. Here are the sale prices for every plan and which one to pick.",
+    "content": "This article summarizes AffiliateWP's official pricing page as checked on November 24, 2026. Prices change often, so always confirm the current offer on the official site before you buy.\n\n## Black Friday 2026 at a glance\n\nAffiliateWP is running its Black Friday sale with **up to 70% off the first year**. Prices are already reduced on the pricing page, so **no coupon code is needed**. AffiliateWP says the sale runs **until Friday, December 4, 2026**.\n\n- **Personal:** $134.55 for the first year, normally $299 (55% off), 1 site\n- **Plus:** $159.60 for the first year, normally $399 (60% off), 2 sites\n- **Pro:** $179.70 for the first year, normally $599 (70% off), 5 sites\n- **Growth Bundle:** $209.70 for the first year, normally $699 (70% off), AffiliateWP Pro plus RewardsWP Pro with 10 total site licenses\n\nAs a Black Friday bonus, every plan also includes a free month of StoreAgent, or StoreAgent Pro with the Growth Bundle.\n\n**Important:** the discount covers the first year only. Every plan renews at its full price, so budget for the renewal before you choose a tier.\n\n## What AffiliateWP does\n\nAffiliateWP is a WordPress plugin for running your own affiliate program. Affiliates sign up on your site, get their own links and coupons, and you track their referrals and pay commissions without a third-party network taking a cut. AffiliateWP describes itself as \"The Most Powerful WordPress Affiliate Plugin … without the High Costs\" and says more than 30,000 business owners use it.\n\n## Key features\n\n- **Real-time reporting** of referrals, visits and earnings\n- **Affiliate coupons:** manual and automatic coupons that credit the right affiliate\n- **Affiliate portal** where partners see their links, stats and payouts\n- **Integrations** with WooCommerce, Easy Digital Downloads, MemberPress, LearnDash, WP Simple Pay, Gravity Forms and more\n- **Zero platform fees** on every plan\n- **Pro and Growth Bundle only:** Stripe and PayPal payouts with automatic payouts, recurring and lifetime commissions, affiliate landing pages and a fraud prevention suite\n\n## Which plan to pick\n\n- **Personal** suits a single store that only needs tracking, coupons and reporting.\n- **Pro** is the sweet spot for most businesses: this is where automatic payouts, recurring commissions and fraud prevention start, and the Black Friday discount is the largest (70%).\n- **Growth Bundle** makes sense if you also want a customer loyalty and rewards program (RewardsWP Pro) or need more site licenses.\n\n## Refunds and trial\n\nThere is no free trial. New purchases are covered by a **14-day money-back guarantee**, but renewals are not refundable.\n\n## Who it's for\n\nWooCommerce and Easy Digital Downloads store owners, course creators and SaaS or membership sites on WordPress that want to run an in-house affiliate program instead of paying a network.\n\nIt is not a fit if your store does not run on WordPress, or if you want to join other companies' affiliate programs rather than run your own.\n\n## Verdict\n\nIf you have been planning an affiliate program on WordPress, Black Friday is the cheapest time of year to start. The Pro plan at $179.70 for the first year gives you the features that save the most manual work. Just remember that the price returns to $599/year at renewal.",
+    "category": "WordPress",
+    "brand": "AffiliateWP",
+    "image": "",
+    "logo": "",
+    "sourceUrl": "https://affiliatewp.com/pricing/",
+    "affiliateUrl": "https://affiliatewp.com/?ref=2607",
+    "ctaLabel": "Get the AffiliateWP deal",
+    "seoTitle": "AffiliateWP Black Friday 2026: Up to 70% Off (No Code)",
+    "metaDescription": "AffiliateWP Black Friday 2026: up to 70% off the first year, no coupon needed, until Dec 4. Pro is $179.70 instead of $599. Prices, features and which plan to pick.",
+    "bestFor": "Running an in-house affiliate program on WordPress",
+    "hubs": [
+      "marketing"
+    ],
+    "rating": 4.4,
+    "price": "Black Friday: from $134.55 for the first year (normally from $299/year)",
+    "pros": [
+      "Up to 70% off the first year, no coupon code needed",
+      "No platform fees on any plan",
+      "Affiliate coupons, real-time reporting and many WordPress integrations",
+      "Automatic payouts and fraud prevention on Pro and above"
+    ],
+    "cons": [
+      "Renews at full price after the first year",
+      "No free trial; renewals are not refundable",
+      "WordPress only"
+    ],
+    "sources": [
+      {
+        "label": "AffiliateWP official pricing page",
+        "url": "https://affiliatewp.com/pricing/"
+      },
+      {
+        "label": "AffiliateWP official website",
+        "url": "https://affiliatewp.com"
+      }
+    ],
+    "author": "onapqua. Editorial",
+    "clicks": 0,
+    "published": true,
+    "featured": true,
+    "publishedAt": "2026-11-24T09:00:00.000Z",
+    "createdAt": "2026-11-24T09:00:00.000Z",
+    "updatedAt": "2026-11-24T09:00:00.000Z",
+    "seedVersion": 3
   }
 ]
